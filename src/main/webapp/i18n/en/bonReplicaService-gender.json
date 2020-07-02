@@ -1,0 +1,9 @@
+{
+  "bonGatewayApp": {
+    "Gender": {
+      "null": "",
+      "HEIFER": "HEIFER",
+      "BULL": "BULL"
+    }
+  }
+}

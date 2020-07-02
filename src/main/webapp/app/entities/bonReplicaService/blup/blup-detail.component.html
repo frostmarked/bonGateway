@@ -1,0 +1,66 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="blup">
+            <h2><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.detail.title">Blup</span> {{ blup.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.t0">T 0</span></dt>
+                <dd>
+                    <span>{{ blup.t0 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.d0">D 0</span></dt>
+                <dd>
+                    <span>{{ blup.d0 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.m0">M 0</span></dt>
+                <dd>
+                    <span>{{ blup.m0 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.t200">T 200</span></dt>
+                <dd>
+                    <span>{{ blup.t200 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.d200">D 200</span></dt>
+                <dd>
+                    <span>{{ blup.d200 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.m200">M 200</span></dt>
+                <dd>
+                    <span>{{ blup.m200 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.t365">T 365</span></dt>
+                <dd>
+                    <span>{{ blup.t365 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.d365">D 365</span></dt>
+                <dd>
+                    <span>{{ blup.d365 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.total">Total</span></dt>
+                <dd>
+                    <span>{{ blup.total }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.status">Status</span></dt>
+                <dd>
+                    <span>{{ blup.status }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.bovine">Bovine</span></dt>
+                <dd>
+                    <div *ngIf="blup.bovine">
+                        <a [routerLink]="['/bovine', blup.bovine?.id, 'view']">{{ blup.bovine?.earTagId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+        </div>
+    </div>
+</div>

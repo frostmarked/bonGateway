@@ -1,0 +1,36 @@
+{
+  "bonGatewayApp": {
+    "bonReplicaServiceBlup": {
+      "home": {
+        "title": "Blups",
+        "createLabel": "Create a new Blup",
+        "createOrEditLabel": "Create or edit a Blup",
+        "notFound": "No Blups found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Blup {{ id }}?"
+      },
+      "detail": {
+        "title": "Blup"
+      },
+      "t0": "T 0",
+      "d0": "D 0",
+      "m0": "M 0",
+      "t200": "T 200",
+      "d200": "D 200",
+      "m200": "M 200",
+      "t365": "T 365",
+      "d365": "D 365",
+      "total": "Total",
+      "status": "Status",
+      "bovine": "Bovine"
+    }
+  },
+  "bonReplicaServiceApp": {
+    "bonReplicaServiceBlup": {
+      "created": "A new Blup is created with identifier {{ param }}",
+      "updated": "A Blup is updated with identifier {{ param }}",
+      "deleted": "A Blup is deleted with identifier {{ param }}"
+    }
+  }
+}

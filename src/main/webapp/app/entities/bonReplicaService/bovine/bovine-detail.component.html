@@ -1,0 +1,82 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="bovine">
+            <h2><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.detail.title">Bovine</span> {{ bovine.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.earTagId">Ear Tag Id</span></dt>
+                <dd>
+                    <span>{{ bovine.earTagId }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.masterIdentifier">Master Identifier</span></dt>
+                <dd>
+                    <span>{{ bovine.masterIdentifier }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.country">Country</span></dt>
+                <dd>
+                    <span>{{ bovine.country }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.herdId">Herd Id</span></dt>
+                <dd>
+                    <span>{{ bovine.herdId }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.birthDate">Birth Date</span></dt>
+                <dd>
+                    <span>{{ bovine.birthDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.gender">Gender</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.Gender.' + bovine.gender }}">{{ bovine.gender }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.name">Name</span></dt>
+                <dd>
+                    <span>{{ bovine.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.bovineStatus">Bovine Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.BovineStatus.' + bovine.bovineStatus }}">{{ bovine.bovineStatus }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.hornStatus">Horn Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.HornStatus.' + bovine.hornStatus }}">{{ bovine.hornStatus }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.matriId">Matri Id</span></dt>
+                <dd>
+                    <span>{{ bovine.matriId }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.patriId">Patri Id</span></dt>
+                <dd>
+                    <span>{{ bovine.patriId }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.weight0">Weight 0</span></dt>
+                <dd>
+                    <span>{{ bovine.weight0 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.weight200">Weight 200</span></dt>
+                <dd>
+                    <span>{{ bovine.weight200 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.weight365">Weight 365</span></dt>
+                <dd>
+                    <span>{{ bovine.weight365 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.sourceFile">Source File</span></dt>
+                <dd>
+                    <div *ngIf="bovine.sourceFile">
+                        <a [routerLink]="['/source-file', bovine.sourceFile?.id, 'view']">{{ bovine.sourceFile?.id }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+        </div>
+    </div>
+</div>

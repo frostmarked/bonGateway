@@ -1,0 +1,132 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-photo-heading" jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.home.createOrEditLabel">Create or edit a Photo</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.image" for="field_image">Image</label>
+                    <div>
+                        <img [src]="'data:' + editForm.get('imageContentType')!.value + ';base64,' + editForm.get('image')!.value" style="max-height: 100px;" *ngIf="editForm.get('image')!.value" alt="photo image"/>
+                        <div *ngIf="editForm.get('image')!.value" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{ editForm.get('imageContentType')!.value }}, {{ byteSize(editForm.get('image')!.value) }}</span>
+                            <button type="button" (click)="clearInputImage('image', 'imageContentType', 'file_image')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_image" (change)="setFileData($event, 'image', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="image" id="field_image"
+                           formControlName="image"/>
+                    <input type="hidden" class="form-control" name="imageContentType" id="field_imageContentType"
+                           formControlName="imageContentType" />
+                    <div *ngIf="editForm.get('image')!.invalid && (editForm.get('image')!.dirty || editForm.get('image')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('image')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.caption" for="field_caption">Caption</label>
+                    <input type="text" class="form-control" name="caption" id="field_caption"
+                           formControlName="caption"/>
+                    <div *ngIf="editForm.get('caption')!.invalid && (editForm.get('caption')!.dirty || editForm.get('caption')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('caption')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('caption')?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 1 }">
+                        This field is required to be at least 1 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('caption')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 140 }">
+                        This field cannot be longer than 140 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.height" for="field_height">Height</label>
+                    <input type="number" class="form-control" name="height" id="field_height"
+                           formControlName="height"/>
+                    <div *ngIf="editForm.get('height')!.invalid && (editForm.get('height')!.dirty || editForm.get('height')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('height')?.errors?.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 0 }">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('height')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.width" for="field_width">Width</label>
+                    <input type="number" class="form-control" name="width" id="field_width"
+                           formControlName="width"/>
+                    <div *ngIf="editForm.get('width')!.invalid && (editForm.get('width')!.dirty || editForm.get('width')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('width')?.errors?.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 0 }">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('width')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.taken" for="field_taken">Taken</label>
+                    <div class="d-flex">
+                        <input id="field_taken" type="datetime-local" class="form-control" name="taken" formControlName="taken" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.visibility" for="field_visibility">Visibility</label>
+                    <select class="form-control" name="visibility" formControlName="visibility" id="field_visibility">
+                        <option value="ROLE_ADMIN">{{ 'bonGatewayApp.UserRole.ROLE_ADMIN' | translate }}</option>
+                        <option value="ROLE_USER">{{ 'bonGatewayApp.UserRole.ROLE_USER' | translate }}</option>
+                        <option value="ROLE_ANONYMOUS">{{ 'bonGatewayApp.UserRole.ROLE_ANONYMOUS' | translate }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.cattle" for="field_cattle">Cattle</label>
+                    <select class="form-control" id="field_cattle" name="cattle" formControlName="cattle">
+                        <option *ngIf="!editForm.get('cattle')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="cattleOption.id === editForm.get('cattle')!.value?.id ? editForm.get('cattle')!.value : cattleOption" *ngFor="let cattleOption of cattles; trackBy: trackById">{{ cattleOption.earTagId }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('cattle')!.invalid && (editForm.get('cattle')!.dirty || editForm.get('cattle')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('cattle')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

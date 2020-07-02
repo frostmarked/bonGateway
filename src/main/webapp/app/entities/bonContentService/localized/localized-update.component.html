@@ -1,0 +1,121 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-localized-heading" jhiTranslate="bonGatewayApp.bonContentServiceLocalized.home.createOrEditLabel">Create or edit a Localized</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceLocalized.i18n" for="field_i18n">I 18 N</label>
+                    <input type="text" class="form-control" name="i18n" id="field_i18n"
+                           formControlName="i18n"/>
+                    <div *ngIf="editForm.get('i18n')!.invalid && (editForm.get('i18n')!.dirty || editForm.get('i18n')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('i18n')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('i18n')?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 2 }">
+                        This field is required to be at least 2 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('i18n')?.errors?.pattern" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'I 18 N' }">
+                            This field should follow pattern for "I 18 N".
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceLocalized.title" for="field_title">Title</label>
+                    <input type="text" class="form-control" name="title" id="field_title"
+                           formControlName="title"/>
+                    <div *ngIf="editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('title')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 127 }">
+                        This field cannot be longer than 127 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceLocalized.ingress" for="field_ingress">Ingress</label>
+                    <input type="text" class="form-control" name="ingress" id="field_ingress"
+                           formControlName="ingress"/>
+                    <div *ngIf="editForm.get('ingress')!.invalid && (editForm.get('ingress')!.dirty || editForm.get('ingress')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('ingress')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                        This field cannot be longer than 255 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceLocalized.body" for="field_body">Body</label>
+                    <textarea class="form-control" name="body" id="field_body"
+                              formControlName="body"></textarea>
+                    <div *ngIf="editForm.get('body')!.invalid && (editForm.get('body')!.dirty || editForm.get('body')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('body')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceLocalized.caption" for="field_caption">Caption</label>
+                    <input type="text" class="form-control" name="caption" id="field_caption"
+                           formControlName="caption"/>
+                    <div *ngIf="editForm.get('caption')!.invalid && (editForm.get('caption')!.dirty || editForm.get('caption')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('caption')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                        This field cannot be longer than 255 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceLocalized.visibility" for="field_visibility">Visibility</label>
+                    <select class="form-control" name="visibility" formControlName="visibility" id="field_visibility">
+                        <option value="ROLE_ADMIN">{{ 'bonGatewayApp.UserRole.ROLE_ADMIN' | translate }}</option>
+                        <option value="ROLE_USER">{{ 'bonGatewayApp.UserRole.ROLE_USER' | translate }}</option>
+                        <option value="ROLE_ANONYMOUS">{{ 'bonGatewayApp.UserRole.ROLE_ANONYMOUS' | translate }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceLocalized.fragment" for="field_fragment">Fragment</label>
+                    <select class="form-control" id="field_fragment" name="fragment" formControlName="fragment">
+                        <option *ngIf="!editForm.get('fragment')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="fragmentOption.id === editForm.get('fragment')!.value?.id ? editForm.get('fragment')!.value : fragmentOption" *ngFor="let fragmentOption of fragments; trackBy: trackById">{{ fragmentOption.orderNo }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('fragment')!.invalid && (editForm.get('fragment')!.dirty || editForm.get('fragment')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('fragment')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

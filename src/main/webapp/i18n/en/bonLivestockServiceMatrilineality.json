@@ -1,0 +1,37 @@
+{
+  "bonGatewayApp": {
+    "bonLivestockServiceMatrilineality": {
+      "home": {
+        "title": "Matrilinealities",
+        "createLabel": "Create a new Matrilineality",
+        "createOrEditLabel": "Create or edit a Matrilineality",
+        "notFound": "No Matrilinealities found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Matrilineality {{ id }}?"
+      },
+      "detail": {
+        "title": "Matrilineality"
+      },
+      "familyname": "Familyname",
+      "earTagId": "Ear Tag Id",
+      "name": "Name",
+      "country": "Country",
+      "description": "Description",
+      "cattleNameRegexPattern": "Cattle Name Regex Pattern",
+      "patriId": "Patri Id",
+      "patriName": "Patri Name",
+      "patriCountry": "Patri Country",
+      "polled": "Polled",
+      "storyHandle": "Story Handle",
+      "visibility": "Visibility"
+    }
+  },
+  "bonLivestockServiceApp": {
+    "bonLivestockServiceMatrilineality": {
+      "created": "A new Matrilineality is created with identifier {{ param }}",
+      "updated": "A Matrilineality is updated with identifier {{ param }}",
+      "deleted": "A Matrilineality is deleted with identifier {{ param }}"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "bonGatewayApp": {
+    "bonReplicaServiceSourceFile": {
+      "home": {
+        "title": "Source Files",
+        "createLabel": "Skapa en ny Source File",
+        "createOrEditLabel": "Skapa eller ändra en Source File",
+        "notFound": "No Source Files found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Source File {{ id }}?"
+      },
+      "detail": {
+        "title": "Source File"
+      },
+      "name": "Name",
+      "zipFile": "Zip File",
+      "processed": "Processed",
+      "outcome": "Outcome"
+    }
+  },
+  "bonReplicaServiceApp": {
+    "bonReplicaServiceSourceFile": {
+      "created": "En ny Source File är skapad med id {{ param }}",
+      "updated": "En Source File är uppdaterad med id  {{ param }}",
+      "deleted": "En Source File är borttagen med id  {{ param }}"
+    }
+  }
+}

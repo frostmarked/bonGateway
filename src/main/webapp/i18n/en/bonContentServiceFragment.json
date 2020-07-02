@@ -1,0 +1,40 @@
+{
+  "bonGatewayApp": {
+    "bonContentServiceFragment": {
+      "home": {
+        "title": "Fragments",
+        "createLabel": "Create a new Fragment",
+        "createOrEditLabel": "Create or edit a Fragment",
+        "search": "Search for Fragment",
+        "notFound": "No Fragments found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Fragment {{ id }}?"
+      },
+      "detail": {
+        "title": "Fragment"
+      },
+      "template": "Template",
+      "name": "Name",
+      "title": "Title",
+      "ingress": "Ingress",
+      "body": "Body",
+      "image": "Image",
+      "caption": "Caption",
+      "width": "Width",
+      "height": "Height",
+      "orderNo": "Order No",
+      "visibility": "Visibility",
+      "localizedFragment": "Localized Fragment",
+      "tag": "Tag",
+      "story": "Story"
+    }
+  },
+  "bonContentServiceApp": {
+    "bonContentServiceFragment": {
+      "created": "A new Fragment is created with identifier {{ param }}",
+      "updated": "A Fragment is updated with identifier {{ param }}",
+      "deleted": "A Fragment is deleted with identifier {{ param }}"
+    }
+  }
+}

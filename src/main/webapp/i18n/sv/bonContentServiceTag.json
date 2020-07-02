@@ -1,0 +1,27 @@
+{
+  "bonGatewayApp": {
+    "bonContentServiceTag": {
+      "home": {
+        "title": "Tags",
+        "createLabel": "Skapa en ny Tag",
+        "createOrEditLabel": "Skapa eller ändra en Tag",
+        "notFound": "No Tags found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Tag {{ id }}?"
+      },
+      "detail": {
+        "title": "Tag"
+      },
+      "name": "Name",
+      "fragment": "Fragment"
+    }
+  },
+  "bonContentServiceApp": {
+    "bonContentServiceTag": {
+      "created": "En ny Tag är skapad med id {{ param }}",
+      "updated": "En Tag är uppdaterad med id  {{ param }}",
+      "deleted": "En Tag är borttagen med id  {{ param }}"
+    }
+  }
+}

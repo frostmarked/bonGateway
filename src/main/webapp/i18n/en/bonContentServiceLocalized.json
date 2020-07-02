@@ -1,0 +1,33 @@
+{
+  "bonGatewayApp": {
+    "bonContentServiceLocalized": {
+      "home": {
+        "title": "Localizeds",
+        "createLabel": "Create a new Localized",
+        "createOrEditLabel": "Create or edit a Localized",
+        "search": "Search for Localized",
+        "notFound": "No Localizeds found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Localized {{ id }}?"
+      },
+      "detail": {
+        "title": "Localized"
+      },
+      "i18n": "I 18 N",
+      "title": "Title",
+      "ingress": "Ingress",
+      "body": "Body",
+      "caption": "Caption",
+      "visibility": "Visibility",
+      "fragment": "Fragment"
+    }
+  },
+  "bonContentServiceApp": {
+    "bonContentServiceLocalized": {
+      "created": "A new Localized is created with identifier {{ param }}",
+      "updated": "A Localized is updated with identifier {{ param }}",
+      "deleted": "A Localized is deleted with identifier {{ param }}"
+    }
+  }
+}

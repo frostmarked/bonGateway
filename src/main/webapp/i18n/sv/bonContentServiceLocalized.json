@@ -1,0 +1,33 @@
+{
+  "bonGatewayApp": {
+    "bonContentServiceLocalized": {
+      "home": {
+        "title": "Localizeds",
+        "createLabel": "Skapa en ny Localized",
+        "createOrEditLabel": "Skapa eller ändra en Localized",
+        "search": "Sök efter Localized",
+        "notFound": "No Localizeds found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Localized {{ id }}?"
+      },
+      "detail": {
+        "title": "Localized"
+      },
+      "i18n": "I 18 N",
+      "title": "Title",
+      "ingress": "Ingress",
+      "body": "Body",
+      "caption": "Caption",
+      "visibility": "Visibility",
+      "fragment": "Fragment"
+    }
+  },
+  "bonContentServiceApp": {
+    "bonContentServiceLocalized": {
+      "created": "En ny Localized är skapad med id {{ param }}",
+      "updated": "En Localized är uppdaterad med id  {{ param }}",
+      "deleted": "En Localized är borttagen med id  {{ param }}"
+    }
+  }
+}

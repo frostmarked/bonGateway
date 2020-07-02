@@ -1,0 +1,42 @@
+{
+  "bonGatewayApp": {
+    "bonReplicaServiceBovine": {
+      "home": {
+        "title": "Bovines",
+        "createLabel": "Create a new Bovine",
+        "createOrEditLabel": "Create or edit a Bovine",
+        "notFound": "No Bovines found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Bovine {{ id }}?"
+      },
+      "detail": {
+        "title": "Bovine"
+      },
+      "earTagId": "Ear Tag Id",
+      "masterIdentifier": "Master Identifier",
+      "country": "Country",
+      "herdId": "Herd Id",
+      "birthDate": "Birth Date",
+      "gender": "Gender",
+      "name": "Name",
+      "bovineStatus": "Bovine Status",
+      "hornStatus": "Horn Status",
+      "matriId": "Matri Id",
+      "patriId": "Patri Id",
+      "weight0": "Weight 0",
+      "weight200": "Weight 200",
+      "weight365": "Weight 365",
+      "journalEntries": "Journal Entries",
+      "sourceFile": "Source File",
+      "blup": "Blup"
+    }
+  },
+  "bonReplicaServiceApp": {
+    "bonReplicaServiceBovine": {
+      "created": "A new Bovine is created with identifier {{ param }}",
+      "updated": "A Bovine is updated with identifier {{ param }}",
+      "deleted": "A Bovine is deleted with identifier {{ param }}"
+    }
+  }
+}

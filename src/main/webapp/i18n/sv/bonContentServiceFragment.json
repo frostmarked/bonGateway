@@ -1,0 +1,40 @@
+{
+  "bonGatewayApp": {
+    "bonContentServiceFragment": {
+      "home": {
+        "title": "Fragments",
+        "createLabel": "Skapa en ny Fragment",
+        "createOrEditLabel": "Skapa eller ändra en Fragment",
+        "search": "Sök efter Fragment",
+        "notFound": "No Fragments found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Fragment {{ id }}?"
+      },
+      "detail": {
+        "title": "Fragment"
+      },
+      "template": "Template",
+      "name": "Name",
+      "title": "Title",
+      "ingress": "Ingress",
+      "body": "Body",
+      "image": "Image",
+      "caption": "Caption",
+      "width": "Width",
+      "height": "Height",
+      "orderNo": "Order No",
+      "visibility": "Visibility",
+      "localizedFragment": "Localized Fragment",
+      "tag": "Tag",
+      "story": "Story"
+    }
+  },
+  "bonContentServiceApp": {
+    "bonContentServiceFragment": {
+      "created": "En ny Fragment är skapad med id {{ param }}",
+      "updated": "En Fragment är uppdaterad med id  {{ param }}",
+      "deleted": "En Fragment är borttagen med id  {{ param }}"
+    }
+  }
+}

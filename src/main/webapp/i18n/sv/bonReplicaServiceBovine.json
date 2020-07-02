@@ -1,0 +1,42 @@
+{
+  "bonGatewayApp": {
+    "bonReplicaServiceBovine": {
+      "home": {
+        "title": "Bovines",
+        "createLabel": "Skapa en ny Bovine",
+        "createOrEditLabel": "Skapa eller ändra en Bovine",
+        "notFound": "No Bovines found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Bovine {{ id }}?"
+      },
+      "detail": {
+        "title": "Bovine"
+      },
+      "earTagId": "Ear Tag Id",
+      "masterIdentifier": "Master Identifier",
+      "country": "Country",
+      "herdId": "Herd Id",
+      "birthDate": "Birth Date",
+      "gender": "Gender",
+      "name": "Name",
+      "bovineStatus": "Bovine Status",
+      "hornStatus": "Horn Status",
+      "matriId": "Matri Id",
+      "patriId": "Patri Id",
+      "weight0": "Weight 0",
+      "weight200": "Weight 200",
+      "weight365": "Weight 365",
+      "journalEntries": "Journal Entries",
+      "sourceFile": "Source File",
+      "blup": "Blup"
+    }
+  },
+  "bonReplicaServiceApp": {
+    "bonReplicaServiceBovine": {
+      "created": "En ny Bovine är skapad med id {{ param }}",
+      "updated": "En Bovine är uppdaterad med id  {{ param }}",
+      "deleted": "En Bovine är borttagen med id  {{ param }}"
+    }
+  }
+}

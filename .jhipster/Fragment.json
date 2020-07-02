@@ -1,0 +1,100 @@
+{
+  "name": "Fragment",
+  "fields": [
+    {
+      "fieldName": "template",
+      "fieldType": "FragmentTemplate",
+      "fieldValues": "V1,V2,V3",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "127"
+    },
+    {
+      "fieldName": "ingress",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "body",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "caption",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "width",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "height",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "orderNo",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "visibility",
+      "fieldType": "UserRole",
+      "fieldValues": "ROLE_ADMIN,ROLE_USER,ROLE_ANONYMOUS"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "localized",
+      "otherEntityRelationshipName": "fragment",
+      "relationshipName": "localizedFragment"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "tag",
+      "otherEntityRelationshipName": "fragment",
+      "relationshipName": "tag",
+      "otherEntityField": "name",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "story",
+      "otherEntityRelationshipName": "fragment",
+      "relationshipValidateRules": "required",
+      "relationshipName": "story",
+      "otherEntityField": "name"
+    }
+  ],
+  "changelogDate": "20200702180022",
+  "entityTableName": "bon_content_fragment",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["bonGateway", "bonContentService"],
+  "microserviceName": "bonContentService",
+  "searchEngine": "elasticsearch"
+}

@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="note">
+            <h2><span jhiTranslate="bonGatewayApp.bonLivestockServiceNote.detail.title">Note</span> {{ note.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceNote.category">Category</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.NoteCategory.' + note.category }}">{{ note.category }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceNote.note">Note</span></dt>
+                <dd>
+                    <span>{{ note.note }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceNote.actualDate">Actual Date</span></dt>
+                <dd>
+                    <span>{{ note.actualDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceNote.pasture">Pasture</span></dt>
+                <dd>
+                    <div *ngIf="note.pasture">
+                        <a [routerLink]="['/pasture', note.pasture?.id, 'view']">{{ note.pasture?.name }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceNote.cattle">Cattle</span></dt>
+                <dd>
+                    <div *ngIf="note.cattle">
+                        <a [routerLink]="['/cattle', note.cattle?.id, 'view']">{{ note.cattle?.earTagId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/note', note.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

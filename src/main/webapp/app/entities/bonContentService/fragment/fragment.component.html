@@ -1,0 +1,110 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="bonGatewayApp.bonContentServiceFragment.home.title">Fragments</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-fragment" [routerLink]="['/fragment/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="bonGatewayApp.bonContentServiceFragment.home.createLabel">
+            Create a new Fragment
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'bonGatewayApp.bonContentServiceFragment.home.search' | translate }}">
+
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon icon="search"></fa-icon>
+                    </button>
+
+                    <button class="input-group-append btn btn-danger" (click)="search('')" *ngIf="currentSearch">
+                        <fa-icon icon="trash-alt"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="fragments?.length === 0">
+        <span jhiTranslate="bonGatewayApp.bonContentServiceFragment.home.notFound">No fragments found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="fragments && fragments.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="template"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.template">Template</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="name"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="title"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.title">Title</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="ingress"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.ingress">Ingress</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="body"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.body">Body</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="image"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.image">Image</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="caption"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.caption">Caption</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="width"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.width">Width</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="height"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.height">Height</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="orderNo"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.orderNo">Order No</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="visibility"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.visibility">Visibility</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="story.name"><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.story">Story</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let fragment of fragments ;trackBy: trackId">
+                    <td><a [routerLink]="['/fragment', fragment.id, 'view']">{{ fragment.id }}</a></td>
+                    <td jhiTranslate="{{ 'bonGatewayApp.FragmentTemplate.' + fragment.template }}">{{ fragment.template }}</td>
+                    <td>{{ fragment.name }}</td>
+                    <td>{{ fragment.title }}</td>
+                    <td>{{ fragment.ingress }}</td>
+                    <td>{{ fragment.body }}</td>
+                    <td>
+                        <a *ngIf="fragment.image" (click)="openFile(fragment.imageContentType, fragment.image)">
+                            <img [src]="'data:' + fragment.imageContentType + ';base64,' + fragment.image" style="max-height: 30px;" alt="fragment image"/>
+                        </a>
+                        <span *ngIf="fragment.image">{{ fragment.imageContentType }}, {{ byteSize(fragment.image) }}</span>
+                    </td>
+                    <td>{{ fragment.caption }}</td>
+                    <td>{{ fragment.width }}</td>
+                    <td>{{ fragment.height }}</td>
+                    <td>{{ fragment.orderNo }}</td>
+                    <td jhiTranslate="{{ 'bonGatewayApp.UserRole.' + fragment.visibility }}">{{ fragment.visibility }}</td>
+                    <td>
+                        <div *ngIf="fragment.story">
+                            <a [routerLink]="['/story', fragment.story?.id, 'view']" >{{ fragment.story?.name }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/fragment', fragment.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/fragment', fragment.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(fragment)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

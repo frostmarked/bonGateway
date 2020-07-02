@@ -1,0 +1,32 @@
+{
+  "bonGatewayApp": {
+    "bonLivestockServicePhoto": {
+      "home": {
+        "title": "Photos",
+        "createLabel": "Skapa en ny Photo",
+        "createOrEditLabel": "Skapa eller ändra en Photo",
+        "notFound": "No Photos found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Photo {{ id }}?"
+      },
+      "detail": {
+        "title": "Photo"
+      },
+      "image": "Image",
+      "caption": "Caption",
+      "height": "Height",
+      "width": "Width",
+      "taken": "Taken",
+      "visibility": "Visibility",
+      "cattle": "Cattle"
+    }
+  },
+  "bonLivestockServiceApp": {
+    "bonLivestockServicePhoto": {
+      "created": "En ny Photo är skapad med id {{ param }}",
+      "updated": "En Photo är uppdaterad med id  {{ param }}",
+      "deleted": "En Photo är borttagen med id  {{ param }}"
+    }
+  }
+}

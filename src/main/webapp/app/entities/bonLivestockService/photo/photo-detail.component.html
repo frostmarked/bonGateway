@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="photo">
+            <h2><span jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.detail.title">Photo</span> {{ photo.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.image">Image</span></dt>
+                <dd>
+                    <div *ngIf="photo.image">
+                        <a (click)="openFile(photo.imageContentType, photo.image)">
+                            <img [src]="'data:' + photo.imageContentType + ';base64,' + photo.image" style="max-width: 100%;" alt="photo image"/>
+                        </a>
+                        {{ photo.imageContentType }}, {{ byteSize(photo.image) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.caption">Caption</span></dt>
+                <dd>
+                    <span>{{ photo.caption }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.height">Height</span></dt>
+                <dd>
+                    <span>{{ photo.height }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.width">Width</span></dt>
+                <dd>
+                    <span>{{ photo.width }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.taken">Taken</span></dt>
+                <dd>
+                    <span>{{ photo.taken }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.visibility">Visibility</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.UserRole.' + photo.visibility }}">{{ photo.visibility }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.cattle">Cattle</span></dt>
+                <dd>
+                    <div *ngIf="photo.cattle">
+                        <a [routerLink]="['/cattle', photo.cattle?.id, 'view']">{{ photo.cattle?.earTagId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/photo', photo.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
