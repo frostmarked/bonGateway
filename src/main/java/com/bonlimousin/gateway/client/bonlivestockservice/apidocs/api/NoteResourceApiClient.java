@@ -4,6 +4,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 
 import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.ClientConfiguration;
 
-@FeignClient(name="${noteResource.name:noteResource}", url="${noteResource.url:http://localhost:9001}", configuration = ClientConfiguration.class)
+@FeignClient(name="${application.bff.resource.note.name}", url="${application.bff.resource.note.url}", configuration = ClientConfiguration.class)
 public interface NoteResourceApiClient extends NoteResourceApi {
 }

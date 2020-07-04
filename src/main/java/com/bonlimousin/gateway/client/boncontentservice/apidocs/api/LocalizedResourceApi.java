@@ -5,29 +5,28 @@
  */
 package com.bonlimousin.gateway.client.boncontentservice.apidocs.api;
 
-import io.swagger.annotations.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.bonlimousin.gateway.client.boncontentservice.apidocs.model.LocalizedEntity;
+import com.bonlimousin.gateway.client.boncontentservice.apidocs.querymap.LocalizedCriteria;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2020-07-04T00:04:26.742175+02:00[Europe/Stockholm]")
 
 @Validated
@@ -220,7 +219,7 @@ public interface LocalizedResourceApi {
     @RequestMapping(value = "/api/localizeds",
         produces = "*/*", 
         method = RequestMethod.GET)
-    ResponseEntity<List<LocalizedEntity>> getAllLocalizedsUsingGET(@ApiParam(value = "") @Valid @RequestParam(value = "caption.contains", required = false) String captionContains,@ApiParam(value = "") @Valid @RequestParam(value = "caption.doesNotContain", required = false) String captionDoesNotContain,@ApiParam(value = "") @Valid @RequestParam(value = "caption.equals", required = false) String captionEquals,@ApiParam(value = "") @Valid @RequestParam(value = "caption.in", required = false) List<String> captionIn,@ApiParam(value = "") @Valid @RequestParam(value = "caption.notEquals", required = false) String captionNotEquals,@ApiParam(value = "") @Valid @RequestParam(value = "caption.notIn", required = false) List<String> captionNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "caption.specified", required = false) Boolean captionSpecified,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.equals", required = false) Long fragmentIdEquals,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.greaterThan", required = false) Long fragmentIdGreaterThan,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.greaterThanOrEqual", required = false) Long fragmentIdGreaterThanOrEqual,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.in", required = false) List<Long> fragmentIdIn,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.lessThan", required = false) Long fragmentIdLessThan,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.lessThanOrEqual", required = false) Long fragmentIdLessThanOrEqual,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.notEquals", required = false) Long fragmentIdNotEquals,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.notIn", required = false) List<Long> fragmentIdNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.specified", required = false) Boolean fragmentIdSpecified,@ApiParam(value = "") @Valid @RequestParam(value = "i18n.contains", required = false) String i18nContains,@ApiParam(value = "") @Valid @RequestParam(value = "i18n.doesNotContain", required = false) String i18nDoesNotContain,@ApiParam(value = "") @Valid @RequestParam(value = "i18n.equals", required = false) String i18nEquals,@ApiParam(value = "") @Valid @RequestParam(value = "i18n.in", required = false) List<String> i18nIn,@ApiParam(value = "") @Valid @RequestParam(value = "i18n.notEquals", required = false) String i18nNotEquals,@ApiParam(value = "") @Valid @RequestParam(value = "i18n.notIn", required = false) List<String> i18nNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "i18n.specified", required = false) Boolean i18nSpecified,@ApiParam(value = "") @Valid @RequestParam(value = "id.equals", required = false) Long idEquals,@ApiParam(value = "") @Valid @RequestParam(value = "id.greaterThan", required = false) Long idGreaterThan,@ApiParam(value = "") @Valid @RequestParam(value = "id.greaterThanOrEqual", required = false) Long idGreaterThanOrEqual,@ApiParam(value = "") @Valid @RequestParam(value = "id.in", required = false) List<Long> idIn,@ApiParam(value = "") @Valid @RequestParam(value = "id.lessThan", required = false) Long idLessThan,@ApiParam(value = "") @Valid @RequestParam(value = "id.lessThanOrEqual", required = false) Long idLessThanOrEqual,@ApiParam(value = "") @Valid @RequestParam(value = "id.notEquals", required = false) Long idNotEquals,@ApiParam(value = "") @Valid @RequestParam(value = "id.notIn", required = false) List<Long> idNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "id.specified", required = false) Boolean idSpecified,@ApiParam(value = "") @Valid @RequestParam(value = "ingress.contains", required = false) String ingressContains,@ApiParam(value = "") @Valid @RequestParam(value = "ingress.doesNotContain", required = false) String ingressDoesNotContain,@ApiParam(value = "") @Valid @RequestParam(value = "ingress.equals", required = false) String ingressEquals,@ApiParam(value = "") @Valid @RequestParam(value = "ingress.in", required = false) List<String> ingressIn,@ApiParam(value = "") @Valid @RequestParam(value = "ingress.notEquals", required = false) String ingressNotEquals,@ApiParam(value = "") @Valid @RequestParam(value = "ingress.notIn", required = false) List<String> ingressNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "ingress.specified", required = false) Boolean ingressSpecified,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "title.contains", required = false) String titleContains,@ApiParam(value = "") @Valid @RequestParam(value = "title.doesNotContain", required = false) String titleDoesNotContain,@ApiParam(value = "") @Valid @RequestParam(value = "title.equals", required = false) String titleEquals,@ApiParam(value = "") @Valid @RequestParam(value = "title.in", required = false) List<String> titleIn,@ApiParam(value = "") @Valid @RequestParam(value = "title.notEquals", required = false) String titleNotEquals,@ApiParam(value = "") @Valid @RequestParam(value = "title.notIn", required = false) List<String> titleNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "title.specified", required = false) Boolean titleSpecified,@ApiParam(value = "", allowableValues = "ROLE_ADMIN, ROLE_USER, ROLE_ANONYMOUS") @Valid @RequestParam(value = "visibility.equals", required = false) String visibilityEquals,@ApiParam(value = "", allowableValues = "ROLE_ADMIN, ROLE_USER, ROLE_ANONYMOUS") @Valid @RequestParam(value = "visibility.in", required = false) List<String> visibilityIn,@ApiParam(value = "", allowableValues = "ROLE_ADMIN, ROLE_USER, ROLE_ANONYMOUS") @Valid @RequestParam(value = "visibility.notEquals", required = false) String visibilityNotEquals,@ApiParam(value = "", allowableValues = "ROLE_ADMIN, ROLE_USER, ROLE_ANONYMOUS") @Valid @RequestParam(value = "visibility.notIn", required = false) List<String> visibilityNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "visibility.specified", required = false) Boolean visibilitySpecified);
+    ResponseEntity<List<LocalizedEntity>> getAllLocalizedsUsingGET(@SpringQueryMap LocalizedCriteria criteria, @ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort);
 
 
     /**

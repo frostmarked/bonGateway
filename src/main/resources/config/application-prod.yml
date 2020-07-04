@@ -155,4 +155,8 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  bff:
+    client:
+      username: gatewayclient
+      password: user

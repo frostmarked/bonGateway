@@ -67,7 +67,7 @@ management:
         include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump']
   endpoint:
     health:
-      show-details: when_authorized
+      show-details: when-authorized
       roles: 'ROLE_ADMIN'
     jhimetrics:
       enabled: true
@@ -218,4 +218,57 @@ kafka:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  bff:
+    resource:
+      # bonContentService
+      boncontentservicekafka:
+        name: bonContentService
+        url: 
+      fragment:
+        name: bonContentService
+        url: 
+      localized:
+        name: bonContentService
+        url: 
+      story:
+        name: bonContentService
+        url: 
+      tag:
+        name: bonContentService
+        url: 
+      # bonLivestockService
+      bonlivestockservicekafka:
+        name: bonLivestockService
+        url: 
+      cattle:
+        name: bonLivestockService
+        url: 
+      matrilineality:
+        name: bonLivestockService
+        url: 
+      note:
+        name: bonLivestockService
+        url: 
+      pasture:
+        name: bonLivestockService
+        url: 
+      photo:
+        name: bonLivestockService
+        url: 
+      # bonReplicaService
+      blup:
+        name: bonReplicaService
+        url: 
+      bonreplicaservicekafka:
+        name: bonReplicaService
+        url: 
+      bovine:
+        name: bonReplicaService
+        url: 
+      journalentry:
+        name: bonReplicaService
+        url: 
+      sourcefile:
+        name: bonReplicaService
+        url: 

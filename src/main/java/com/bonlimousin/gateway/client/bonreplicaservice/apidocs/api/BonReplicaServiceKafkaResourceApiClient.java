@@ -4,6 +4,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 
 import com.bonlimousin.gateway.client.bonreplicaservice.apidocs.ClientConfiguration;
 
-@FeignClient(name="${bonReplicaServiceKafkaResource.name:bonReplicaServiceKafkaResource}", url="${bonReplicaServiceKafkaResource.url:http://localhost:9002}", configuration = ClientConfiguration.class)
+@FeignClient(name="${application.bff.resource.bonreplicaservicekafka.name}", url="${application.bff.resource.bonreplicaservicekafka.url}", configuration = ClientConfiguration.class)
 public interface BonReplicaServiceKafkaResourceApiClient extends BonReplicaServiceKafkaResourceApi {
 }

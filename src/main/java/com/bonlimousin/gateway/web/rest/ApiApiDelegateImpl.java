@@ -79,6 +79,6 @@ public class ApiApiDelegateImpl implements ApiApiDelegate {
 
 	@Override
 	public ResponseEntity<List<TagVO>> getAllTagVOs(Integer page, Integer size, List<String> sort) {
-		return this.getAllTagVOs(page, size, sort);
+		return this.articleVOResourceDelegate.getAllTagVOs(page, size, sort);
 	}
 }

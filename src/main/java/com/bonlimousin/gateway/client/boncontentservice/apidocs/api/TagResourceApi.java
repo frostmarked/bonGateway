@@ -5,29 +5,28 @@
  */
 package com.bonlimousin.gateway.client.boncontentservice.apidocs.api;
 
-import io.swagger.annotations.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.bonlimousin.gateway.client.boncontentservice.apidocs.model.TagEntity;
+import com.bonlimousin.gateway.client.boncontentservice.apidocs.querymap.TagCriteria;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2020-07-04T00:04:26.742175+02:00[Europe/Stockholm]")
 
 @Validated
@@ -168,7 +167,7 @@ public interface TagResourceApi {
     @RequestMapping(value = "/api/tags",
         produces = "*/*", 
         method = RequestMethod.GET)
-    ResponseEntity<List<TagEntity>> getAllTagsUsingGET(@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.equals", required = false) Long fragmentIdEquals,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.greaterThan", required = false) Long fragmentIdGreaterThan,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.greaterThanOrEqual", required = false) Long fragmentIdGreaterThanOrEqual,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.in", required = false) List<Long> fragmentIdIn,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.lessThan", required = false) Long fragmentIdLessThan,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.lessThanOrEqual", required = false) Long fragmentIdLessThanOrEqual,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.notEquals", required = false) Long fragmentIdNotEquals,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.notIn", required = false) List<Long> fragmentIdNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "fragmentId.specified", required = false) Boolean fragmentIdSpecified,@ApiParam(value = "") @Valid @RequestParam(value = "id.equals", required = false) Long idEquals,@ApiParam(value = "") @Valid @RequestParam(value = "id.greaterThan", required = false) Long idGreaterThan,@ApiParam(value = "") @Valid @RequestParam(value = "id.greaterThanOrEqual", required = false) Long idGreaterThanOrEqual,@ApiParam(value = "") @Valid @RequestParam(value = "id.in", required = false) List<Long> idIn,@ApiParam(value = "") @Valid @RequestParam(value = "id.lessThan", required = false) Long idLessThan,@ApiParam(value = "") @Valid @RequestParam(value = "id.lessThanOrEqual", required = false) Long idLessThanOrEqual,@ApiParam(value = "") @Valid @RequestParam(value = "id.notEquals", required = false) Long idNotEquals,@ApiParam(value = "") @Valid @RequestParam(value = "id.notIn", required = false) List<Long> idNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "id.specified", required = false) Boolean idSpecified,@ApiParam(value = "") @Valid @RequestParam(value = "name.contains", required = false) String nameContains,@ApiParam(value = "") @Valid @RequestParam(value = "name.doesNotContain", required = false) String nameDoesNotContain,@ApiParam(value = "") @Valid @RequestParam(value = "name.equals", required = false) String nameEquals,@ApiParam(value = "") @Valid @RequestParam(value = "name.in", required = false) List<String> nameIn,@ApiParam(value = "") @Valid @RequestParam(value = "name.notEquals", required = false) String nameNotEquals,@ApiParam(value = "") @Valid @RequestParam(value = "name.notIn", required = false) List<String> nameNotIn,@ApiParam(value = "") @Valid @RequestParam(value = "name.specified", required = false) Boolean nameSpecified,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort);
+    ResponseEntity<List<TagEntity>> getAllTagsUsingGET(@SpringQueryMap TagCriteria criteria, @ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort);
 
 
     /**
