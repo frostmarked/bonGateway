@@ -132,7 +132,8 @@
     "webpack:prod": "npm run cleanup && npm run webpack:prod:main && npm run clean-www",
     "webpack:test": "npm run test",
     "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
+    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js",
+    "openapi-client:apidocs": "openapi-generator generate -g spring -i http://localhost:9002/v2/api-docs -p library=spring-cloud -p apiPackage=com.bonlimousin.gateway.client.apidocs.api -p modelPackage=com.bonlimousin.gateway.client.apidocs.model -p basePackage=com.bonlimousin.gateway.client -p configPackage=com.bonlimousin.gateway.client.apidocs -p title=apidocs -p artifactId=apidocs -p supportingFiles=ApiKeyRequestInterceptor.java --skip-validate-spec"
   },
   "jestSonar": {
     "reportPath": "target/test-results/jest",
