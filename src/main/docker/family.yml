@@ -1,0 +1,47 @@
+version: '2'
+services:
+  bongateway-app:
+    image: bongateway
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/bonGateway
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
+    ports:
+      - 9000:9000
+  bonreplicaservice-app:
+    extends:
+      file: siblings.yml
+      service: bonreplicaservice-app
+  bonlivestockservice-app:
+    extends:
+      file: siblings.yml
+      service: bonlivestockservice-app
+  boncontentservice-app:
+    extends:
+      file: siblings.yml
+      service: boncontentservice-app
+  bonfamily-elasticsearch:
+    extends:
+      file: siblings.yml
+      service: bonfamily-elasticsearch
+  bonfamily-rdb-postgresql:
+    extends:
+      file: siblings.yml
+      service: bonfamily-rdb-postgresql
+  kafka:
+    extends:
+      file: siblings.yml
+      service: kafka
+  zookeeper:
+    extends:
+      file: siblings.yml
+      service: zookeeper
+  jhipster-registry:
+    extends:
+      file: siblings.yml
+      service: jhipster-registry    

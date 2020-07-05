@@ -1,0 +1,89 @@
+version: '2'
+services:
+
+  bonreplicaservice-app:
+    image: bonreplicaservice
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/bonReplicaService # use shared postgres
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
+      - SPRING_LIQUIBASE_CONTEXTS=prod,faker #test data from faker
+    ports:
+      - 9002:9002
+
+  bonlivestockservice-app:
+    image: bonlivestockservice
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/bonLivestockService # use shared postgres
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
+      - SPRING_LIQUIBASE_CONTEXTS=prod,faker #test data from faker
+    ports:
+      - 9001:9001
+
+  boncontentservice-app:
+    image: boncontentservice
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/bonContentService # use shared postgres
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATA_JEST_URI=http://host.docker.internal:9200 # use shared elasticsearch
+      - SPRING_ELASTICSEARCH_REST_URIS=http://host.docker.internal:9200 # use shared elasticsearch
+      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
+      - SPRING_LIQUIBASE_CONTEXTS=prod,faker #test data from faker
+    ports:
+      - 9003:9003
+
+  bonfamily-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.8
+    # volumes:
+    #     - ~/volumes/jhipster/bonfamily/elasticsearch/:/usr/share/elasticsearch/data/
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - 'ES_JAVA_OPTS=-Xms1024m -Xmx1024m'
+      - 'discovery.type=single-node'
+
+  bonfamily-rdb-postgresql:
+    extends:
+      file: family-rdb.yml
+      service: bonfamily-rdb-postgresql
+    ports:
+      - 5432:5432
+
+  kafka:
+    extends:
+      file: kafka.yml
+      service: kafka
+    ports:
+      - 9092:9092
+
+  zookeeper:
+    extends:
+      file: kafka.yml
+      service: zookeeper
+
+  jhipster-registry:
+    extends:
+      file: jhipster-registry.yml
+      service: jhipster-registry
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/mixed-config/
+    ports:
+      - 8761:8761

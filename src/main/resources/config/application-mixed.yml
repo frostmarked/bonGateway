@@ -1,0 +1,55 @@
+
+application:
+  bff:
+    resource:
+      # bonContentService
+      boncontentservicekafka:
+        name: bonContentService
+        url: http://localhost:9003
+      fragment:
+        name: bonContentService
+        url: http://localhost:9003
+      localized:
+        name: bonContentService
+        url: http://localhost:9003
+      story:
+        name: bonContentService
+        url: http://localhost:9003
+      tag:
+        name: bonContentService
+        url: http://localhost:9003
+      # bonLivestockService
+      bonlivestockservicekafka:
+        name: bonLivestockService
+        url: http://localhost:9001
+      cattle:
+        name: bonLivestockService
+        url: http://localhost:9001
+      matrilineality:
+        name: bonLivestockService
+        url: http://localhost:9001
+      note:
+        name: bonLivestockService
+        url: http://localhost:9001
+      pasture:
+        name: bonLivestockService
+        url: http://localhost:9001
+      photo:
+        name: bonLivestockService
+        url: http://localhost:9001
+      # bonReplicaService
+      blup:
+        name: bonReplicaService
+        url: http://localhost:9002
+      bonreplicaservicekafka:
+        name: bonReplicaService
+        url: http://localhost:9002
+      bovine:
+        name: bonReplicaService
+        url: http://localhost:9002
+      journalentry:
+        name: bonReplicaService
+        url: http://localhost:9002
+      sourcefile:
+        name: bonReplicaService
+        url: http://localhost:9002

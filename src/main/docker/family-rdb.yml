@@ -1,0 +1,24 @@
+version: '2'
+services:
+  bonfamily-rdb-postgresql:
+    image: postgres:12.3
+    #restart: always
+    volumes:
+      # - ~/volumes/jhipster/bonfamily/postgresql/:/var/lib/postgresql/data/
+      - ./bonfamily_postgres_init:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432:5432
+
+  bonfamily-rdb-pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'root@bonlimousin.com'
+      PGADMIN_DEFAULT_PASSWORD: 'root'
+    ports:
+      - 16543:80
+    depends_on:
+      - bonfamily-rdb-postgresql
