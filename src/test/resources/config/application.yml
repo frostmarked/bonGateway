@@ -75,6 +75,13 @@ spring:
         size: 1
   thymeleaf:
     mode: HTML
+  # TODO graphql with kickstart breaks the test.
+  # https://github.com/graphql-java-kickstart/graphql-spring-boot/issues/230
+  # handle for now according to issue on github
+  autoconfigure:
+    exclude:
+      - graphql.kickstart.spring.web.boot.GraphQLWebAutoConfiguration
+      - graphql.kickstart.spring.web.boot.GraphQLWebsocketAutoConfiguration
 
 server:
   port: 10344

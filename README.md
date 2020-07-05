@@ -127,6 +127,51 @@ To edit the `api.yml` definition file, you can use a tool such as [Swagger-Edito
 
 Refer to [Doing API-First development][] for more details.
 
+
+### Doing Graphql with OAS spec - Backend
+
+Note! 
+During test and evaluation of workflow there were issues with conflicting npm dependencies regarding graphql.
+Might be better to handle generation in a new node project ...
+
+
+Use https://editor.swagger.io/ to convert openapi spec to json and save to
+```
+src/main/resources/graphql/oas.json
+```  
+
+Install https://github.com/IBM/openapi-to-graphql/
+```
+npm i openapi-to-graphql-cli --save-dev 
+```
+
+Remove references to jwt in oas.json, its going to be public any way. 
+The generator will otherwise output dangerous warnings and odd looking graphql schema
+
+Run converter and save result
+```
+npx openapi-to-graphql src/main/resources/graphql/oas-no-jwt.json --save src/main/resources/graphql/oas-no-jwt.graphqls
+```
+
+Add graphql-java-kickstart maven dependencies 
+- graphql-spring-boot-starter
+- graphiql-spring-boot-starter
+
+Add examples to graphiql folder
+- src/main/resources/graphql/graphiql
+
+Add maven plugin graphql-java-codegen and configure it
+- https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven
+
+Configure graphql and graphiql endpoints in Spring Boot configuration
+- SecurityConfiguration 
+- WebConfigurer
+
+Make a simple test with a catch-all query-resolver
+
+Run app and use graphiql to test it
+- http://localhost:9000/graphiql 
+
 ## Building for production
 
 ### Packaging as jar

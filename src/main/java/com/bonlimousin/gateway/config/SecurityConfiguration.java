@@ -49,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/content/**")
             .antMatchers("/h2-console/**")
             .antMatchers("/swagger-ui/index.html")
+            .antMatchers("/graphiql")
             .antMatchers("/test/**");
     }
 
@@ -83,6 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/public/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/graphql").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/websocket/**").permitAll()

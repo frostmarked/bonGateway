@@ -89,6 +89,9 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
+        
+        <!-- Bon -->
+        <com.graphql-java-kickstart.version>7.1.0</com.graphql-java-kickstart.version>
     </properties>
 
     <dependencyManagement>
@@ -101,6 +104,18 @@
                 <scope>import</scope>
             </dependency>
             <!-- jhipster-needle-maven-add-dependency-management -->
+            
+            <!-- Bon -->
+            <dependency>
+			  <groupId>com.graphql-java-kickstart</groupId>
+			  <artifactId>graphql-spring-boot-starter</artifactId>
+			  <version>${com.graphql-java-kickstart.version}</version>
+			</dependency>
+			<dependency>
+			  <groupId>com.graphql-java-kickstart</groupId>
+			  <artifactId>graphiql-spring-boot-starter</artifactId>
+			  <version>${com.graphql-java-kickstart.version}</version>
+			</dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -386,6 +401,16 @@
             <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+        
+        <!-- Bon -->
+        <dependency>
+		  <groupId>com.graphql-java-kickstart</groupId>
+		  <artifactId>graphql-spring-boot-starter</artifactId>		  
+		</dependency>
+		<dependency>
+		  <groupId>com.graphql-java-kickstart</groupId>
+		  <artifactId>graphiql-spring-boot-starter</artifactId>
+		</dependency>
     </dependencies>
 
     <build>
@@ -460,6 +485,11 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
+            <!-- Bon -->
+            <plugin>
+          		<groupId>io.github.kobylynskyi</groupId>
+        		<artifactId>graphql-codegen-maven-plugin</artifactId>
+        	</plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -942,6 +972,28 @@
 
                 </plugin>
                 <!-- jhipster-needle-maven-add-plugin-management -->
+                <!-- Bon -->
+                <plugin>
+		            <groupId>io.github.kobylynskyi</groupId>
+            		<artifactId>graphql-codegen-maven-plugin</artifactId>
+		            <version>2.1.0</version>
+		            <executions>
+		                <execution>
+		                    <goals>
+		                        <goal>generate</goal>
+		                    </goals>
+		                    <configuration>
+		                        <graphqlSchemaPaths>${project.basedir}/src/main/resources/graphql/oas-no-jwt.graphqls</graphqlSchemaPaths>
+		                        <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
+		                        <packageName>com.bonlimousin.gateway.web.graphql.model</packageName>
+		                        <customTypesMapping>
+		                            <DateTime>java.util.Date</DateTime>
+		                        </customTypesMapping>
+		                        <modelNameSuffix>TO</modelNameSuffix>
+		                    </configuration>
+		                </execution>
+		            </executions>
+		        </plugin>
             </plugins>
         </pluginManagement>
     </build>

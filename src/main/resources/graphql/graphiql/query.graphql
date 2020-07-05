@@ -1,0 +1,97 @@
+query FindArticles(
+    $i18n: I18n!, 
+    $categoryIn: [CategoryInListItem], 
+    $page: Int, 
+    $size: Int, 
+    $sort: [String],
+    $isSummary: Boolean = true
+  ) {
+  apiPublicArticles(
+      categoryIn:$categoryIn, 
+      i18n:$i18n, 
+      page:$page, 
+      size:$size, 
+      sort:$sort
+    ) {    
+    id
+    category
+    name
+    visibility
+    sections {
+      id
+      title
+      body @skip(if: $isSummary)
+      caption @skip(if: $isSummary)
+      width @skip(if: $isSummary)
+      height @skip(if: $isSummary)
+      image @skip(if: $isSummary)
+      imageContentType @skip(if: $isSummary)
+      ingress
+      orderNo
+      tags {
+        name
+      }
+      template
+      visibility
+    }
+  }
+}
+
+query FindCows(
+    $page: Int    
+    $size: Int
+    $sort: [String]
+    $birthDateGreaterThan: String
+    $birthDateLessThan: String
+    $genderEquals: GenderEquals
+    $hornStatusIn: [HornStatusInListItem]
+    $linageIdEquals: Int
+    $matriIdEquals: Int
+    $patriIdEquals: Int
+    $weight0GreaterThan: Int
+    $weight0LessThan: Int
+    $weight0Specified: Boolean
+    $weight200GreaterThan: Int
+    $weight200LessThan: Int
+    $weight200Specified: Boolean
+    $weight365GreaterThan: Int
+    $weight365LessThan: Int
+    $weight365Specified: Boolean
+  ) {
+  apiPublicCows(
+    birthDateGreaterThan: $birthDateGreaterThan
+    birthDateLessThan: $birthDateLessThan
+    genderEquals: $genderEquals
+    hornStatusIn: $hornStatusIn
+    linageIdEquals: $linageIdEquals
+    matriIdEquals: $matriIdEquals
+    page: $page
+    patriIdEquals: $patriIdEquals
+    size: $size
+    sort: $sort
+    weight0GreaterThan: $weight0GreaterThan
+    weight0LessThan: $weight0LessThan
+    weight0Specified: $weight0Specified
+    weight200GreaterThan: $weight200GreaterThan
+    weight200LessThan: $weight200LessThan
+    weight200Specified: $weight200Specified
+    weight365GreaterThan: $weight365GreaterThan
+    weight365LessThan: $weight365LessThan
+    weight365Specified: $weight365Specified
+  ) {
+    birthDate
+    earTagId
+    gender
+    hornStatus
+    linageId
+    linageName
+    matriId
+    name
+    patriId
+    storyHandle
+    visibility
+    weight0
+    weight200
+    weight365
+  }
+}

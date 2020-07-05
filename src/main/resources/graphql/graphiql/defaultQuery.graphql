@@ -1,0 +1,6 @@
+query {
+    apiPublicTags {
+      id
+      name
+    }
+}

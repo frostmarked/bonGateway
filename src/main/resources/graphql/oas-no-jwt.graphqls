@@ -1,0 +1,328 @@
+type ArticleVO {
+  category: Category
+  id: Float
+  name: String
+  sections: [SectionVO]
+  visibility: Visibility
+}
+
+type BlupVO {
+  d0: Int
+  d200: Int
+  d365: Int
+  m0: Int
+  m200: Int
+  status: String
+  t0: Int
+  t200: Int
+  t365: Int
+  total: Int
+}
+
+enum Category {
+  NEWS
+  IT
+  MATRILINEALITY
+  CATTLE
+}
+
+enum CategoryInListItem {
+  NEWS
+  IT
+  MATRILINEALITY
+  CATTLE
+}
+
+type CowVO {
+  birthDate: String
+  earTagId: Int
+  gender: Gender
+  hornStatus: HornStatus
+  linageId: Float
+  linageName: String
+  matriId: Int
+  name: String
+  patriId: Int
+  storyHandle: String
+  visibility: Visibility
+  weight0: Int
+  weight200: Int
+  weight365: Int
+}
+
+enum Gender {
+  HEIFER
+  BULL
+}
+
+enum GenderEquals {
+  HEIFER
+  BULL
+}
+
+enum HornStatus {
+  UNKNOWN
+  HORNED
+  POLLED
+  SCURS
+  DEHORNED
+  DISBUDDED
+}
+
+enum HornStatusInListItem {
+  UNKNOWN
+  HORNED
+  POLLED
+  SCURS
+  DEHORNED
+  DISBUDDED
+}
+
+enum I18n {
+  SV
+  EN
+}
+
+type LinageVO {
+  country: String
+  earTagId: Int
+  familyname: String
+  id: Float
+  name: String
+  patriCountry: String
+  patriId: Int
+  patriName: String
+  polled: Boolean
+  storyHandle: String
+  visibility: Visibility
+}
+
+type PhotographVO {
+  caption: String
+  earTagId: Int
+  height: Int
+  id: Float
+  image: String
+  imageContentType: String
+  taken: String
+  visibility: Visibility
+  width: Int
+}
+
+type Query {
+  """
+  Get all ArticleVOs
+  
+  Equivalent to GET /api/public/articles
+  """
+  apiPublicArticles(
+    categoryIn: [CategoryInListItem]
+
+    """Supported locale"""
+    i18n: I18n!
+
+    """Page number of the requested page"""
+    page: Int
+
+    """Size of a page"""
+    size: Int
+
+    """
+    Sorting criteria in the format: property(,asc|desc). Default sort order is
+    ascending. Multiple sort criteria are supported.
+    """
+    sort: [String]
+  ): [ArticleVO]
+
+  """
+  Get all PhotographVOs for a cow
+  
+  Equivalent to GET /api/public/cows/{earTagId}/photographs
+  """
+  apiPublicCowPhotographs(
+    """Numeric identifier for cattle"""
+    earTagId: Float!
+
+    """Page number of the requested page"""
+    page: Int
+
+    """Size of a page"""
+    size: Int
+
+    """
+    Sorting criteria in the format: property(,asc|desc). Default sort order is
+    ascending. Multiple sort criteria are supported.
+    """
+    sort: [String]
+  ): [PhotographVO]
+
+  """
+  Find all cows matching criteria
+  
+  Equivalent to GET /api/public/cows
+  """
+  apiPublicCows(
+    birthDateGreaterThan: String
+    birthDateLessThan: String
+    genderEquals: GenderEquals
+    hornStatusIn: [HornStatusInListItem]
+    linageIdEquals: Int
+    matriIdEquals: Int
+
+    """Page number of the requested page"""
+    page: Int
+    patriIdEquals: Int
+
+    """Size of a page"""
+    size: Int
+
+    """
+    Sorting criteria in the format: property(,asc|desc). Default sort order is
+    ascending. Multiple sort criteria are supported.
+    """
+    sort: [String]
+    weight0GreaterThan: Int
+    weight0LessThan: Int
+    weight0Specified: Boolean
+    weight200GreaterThan: Int
+    weight200LessThan: Int
+    weight200Specified: Boolean
+    weight365GreaterThan: Int
+    weight365LessThan: Int
+    weight365Specified: Boolean
+  ): [CowVO]
+
+  """
+  Find all LinageVOs
+  
+  Equivalent to GET /api/public/linages
+  """
+  apiPublicLinages(
+    """Page number of the requested page"""
+    page: Int
+
+    """Size of a page"""
+    size: Int
+
+    """
+    Sorting criteria in the format: property(,asc|desc). Default sort order is
+    ascending. Multiple sort criteria are supported.
+    """
+    sort: [String]
+  ): [LinageVO]
+
+  """
+  Search ArticleVOs
+  
+  Equivalent to GET /api/public/_search/articles
+  """
+  apiPublicSearchArticles(
+    categoryIn: [CategoryInListItem]
+
+    """Supported locale"""
+    i18n: I18n!
+
+    """Page number of the requested page"""
+    page: Int
+
+    """query"""
+    query: String!
+
+    """Size of a page"""
+    size: Int
+
+    """
+    Sorting criteria in the format: property(,asc|desc). Default sort order is
+    ascending. Multiple sort criteria are supported.
+    """
+    sort: [String]
+  ): [ArticleVO]
+
+  """
+  Get all TagVOs
+  
+  Equivalent to GET /api/public/tags
+  """
+  apiPublicTags(
+    """Page number of the requested page"""
+    page: Int
+
+    """Size of a page"""
+    size: Int
+
+    """
+    Sorting criteria in the format: property(,asc|desc). Default sort order is
+    ascending. Multiple sort criteria are supported.
+    """
+    sort: [String]
+  ): [TagVO]
+
+  """
+  Get ArticleVO by Id or handle
+  
+  Equivalent to GET /api/public/articles/{id}
+  """
+  articleVO(
+    """Supported locale"""
+    i18n: I18n!
+
+    """id"""
+    id: String!
+
+    """Indicate that another kind of id is used"""
+    isHandle: Boolean
+  ): ArticleVO
+
+  """
+  Get BLUP for a cow
+  
+  Equivalent to GET /api/public/cows/{earTagId}/blup
+  """
+  blupVO(
+    """Numeric identifier for cattle"""
+    earTagId: Float!
+  ): BlupVO
+
+  """
+  getCowVO
+  
+  Equivalent to GET /api/public/cows/{earTagId}
+  """
+  cowVO(
+    """Numeric identifier for cattle"""
+    earTagId: Float!
+  ): CowVO
+}
+
+type SectionVO {
+  body: String
+  caption: String
+  height: Int
+  id: Float
+  image: String
+  imageContentType: String
+  ingress: String
+  orderNo: Int
+  tags: [TagVO]
+  template: Template
+  title: String
+  visibility: Visibility
+  width: Int
+}
+
+type TagVO {
+  id: Float
+  name: String
+}
+
+enum Template {
+  V1
+  V2
+  V3
+}
+
+enum Visibility {
+  ROLE_ADMIN
+  ROLE_USER
+  ROLE_ANONYMOUS
+}
