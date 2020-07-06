@@ -128,29 +128,27 @@ To edit the `api.yml` definition file, you can use a tool such as [Swagger-Edito
 Refer to [Doing API-First development][] for more details.
 
 
-### Doing Graphql with OAS spec - Backend
+### Doing Graphql with OAS spec
 
 Note! 
 During test and evaluation of workflow there were issues with conflicting npm dependencies regarding graphql.
-Might be better to handle generation in a new node project ...
+Result is that generators were moved to individual packages
 
-
+#### Backend
 Use https://editor.swagger.io/ to convert openapi spec to json and save to
 ```
-src/main/resources/graphql/oas.json
+packages/oas2gql/oas.json
 ```  
-
-Install https://github.com/IBM/openapi-to-graphql/
-```
-npm i openapi-to-graphql-cli --save-dev 
-```
-
+Currenly:
 Remove references to jwt in oas.json, its going to be public any way. 
 The generator will otherwise output dangerous warnings and odd looking graphql schema
-
-Run converter and save result
 ```
-npx openapi-to-graphql src/main/resources/graphql/oas-no-jwt.json --save src/main/resources/graphql/oas-no-jwt.graphqls
+packages/oas2gql/oas-no-jwt.json
+```
+
+Run converter, it will save result in graphql folder
+```
+npm run oas2gql
 ```
 
 Add graphql-java-kickstart maven dependencies 
@@ -171,6 +169,15 @@ Make a simple test with a catch-all query-resolver
 
 Run app and use graphiql to test it
 - http://localhost:9000/graphiql 
+
+#### Frontend
+Re-generate typescript from graphql schema and given queries plus fragments etc
+```
+npm run gqltypes
+```  
+Strange choise of case settings by generator. Probably need to add 
+/* eslint-disable */
+to generated ts file
 
 ## Building for production
 

@@ -993,7 +993,7 @@
 		                        <goal>generate</goal>
 		                    </goals>
 		                    <configuration>
-		                        <graphqlSchemaPaths>${project.basedir}/src/main/resources/graphql/oas-no-jwt.graphqls</graphqlSchemaPaths>
+		                        <graphqlSchemaPaths>${project.basedir}/src/main/resources/graphql/bonpublic.graphqls</graphqlSchemaPaths>
 		                        <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
 		                        <packageName>com.bonlimousin.gateway.web.graphql.model</packageName>
 		                        <customTypesMapping>
