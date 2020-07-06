@@ -1,0 +1,36 @@
+query SearchArticles(
+    $i18n: I18n!, 
+    $query: String!, 
+    $categoryIn: [CategoryInListItem], 
+    $page: Int, 
+    $size: Int, 
+    $sort: [String],
+    $isSummary: Boolean = true
+  ) {
+  apiPublicSearchArticles(
+    categoryIn:$categoryIn, 
+    query:$query, 
+    i18n:$i18n, 
+    page:$page, 
+    size:$size, 
+    sort:$sort
+  ) {
+    id
+    category
+    name
+    visibility    
+    sections {
+      id
+      title
+      body @skip(if: $isSummary)      
+      ingress
+      orderNo
+      tags {
+        name
+      }
+      template
+      visibility
+      ...SectionImageFragment
+    }
+  }
+}

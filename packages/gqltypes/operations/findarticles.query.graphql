@@ -1,0 +1,34 @@
+query FindArticles(
+    $i18n: I18n!,
+    $categoryIn: [CategoryInListItem],
+    $page: Int,
+    $size: Int,
+    $sort: [String],
+    $isSummary: Boolean = true
+  ) {
+  apiPublicArticles(
+      categoryIn:$categoryIn,
+      i18n:$i18n,
+      page:$page,
+      size:$size,
+      sort:$sort
+    ) {
+    id
+    category
+    name
+    visibility
+    sections {
+      id
+      title
+      body @skip(if: $isSummary)
+      ingress
+      orderNo
+      tags {
+        name
+      }
+      template
+      visibility
+      ...SectionImageFragment
+    }
+  }
+}

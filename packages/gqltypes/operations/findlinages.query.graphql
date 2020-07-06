@@ -1,0 +1,19 @@
+query FindLinages(
+    $page: Int
+    $size: Int
+    $sort: [String]
+  ) {
+  apiPublicLinages(
+    page: $page
+    size: $size
+    sort: $sort
+  ) {
+    id
+    visibility
+    name
+    earTagId
+    familyname
+    polled
+    country
+  }
+}
