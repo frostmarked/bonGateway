@@ -1,0 +1,12 @@
+{
+  "name": "oas2gql",
+  "version": "1.0.0",
+  "description": "transforms openapi spec to graphql",  
+  "scripts": {
+    "oas2gql": "npx openapi-to-graphql oas-no-jwt.json --save ../../src/main/resources/graphql/bonpublic.graphqls"
+  },
+  "author": "jofr",
+  "devDependencies": {
+    "openapi-to-graphql-cli": "^2.2.2"
+  }
+}

@@ -1,0 +1,1175 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Public Bon API",
+    "description": "The bonlimousin.com public API for retrieving livestock information and content\n",
+    "contact": {
+      "name": "Johan Frostmark",
+      "url": "http://www.bonlimousin.com",
+      "email": "johan@bonlimousin.com"
+    },
+    "license": {
+      "name": "unknown"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:9000",
+      "description": "Development server"
+    },
+    {
+      "url": "https://localhost:9000",
+      "description": "Development server with TLS Profile"
+    }
+  ],
+  "tags": [
+    {
+      "name": "cowvo-resource",
+      "description": "Cow facts"
+    },
+    {
+      "name": "linagevo-resource",
+      "description": "Maternal ancestry information"
+    },
+    {
+      "name": "articlevo-resource",
+      "description": "ArticleVO Resource"
+    }
+  ],
+  "paths": {
+    "/api/public/cows": {
+      "get": {
+        "tags": [
+          "cowvo-resource"
+        ],
+        "summary": "Find all cows matching criteria",
+        "description": "",
+        "operationId": "findCowVOs",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of the requested page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of a page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "default": 10
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "linageId.equals",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "birthDate.greaterThan",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "birthDate.lessThan",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "gender.equals",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "HEIFER",
+                "BULL"
+              ]
+            }
+          },
+          {
+            "name": "hornStatus.in",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "UNKNOWN",
+                  "HORNED",
+                  "POLLED",
+                  "SCURS",
+                  "DEHORNED",
+                  "DISBUDDED"
+                ]
+              }
+            }
+          },
+          {
+            "name": "matriId.equals",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "patriId.equals",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "weight0.greaterThan",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "weight0.lessThan",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "weight0.specified",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "weight200.greaterThan",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "weight200.lessThan",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "weight200.specified",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "weight365.greaterThan",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "weight365.lessThan",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "weight365.specified",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CowVO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/public/cows/{earTagId}": {
+      "get": {
+        "tags": [
+          "cowvo-resource"
+        ],
+        "summary": "getCowVO",
+        "description": "",
+        "operationId": "getCowVO",
+        "parameters": [
+          {
+            "name": "earTagId",
+            "in": "path",
+            "description": "Numeric identifier for cattle",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CowVO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/public/linages": {
+      "get": {
+        "tags": [
+          "linagevo-resource"
+        ],
+        "summary": "Find all LinageVOs",
+        "description": "",
+        "operationId": "findAllLinageVOs",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of the requested page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of a page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "default": 10
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LinageVO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/public/cows/{earTagId}/photographs": {
+      "get": {
+        "tags": [
+          "cowvo-resource"
+        ],
+        "summary": "Get all PhotographVOs for a cow",
+        "description": "",
+        "operationId": "getAllPhotographVOsByCow",
+        "parameters": [
+          {
+            "name": "earTagId",
+            "in": "path",
+            "description": "Numeric identifier for cattle",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of the requested page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of a page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "default": 10
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PhotographVO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/public/cows/{earTagId}/blup": {
+      "get": {
+        "tags": [
+          "cowvo-resource"
+        ],
+        "summary": "Get BLUP for a cow",
+        "description": "",
+        "operationId": "getBlupByCow",
+        "parameters": [
+          {
+            "name": "earTagId",
+            "in": "path",
+            "description": "Numeric identifier for cattle",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlupVO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/public/_search/articles": {
+      "get": {
+        "tags": [
+          "articlevo-resource"
+        ],
+        "summary": "Search ArticleVOs",
+        "description": "",
+        "operationId": "searchArticleVOs",
+        "parameters": [
+          {
+            "name": "i18n",
+            "in": "query",
+            "description": "Supported locale",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sv",
+                "en"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of the requested page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category.in",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "NEWS",
+                  "IT",
+                  "MATRILINEALITY",
+                  "CATTLE"
+                ]
+              }
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of a page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "default": 10
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ArticleVO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/public/articles": {
+      "get": {
+        "tags": [
+          "articlevo-resource"
+        ],
+        "summary": "Get all ArticleVOs",
+        "description": "",
+        "operationId": "getAllArticleVOs",
+        "parameters": [
+          {
+            "name": "i18n",
+            "in": "query",
+            "description": "Supported locale",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sv",
+                "en"
+              ]
+            }
+          },
+          {
+            "name": "category.in",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "NEWS",
+                  "IT",
+                  "MATRILINEALITY",
+                  "CATTLE"
+                ]
+              }
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of the requested page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of a page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "default": 10
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ArticleVO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/public/articles/{id}": {
+      "get": {
+        "tags": [
+          "articlevo-resource"
+        ],
+        "summary": "Get ArticleVO by Id or handle",
+        "description": "",
+        "operationId": "getArticleVOByIdOrHandle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "i18n",
+            "in": "query",
+            "description": "Supported locale",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sv",
+                "en"
+              ]
+            }
+          },
+          {
+            "name": "isHandle",
+            "in": "query",
+            "description": "Indicate that another kind of id is used",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleVO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/public/tags": {
+      "get": {
+        "tags": [
+          "articlevo-resource"
+        ],
+        "summary": "Get all TagVOs",
+        "description": "",
+        "operationId": "getAllTagVOs",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of the requested page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of a page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "default": 10
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagVO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "Problem": {
+        "description": "error occurred - see status code and problem object for more information.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "https://opensource.zalando.com/problem/schema.yaml#/Problem"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CowVO": {
+        "title": "CowVO",
+        "type": "object",
+        "properties": {
+          "earTagId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "linageId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "linageName": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "HEIFER",
+              "BULL"
+            ]
+          },
+          "hornStatus": {
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "HORNED",
+              "POLLED",
+              "SCURS",
+              "DEHORNED",
+              "DISBUDDED"
+            ]
+          },
+          "matriId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "patriId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "weight0": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "weight200": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "weight365": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "storyHandle": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "ROLE_ADMIN",
+              "ROLE_USER",
+              "ROLE_ANONYMOUS"
+            ]
+          }
+        }
+      },
+      "LinageVO": {
+        "title": "LinageVO",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "familyname": {
+            "type": "string"
+          },
+          "earTagId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "patriId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "patriName": {
+            "type": "string"
+          },
+          "patriCountry": {
+            "type": "string"
+          },
+          "polled": {
+            "type": "boolean"
+          },
+          "storyHandle": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "ROLE_ADMIN",
+              "ROLE_USER",
+              "ROLE_ANONYMOUS"
+            ]
+          }
+        }
+      },
+      "PhotographVO": {
+        "title": "PhotographVO",
+        "type": "object",
+        "properties": {
+          "caption": {
+            "type": "string"
+          },
+          "earTagId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "image": {
+            "type": "string",
+            "format": "byte"
+          },
+          "imageContentType": {
+            "type": "string"
+          },
+          "taken": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "ROLE_ADMIN",
+              "ROLE_USER",
+              "ROLE_ANONYMOUS"
+            ]
+          }
+        }
+      },
+      "BlupVO": {
+        "title": "BlupVO",
+        "type": "object",
+        "properties": {
+          "t0": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "d0": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "m0": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "t200": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "d200": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "m200": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "t365": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "d365": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "ArticleVO": {
+        "title": "ArticleVO",
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "NEWS",
+              "IT",
+              "MATRILINEALITY",
+              "CATTLE"
+            ]
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "ROLE_ADMIN",
+              "ROLE_USER",
+              "ROLE_ANONYMOUS"
+            ]
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SectionVO"
+            }
+          }
+        }
+      },
+      "SectionVO": {
+        "title": "SectionVO",
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string"
+          },
+          "caption": {
+            "type": "string"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "image": {
+            "type": "string",
+            "format": "byte"
+          },
+          "imageContentType": {
+            "type": "string"
+          },
+          "ingress": {
+            "type": "string"
+          },
+          "orderNo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagVO"
+            }
+          },
+          "template": {
+            "type": "string",
+            "enum": [
+              "V1",
+              "V2",
+              "V3"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "ROLE_ADMIN",
+              "ROLE_USER",
+              "ROLE_ANONYMOUS"
+            ]
+          }
+        }
+      },
+      "TagVO": {
+        "title": "TagVO",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
