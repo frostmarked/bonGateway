@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { AccountService } from 'app/core/auth/account.service';
@@ -8,6 +9,7 @@ import { Account } from 'app/core/user/account.model';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 // import { FindArticles, FindArticlesVariables } from 'app/bonpublicgraphql/bonpublicgraphql-types';
+import { I18n, FindArticlesGQL } from 'app/bonpublicgraphql/bonpublicgraphql';
 
 @Component({
   selector: 'jhi-home',
@@ -22,11 +24,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   loading = true;
   errors: any;
 
-  constructor(private accountService: AccountService, private loginModalService: LoginModalService, private apollo: Apollo) {}
+  constructor(
+    private accountService: AccountService,
+    private loginModalService: LoginModalService,
+    private apollo: Apollo,
+    private findArticlesGQL: FindArticlesGQL
+  ) {}
 
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
 
+    this.fetchArticles();
+  }
+
+  fetchTags(): void {
     this.apollo
       .watchQuery({
         query: gql`
@@ -39,6 +50,18 @@ export class HomeComponent implements OnInit, OnDestroy {
         `,
       })
       .valueChanges.subscribe(result => {
+        this.data = result.data && result.data;
+        this.msg = JSON.stringify(this.data);
+        this.loading = result.loading;
+        this.errors = result.errors;
+      });
+  }
+
+  fetchArticles(): void {
+    this.findArticlesGQL
+      .fetch({ i18n: I18n.Sv })
+      //  .pipe(map(result => result.data.apiPublicArticles))
+      .subscribe(result => {
         this.data = result.data && result.data;
         this.msg = JSON.stringify(this.data);
         this.loading = result.loading;
