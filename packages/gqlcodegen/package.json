@@ -1,0 +1,19 @@
+{
+  "name": "gqlcodegen",
+  "version": "1.0.0",
+  "description": "Alt codegen for graphql types",
+  "scripts": {
+    "gqlcodegen": "graphql-codegen --config codegen.yml"
+  },
+  "author": "jofr",
+  "dependencies": {
+    "graphql": "^15.3.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "1.16.3",
+    "@graphql-codegen/introspection": "^1.16.3",
+    "@graphql-codegen/typescript": "1.16.3",
+    "@graphql-codegen/typescript-apollo-angular": "1.16.3",
+    "@graphql-codegen/typescript-operations": "1.16.3"
+  }
+}

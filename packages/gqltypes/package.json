@@ -4,7 +4,7 @@
   "description": "Generate typescript from graphql schema",
   "scripts": {
     "intro": "npx apollo-codegen introspect-schema ../../src/main/resources/graphql/bonpublic.graphqls --output schema.json",
-    "types": "npx apollo-codegen generate operations/**/*.graphql --schema schema.json --target typescript --output ../../src/main/webapp/app/bonpublicgraphql/bonpublicgraphql-types.ts",
+    "types": "npx apollo-codegen generate ../../src/main/resources/graphql/operations/**/*.graphql --schema schema.json --target typescript --output ../../src/main/webapp/app/bonpublicgraphql/bonpublicgraphql-types.ts",
     "gqltypes": "npm run intro && npm run types"
   },
   "author": "jofr",

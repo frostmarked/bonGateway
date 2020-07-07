@@ -1,0 +1,12 @@
+overwrite: true
+schema: "../../src/main/resources/graphql/bonpublic.graphqls"
+documents: "../../src/main/resources/graphql/operations/*.graphql"
+generates:
+  ../../src/main/webapp/app/bonpublicgraphql/bonpublicgraphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-apollo-angular"
+  ./graphql/graphql.schema.json:
+    plugins:
+      - "introspection"
