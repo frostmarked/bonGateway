@@ -1,0 +1,15 @@
+{
+  "name": "Bon Public Schema",
+  "schemaPath": "src/main/resources/graphql/bonpublic.graphqls",
+  "extensions": {
+    "endpoints": {
+      "Remote GraphQL Endpoint": {
+        "url": "http://localhost:9000/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": true
+      }
+    }
+  }
+}
