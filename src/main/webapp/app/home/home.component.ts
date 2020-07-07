@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subscription, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { AccountService } from 'app/core/auth/account.service';
@@ -8,8 +8,7 @@ import { Account } from 'app/core/user/account.model';
 
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-// import { FindArticles, FindArticlesVariables } from 'app/bonpublicgraphql/bonpublicgraphql-types';
-import { I18n, FindArticlesGQL } from 'app/bonpublicgraphql/bonpublicgraphql';
+import { I18n, FindArticlesGQL, FindTagsQuery } from 'app/bonpublicgraphql/bonpublicgraphql';
 
 @Component({
   selector: 'jhi-home',
@@ -34,39 +33,46 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
 
+    //  this.fetchTags();
     this.fetchArticles();
   }
 
   fetchTags(): void {
+    const customFindTagsQuery = gql`
+      query aFewTags($size: Int) {
+        apiPublicTags(size: $size) {
+          id
+          name
+        }
+      }
+    `;
     this.apollo
-      .watchQuery({
-        query: gql`
-          {
-            apiPublicTags {
-              id
-              name
-            }
-          }
-        `,
+      .watchQuery<FindTagsQuery>({
+        query: customFindTagsQuery,
+        variables: {
+          size: 3,
+        },
       })
       .valueChanges.subscribe(result => {
         this.data = result.data && result.data;
         this.msg = JSON.stringify(this.data);
-        this.loading = result.loading;
         this.errors = result.errors;
+        this.loading = result.loading;
       });
   }
 
   fetchArticles(): void {
     this.findArticlesGQL
       .fetch({ i18n: I18n.Sv })
-      //  .pipe(map(result => result.data.apiPublicArticles))
-      .subscribe(result => {
-        this.data = result.data && result.data;
-        this.msg = JSON.stringify(this.data);
-        this.loading = result.loading;
-        this.errors = result.errors;
-      });
+      .pipe(
+        map(result => result.data.apiPublicArticles),
+        catchError(err => throwError(`Caught error: ${err}`))
+      )
+      .subscribe(
+        arr => (this.msg = JSON.stringify(arr)),
+        err => (this.errors = err),
+        () => (this.loading = false)
+      );
   }
 
   isAuthenticated(): boolean {

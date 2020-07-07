@@ -456,6 +456,16 @@ export type FindLinagesQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export type FindTagsQueryVariables = Exact<{
+  page?: Maybe<Scalars['Int']>;
+  size?: Maybe<Scalars['Int']>;
+  sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+}>;
+
+export type FindTagsQuery = { __typename?: 'Query' } & {
+  apiPublicTags?: Maybe<Array<Maybe<{ __typename?: 'TagVO' } & Pick<TagVo, 'id' | 'name'>>>>;
+};
+
 export type SearchArticlesQueryVariables = Exact<{
   i18n: I18n;
   query: Scalars['String'];
@@ -698,6 +708,21 @@ export const FindLinagesDocument = gql`
 })
 export class FindLinagesGQL extends Apollo.Query<FindLinagesQuery, FindLinagesQueryVariables> {
   document = FindLinagesDocument;
+}
+export const FindTagsDocument = gql`
+  query FindTags($page: Int, $size: Int, $sort: [String]) {
+    apiPublicTags(page: $page, size: $size, sort: $sort) {
+      id
+      name
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class FindTagsGQL extends Apollo.Query<FindTagsQuery, FindTagsQueryVariables> {
+  document = FindTagsDocument;
 }
 export const SearchArticlesDocument = gql`
   query SearchArticles(

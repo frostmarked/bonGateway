@@ -1,0 +1,14 @@
+query FindTags(
+    $page: Int,
+    $size: Int,
+    $sort: [String]    
+  ) {
+  apiPublicTags(      
+      page:$page,
+      size:$size,
+      sort:$sort
+    ) {
+    id
+    name
+  }
+}
