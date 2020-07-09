@@ -1,0 +1,26 @@
+<p>linage-list works!</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Familyname</th>
+      <th>Visibility</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let linage of linages">
+      <td>{{ linage?.id }}</td>
+      <td>{{ linage?.name }}</td>
+      <td>{{ linage?.familyname }}</td>
+      <td>{{ linage?.visibility }}</td>
+      <td>
+        <a [title]="'Linage' + linage?.id" [routerLink]="['/farm', 'cow', 'linage', linage?.id]">
+          <span>EarTagId {{linage?.earTagId}}</span>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

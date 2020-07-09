@@ -1,0 +1,37 @@
+<p>linage-details works!</p>
+
+<dl>
+  <dt>id</dt>
+  <dd>{{ linageVo?.id }}</dd>
+  <dt>name</dt>
+  <dd>{{ linageVo?.name }}</dd>
+  <dt>familyname</dt>
+  <dd>{{ linageVo?.familyname }}</dd>
+  <dt>visibility</dt>
+  <dd>{{ linageVo?.visibility }}</dd>
+</dl>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>EarTagId</th>
+      <th>Gender</th>
+      <th>Visibility</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cow of cowVos">
+      <td>{{ cow?.earTagId }}</td>
+      <td>{{ cow?.name }}</td>
+      <td>{{ cow?.gender }}</td>
+      <td>{{ cow?.visibility }}</td>
+      <td>
+        <a [title]="'Cow' + cow?.earTagId" [routerLink]="['/farm', 'cow', 'dam', cow?.earTagId]">
+          <span>EarTagId {{cow?.earTagId}}</span>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
