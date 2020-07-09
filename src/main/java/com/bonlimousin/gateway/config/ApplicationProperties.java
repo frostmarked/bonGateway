@@ -13,7 +13,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 	
+	private Boolean publicAccountRegistration;
 	private Bff bff;
+
+	public Boolean getPublicAccountRegistration() {
+		return publicAccountRegistration;
+	}
+
+	public void setPublicAccountRegistration(Boolean publicAccountRegistration) {
+		this.publicAccountRegistration = publicAccountRegistration;
+	}
 	
 	public Bff getBff() {
 		return bff;

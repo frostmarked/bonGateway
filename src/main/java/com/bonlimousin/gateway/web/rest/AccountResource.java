@@ -2,6 +2,7 @@ package com.bonlimousin.gateway.web.rest;
 
 import com.bonlimousin.gateway.domain.UserEntity;
 import com.bonlimousin.gateway.repository.UserRepository;
+import com.bonlimousin.gateway.security.AuthoritiesConstants;
 import com.bonlimousin.gateway.security.SecurityUtils;
 import com.bonlimousin.gateway.service.MailService;
 import com.bonlimousin.gateway.service.UserService;
@@ -14,6 +15,7 @@ import com.bonlimousin.gateway.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,17 +44,21 @@ public class AccountResource {
 
     private final MailService mailService;
 
+    @Value("${application.publicAccountRegistration:false}")
+    private Boolean registrationEnabled;
+
     public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
-        this.mailService = mailService;
+        this.mailService = mailService;        
     }
 
     /**
      * {@code POST  /register} : register the user.
      *
      * @param managedUserVM the managed user View Model.
+     * @throws RegisterAccountDisabledException {@code 403 (Forbidden)} if register account is disabled.
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
@@ -60,6 +66,10 @@ public class AccountResource {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+        if (!registrationEnabled && !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            throw new RegisterAccountDisabledException();
+        }
+        
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }

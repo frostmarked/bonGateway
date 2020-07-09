@@ -138,6 +138,7 @@ kafka:
 # ===================================================================
 
 application:
+  public-account-registration: false
   bff:
     client:
       username: gatewayclient

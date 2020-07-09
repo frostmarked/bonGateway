@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
 
-import { VERSION } from 'app/app.constants';
+import { VERSION, PUBLIC_ACCOUNT_REGISTRATION } from 'app/app.constants';
 import { LANGUAGES } from 'app/core/language/language.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
   languages = LANGUAGES;
   swaggerEnabled?: boolean;
   version: string;
+  publicAccountRegistration: boolean;
 
   constructor(
     private loginService: LoginService,
@@ -32,6 +33,7 @@ export class NavbarComponent implements OnInit {
     private router: Router
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
+    this.publicAccountRegistration = PUBLIC_ACCOUNT_REGISTRATION;
   }
 
   ngOnInit(): void {

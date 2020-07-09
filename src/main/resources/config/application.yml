@@ -219,56 +219,57 @@ kafka:
 # ===================================================================
 
 application:
+  public-account-registration: false
   bff:
     resource:
       # bonContentService
       boncontentservicekafka:
         name: bonContentService
-        url: 
+        url:
       fragment:
         name: bonContentService
-        url: 
+        url:
       localized:
         name: bonContentService
-        url: 
+        url:
       story:
         name: bonContentService
-        url: 
+        url:
       tag:
         name: bonContentService
-        url: 
+        url:
       # bonLivestockService
       bonlivestockservicekafka:
         name: bonLivestockService
-        url: 
+        url:
       cattle:
         name: bonLivestockService
-        url: 
+        url:
       matrilineality:
         name: bonLivestockService
-        url: 
+        url:
       note:
         name: bonLivestockService
-        url: 
+        url:
       pasture:
         name: bonLivestockService
-        url: 
+        url:
       photo:
         name: bonLivestockService
-        url: 
+        url:
       # bonReplicaService
       blup:
         name: bonReplicaService
-        url: 
+        url:
       bonreplicaservicekafka:
         name: bonReplicaService
-        url: 
+        url:
       bovine:
         name: bonReplicaService
-        url: 
+        url:
       journalentry:
         name: bonReplicaService
-        url: 
+        url:
       sourcefile:
         name: bonReplicaService
-        url: 
+        url:
