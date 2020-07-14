@@ -1,0 +1,22 @@
+query GetCow(
+    $earTagId: Float!
+  ) {
+  cowVO(
+    earTagId: $earTagId
+  ) {
+    birthDate
+    earTagId
+    gender
+    hornStatus
+    linageId
+    linageName
+    matriId
+    name
+    patriId
+    storyHandle
+    visibility
+    weight0
+    weight200
+    weight365
+  }
+}

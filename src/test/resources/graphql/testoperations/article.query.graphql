@@ -1,0 +1,30 @@
+query GetArticle(
+    $i18n: I18n!
+    $id: String!
+    $isHandle: Boolean
+    $isSummary: Boolean = false
+  ) {
+  articleVO(
+    i18n: $i18n
+    id: $id
+    isHandle: $isHandle    
+  ) {
+    id
+    category
+    name
+    visibility
+    sections {
+      id
+      body      
+      ingress
+      orderNo
+      tags {
+        name
+      }
+      template
+      title
+      visibility
+      ...SectionImageFragment
+    }
+  }
+}

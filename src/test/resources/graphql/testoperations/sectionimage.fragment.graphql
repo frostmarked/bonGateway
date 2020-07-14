@@ -1,0 +1,7 @@
+fragment SectionImageFragment on SectionVO {  
+  caption @skip(if: $isSummary)
+  width @skip(if: $isSummary)
+  height @skip(if: $isSummary)
+  image @skip(if: $isSummary)
+  imageContentType @skip(if: $isSummary)
+}
