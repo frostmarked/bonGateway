@@ -132,6 +132,9 @@ kafka:
 
 application:
   bff:
+    client:
+      username: gatewayclient
+      password: user
     resource:
       # bonContentService
       boncontentservicekafka:
