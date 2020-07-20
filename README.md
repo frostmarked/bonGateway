@@ -1,3 +1,11 @@
+# Note
+
+Visit the parent project https://github.com/frostmarked/bonParent for more information<br>
+<br/>
+<br/>
+<br/>
+<br/>
+
 # bonGateway
 
 This application was generated using JHipster 6.10.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.0](https://www.jhipster.tech/documentation-archive/v6.10.0).
@@ -127,56 +135,68 @@ To edit the `api.yml` definition file, you can use a tool such as [Swagger-Edito
 
 Refer to [Doing API-First development][] for more details.
 
-
 ### Doing Graphql with OAS spec
 
-Note! 
+Note!
 During test and evaluation of workflow there were issues with conflicting npm dependencies regarding graphql.
 Result is that generators were moved to individual packages
 
 #### Backend
+
 Use https://editor.swagger.io/ to convert openapi spec to json and save to
+
 ```
 packages/oas2gql/oas.json
-```  
+```
+
 Currenly:
-Remove references to jwt in oas.json, its going to be public any way. 
+Remove references to jwt in oas.json, its going to be public any way.
 The generator will otherwise output dangerous warnings and odd looking graphql schema
+
 ```
 packages/oas2gql/oas-no-jwt.json
 ```
 
 Run converter, it will save result in graphql folder
+
 ```
 npm run oas2gql
 ```
 
-Add graphql-java-kickstart maven dependencies 
+Add graphql-java-kickstart maven dependencies
+
 - graphql-spring-boot-starter
 - graphiql-spring-boot-starter
 
 Add examples to graphiql folder
+
 - src/main/resources/graphql/graphiql
 
 Add maven plugin graphql-java-codegen and configure it
+
 - https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven
 
 Configure graphql and graphiql endpoints in Spring Boot configuration
-- SecurityConfiguration 
+
+- SecurityConfiguration
 - WebConfigurer
 
 Make a simple test with a catch-all query-resolver
 
 Run app and use graphiql to test it
-- http://localhost:9000/graphiql 
+
+- http://localhost:9000/graphiql
 
 #### Frontend
+
 Re-generate typescript from graphql schema and given queries plus fragments etc
+
 ```
 npm run gqltypes
-```  
-Strange choise of case settings by generator. Probably need to add 
-/* eslint-disable */
+```
+
+Strange choise of case settings by generator. Probably need to add
+/_ eslint-disable _/
 to generated ts file
 
 ## Building for production
