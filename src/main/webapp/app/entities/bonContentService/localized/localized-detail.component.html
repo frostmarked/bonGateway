@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="localized">
+            <h2><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.detail.title">Localized</span> {{ localized.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.i18n">I 18 N</span></dt>
+                <dd>
+                    <span>{{ localized.i18n }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.title">Title</span></dt>
+                <dd>
+                    <span>{{ localized.title }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.ingress">Ingress</span></dt>
+                <dd>
+                    <span>{{ localized.ingress }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.body">Body</span></dt>
+                <dd>
+                    <span>{{ localized.body }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.caption">Caption</span></dt>
+                <dd>
+                    <span>{{ localized.caption }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.visibility">Visibility</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.UserRole.' + localized.visibility }}">{{ localized.visibility }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.fragment">Fragment</span></dt>
+                <dd>
+                    <div *ngIf="localized.fragment">
+                        <a [routerLink]="['/fragment', localized.fragment?.id, 'view']">{{ localized.fragment?.orderNo }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/localized', localized.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

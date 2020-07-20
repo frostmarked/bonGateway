@@ -1,0 +1,87 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="fragment">
+            <h2><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.detail.title">Fragment</span> {{ fragment.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.template">Template</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.FragmentTemplate.' + fragment.template }}">{{ fragment.template }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.name">Name</span></dt>
+                <dd>
+                    <span>{{ fragment.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.title">Title</span></dt>
+                <dd>
+                    <span>{{ fragment.title }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.ingress">Ingress</span></dt>
+                <dd>
+                    <span>{{ fragment.ingress }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.body">Body</span></dt>
+                <dd>
+                    <span>{{ fragment.body }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.image">Image</span></dt>
+                <dd>
+                    <div *ngIf="fragment.image">
+                        <a (click)="openFile(fragment.imageContentType, fragment.image)">
+                            <img [src]="'data:' + fragment.imageContentType + ';base64,' + fragment.image" style="max-width: 100%;" alt="fragment image"/>
+                        </a>
+                        {{ fragment.imageContentType }}, {{ byteSize(fragment.image) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.caption">Caption</span></dt>
+                <dd>
+                    <span>{{ fragment.caption }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.width">Width</span></dt>
+                <dd>
+                    <span>{{ fragment.width }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.height">Height</span></dt>
+                <dd>
+                    <span>{{ fragment.height }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.orderNo">Order No</span></dt>
+                <dd>
+                    <span>{{ fragment.orderNo }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.visibility">Visibility</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.UserRole.' + fragment.visibility }}">{{ fragment.visibility }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.tag">Tag</span></dt>
+                <dd>
+                    <span *ngFor="let tag of fragment.tags; let last = last">
+                        <a [routerLink]="['/tag', tag?.id, 'view']">{{ tag.name }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonContentServiceFragment.story">Story</span></dt>
+                <dd>
+                    <div *ngIf="fragment.story">
+                        <a [routerLink]="['/story', fragment.story?.id, 'view']">{{ fragment.story?.name }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/fragment', fragment.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

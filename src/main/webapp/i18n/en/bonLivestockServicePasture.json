@@ -1,0 +1,27 @@
+{
+  "bonGatewayApp": {
+    "bonLivestockServicePasture": {
+      "home": {
+        "title": "Pastures",
+        "createLabel": "Create a new Pasture",
+        "createOrEditLabel": "Create or edit a Pasture",
+        "notFound": "No Pastures found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Pasture {{ id }}?"
+      },
+      "detail": {
+        "title": "Pasture"
+      },
+      "name": "Name",
+      "description": "Description"
+    }
+  },
+  "bonLivestockServiceApp": {
+    "bonLivestockServicePasture": {
+      "created": "A new Pasture is created with identifier {{ param }}",
+      "updated": "A Pasture is updated with identifier {{ param }}",
+      "deleted": "A Pasture is deleted with identifier {{ param }}"
+    }
+  }
+}

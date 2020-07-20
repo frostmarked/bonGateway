@@ -1,0 +1,35 @@
+{
+  "bonGatewayApp": {
+    "bonLivestockServiceCattle": {
+      "home": {
+        "title": "Cattles",
+        "createLabel": "Skapa en ny Cattle",
+        "createOrEditLabel": "Skapa eller ändra en Cattle",
+        "notFound": "No Cattles found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Cattle {{ id }}?"
+      },
+      "detail": {
+        "title": "Cattle"
+      },
+      "earTagId": "Ear Tag Id",
+      "name": "Name",
+      "visibility": "Visibility",
+      "upForSale": "Up For Sale",
+      "showBlup": "Show Blup",
+      "alert": "Alert",
+      "storyHandle": "Story Handle",
+      "photo": "Photo",
+      "note": "Note",
+      "matrilineality": "Matrilineality"
+    }
+  },
+  "bonLivestockServiceApp": {
+    "bonLivestockServiceCattle": {
+      "created": "En ny Cattle är skapad med id {{ param }}",
+      "updated": "En Cattle är uppdaterad med id  {{ param }}",
+      "deleted": "En Cattle är borttagen med id  {{ param }}"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.home.title">Blups</span>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="blups?.length === 0">
+        <span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.home.notFound">No blups found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="blups && blups.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="t0"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.t0">T 0</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="d0"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.d0">D 0</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="m0"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.m0">M 0</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="t200"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.t200">T 200</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="d200"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.d200">D 200</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="m200"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.m200">M 200</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="t365"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.t365">T 365</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="d365"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.d365">D 365</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="total"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.total">Total</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="status"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.status">Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="bovine.earTagId"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBlup.bovine">Bovine</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let blup of blups ;trackBy: trackId">
+                    <td><a [routerLink]="['/blup', blup.id, 'view']">{{ blup.id }}</a></td>
+                    <td>{{ blup.t0 }}</td>
+                    <td>{{ blup.d0 }}</td>
+                    <td>{{ blup.m0 }}</td>
+                    <td>{{ blup.t200 }}</td>
+                    <td>{{ blup.d200 }}</td>
+                    <td>{{ blup.m200 }}</td>
+                    <td>{{ blup.t365 }}</td>
+                    <td>{{ blup.d365 }}</td>
+                    <td>{{ blup.total }}</td>
+                    <td>{{ blup.status }}</td>
+                    <td>
+                        <div *ngIf="blup.bovine">
+                            <a [routerLink]="['/bovine', blup.bovine?.id, 'view']" >{{ blup.bovine?.earTagId }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/blup', blup.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="blups && blups.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

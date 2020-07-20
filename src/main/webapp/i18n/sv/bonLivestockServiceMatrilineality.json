@@ -1,0 +1,37 @@
+{
+  "bonGatewayApp": {
+    "bonLivestockServiceMatrilineality": {
+      "home": {
+        "title": "Matrilinealities",
+        "createLabel": "Skapa en ny Matrilineality",
+        "createOrEditLabel": "Skapa eller ändra en Matrilineality",
+        "notFound": "No Matrilinealities found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Matrilineality {{ id }}?"
+      },
+      "detail": {
+        "title": "Matrilineality"
+      },
+      "familyname": "Familyname",
+      "earTagId": "Ear Tag Id",
+      "name": "Name",
+      "country": "Country",
+      "description": "Description",
+      "cattleNameRegexPattern": "Cattle Name Regex Pattern",
+      "patriId": "Patri Id",
+      "patriName": "Patri Name",
+      "patriCountry": "Patri Country",
+      "polled": "Polled",
+      "storyHandle": "Story Handle",
+      "visibility": "Visibility"
+    }
+  },
+  "bonLivestockServiceApp": {
+    "bonLivestockServiceMatrilineality": {
+      "created": "En ny Matrilineality är skapad med id {{ param }}",
+      "updated": "En Matrilineality är uppdaterad med id  {{ param }}",
+      "deleted": "En Matrilineality är borttagen med id  {{ param }}"
+    }
+  }
+}

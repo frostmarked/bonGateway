@@ -1,0 +1,95 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.home.title">Localizeds</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-localized" [routerLink]="['/localized/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="bonGatewayApp.bonContentServiceLocalized.home.createLabel">
+            Create a new Localized
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'bonGatewayApp.bonContentServiceLocalized.home.search' | translate }}">
+
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon icon="search"></fa-icon>
+                    </button>
+
+                    <button class="input-group-append btn btn-danger" (click)="search('')" *ngIf="currentSearch">
+                        <fa-icon icon="trash-alt"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="localizeds?.length === 0">
+        <span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.home.notFound">No localizeds found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="localizeds && localizeds.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="i18n"><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.i18n">I 18 N</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="title"><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.title">Title</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="ingress"><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.ingress">Ingress</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="body"><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.body">Body</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="caption"><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.caption">Caption</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="visibility"><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.visibility">Visibility</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="fragment.orderNo"><span jhiTranslate="bonGatewayApp.bonContentServiceLocalized.fragment">Fragment</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let localized of localizeds ;trackBy: trackId">
+                    <td><a [routerLink]="['/localized', localized.id, 'view']">{{ localized.id }}</a></td>
+                    <td>{{ localized.i18n }}</td>
+                    <td>{{ localized.title }}</td>
+                    <td>{{ localized.ingress }}</td>
+                    <td>{{ localized.body }}</td>
+                    <td>{{ localized.caption }}</td>
+                    <td jhiTranslate="{{ 'bonGatewayApp.UserRole.' + localized.visibility }}">{{ localized.visibility }}</td>
+                    <td>
+                        <div *ngIf="localized.fragment">
+                            <a [routerLink]="['/fragment', localized.fragment?.id, 'view']" >{{ localized.fragment?.orderNo }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/localized', localized.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/localized', localized.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(localized)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

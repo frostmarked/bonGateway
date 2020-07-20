@@ -1,0 +1,89 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.home.title">Cattles</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-cattle" [routerLink]="['/cattle/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.home.createLabel">
+            Create a new Cattle
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="cattles?.length === 0">
+        <span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.home.notFound">No cattles found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="cattles && cattles.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="earTagId"><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.earTagId">Ear Tag Id</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="name"><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="visibility"><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.visibility">Visibility</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="upForSale"><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.upForSale">Up For Sale</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="showBlup"><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.showBlup">Show Blup</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="alert"><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.alert">Alert</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="storyHandle"><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.storyHandle">Story Handle</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="matrilineality.name"><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.matrilineality">Matrilineality</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cattle of cattles ;trackBy: trackId">
+                    <td><a [routerLink]="['/cattle', cattle.id, 'view']">{{ cattle.id }}</a></td>
+                    <td>{{ cattle.earTagId }}</td>
+                    <td>{{ cattle.name }}</td>
+                    <td jhiTranslate="{{ 'bonGatewayApp.UserRole.' + cattle.visibility }}">{{ cattle.visibility }}</td>
+                    <td>{{ cattle.upForSale }}</td>
+                    <td>{{ cattle.showBlup }}</td>
+                    <td>{{ cattle.alert }}</td>
+                    <td>{{ cattle.storyHandle }}</td>
+                    <td>
+                        <div *ngIf="cattle.matrilineality">
+                            <a [routerLink]="['/matrilineality', cattle.matrilineality?.id, 'view']" >{{ cattle.matrilineality?.name }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/cattle', cattle.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/cattle', cattle.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(cattle)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="cattles && cattles.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

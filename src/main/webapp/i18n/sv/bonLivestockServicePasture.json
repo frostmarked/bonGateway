@@ -1,0 +1,27 @@
+{
+  "bonGatewayApp": {
+    "bonLivestockServicePasture": {
+      "home": {
+        "title": "Pastures",
+        "createLabel": "Skapa en ny Pasture",
+        "createOrEditLabel": "Skapa eller ändra en Pasture",
+        "notFound": "No Pastures found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Pasture {{ id }}?"
+      },
+      "detail": {
+        "title": "Pasture"
+      },
+      "name": "Name",
+      "description": "Description"
+    }
+  },
+  "bonLivestockServiceApp": {
+    "bonLivestockServicePasture": {
+      "created": "En ny Pasture är skapad med id {{ param }}",
+      "updated": "En Pasture är uppdaterad med id  {{ param }}",
+      "deleted": "En Pasture är borttagen med id  {{ param }}"
+    }
+  }
+}

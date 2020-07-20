@@ -1,0 +1,13 @@
+{
+  "bonGatewayApp": {
+    "HornStatus": {
+      "null": "",
+      "UNKNOWN": "UNKNOWN",
+      "HORNED": "HORNED",
+      "POLLED": "POLLED",
+      "SCURS": "SCURS",
+      "DEHORNED": "DEHORNED",
+      "DISBUDDED": "DISBUDDED"
+    }
+  }
+}

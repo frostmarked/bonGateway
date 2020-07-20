@@ -1,0 +1,83 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.home.title">Bovines</span>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="bovines?.length === 0">
+        <span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.home.notFound">No bovines found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="bovines && bovines.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="earTagId"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.earTagId">Ear Tag Id</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="masterIdentifier"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.masterIdentifier">Master Identifier</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="country"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.country">Country</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="herdId"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.herdId">Herd Id</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="birthDate"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.birthDate">Birth Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="gender"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.gender">Gender</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="name"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="bovineStatus"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.bovineStatus">Bovine Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="hornStatus"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.hornStatus">Horn Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="matriId"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.matriId">Matri Id</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="patriId"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.patriId">Patri Id</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="weight0"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.weight0">Weight 0</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="weight200"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.weight200">Weight 200</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="weight365"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.weight365">Weight 365</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="sourceFile.id"><span jhiTranslate="bonGatewayApp.bonReplicaServiceBovine.sourceFile">Source File</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let bovine of bovines ;trackBy: trackId">
+                    <td><a [routerLink]="['/bovine', bovine.id, 'view']">{{ bovine.id }}</a></td>
+                    <td>{{ bovine.earTagId }}</td>
+                    <td>{{ bovine.masterIdentifier }}</td>
+                    <td>{{ bovine.country }}</td>
+                    <td>{{ bovine.herdId }}</td>
+                    <td>{{ bovine.birthDate | date:'medium' }}</td>
+                    <td jhiTranslate="{{ 'bonGatewayApp.Gender.' + bovine.gender }}">{{ bovine.gender }}</td>
+                    <td>{{ bovine.name }}</td>
+                    <td jhiTranslate="{{ 'bonGatewayApp.BovineStatus.' + bovine.bovineStatus }}">{{ bovine.bovineStatus }}</td>
+                    <td jhiTranslate="{{ 'bonGatewayApp.HornStatus.' + bovine.hornStatus }}">{{ bovine.hornStatus }}</td>
+                    <td>{{ bovine.matriId }}</td>
+                    <td>{{ bovine.patriId }}</td>
+                    <td>{{ bovine.weight0 }}</td>
+                    <td>{{ bovine.weight200 }}</td>
+                    <td>{{ bovine.weight365 }}</td>
+                    <td>
+                        <div *ngIf="bovine.sourceFile">
+                            <a [routerLink]="['/source-file', bovine.sourceFile?.id, 'view']" >{{ bovine.sourceFile?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/bovine', bovine.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="bovines && bovines.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+{
+  "bonGatewayApp": {
+    "bonReplicaServiceSourceFile": {
+      "home": {
+        "title": "Source Files",
+        "createLabel": "Create a new Source File",
+        "createOrEditLabel": "Create or edit a Source File",
+        "notFound": "No Source Files found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Source File {{ id }}?"
+      },
+      "detail": {
+        "title": "Source File"
+      },
+      "name": "Name",
+      "zipFile": "Zip File",
+      "processed": "Processed",
+      "outcome": "Outcome"
+    }
+  },
+  "bonReplicaServiceApp": {
+    "bonReplicaServiceSourceFile": {
+      "created": "A new Source File is created with identifier {{ param }}",
+      "updated": "A Source File is updated with identifier {{ param }}",
+      "deleted": "A Source File is deleted with identifier {{ param }}"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="journalEntry">
+            <h2><span jhiTranslate="bonGatewayApp.bonReplicaServiceJournalEntry.detail.title">Journal Entry</span> {{ journalEntry.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceJournalEntry.status">Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.EntryStatus.' + journalEntry.status }}">{{ journalEntry.status }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceJournalEntry.date">Date</span></dt>
+                <dd>
+                    <span>{{ journalEntry.date }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceJournalEntry.edited">Edited</span></dt>
+                <dd>
+                    <span>{{ journalEntry.edited }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceJournalEntry.herdId">Herd Id</span></dt>
+                <dd>
+                    <span>{{ journalEntry.herdId }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceJournalEntry.newHerdId">New Herd Id</span></dt>
+                <dd>
+                    <span>{{ journalEntry.newHerdId }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceJournalEntry.subState1">Sub State 1</span></dt>
+                <dd>
+                    <span>{{ journalEntry.subState1 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceJournalEntry.subState2">Sub State 2</span></dt>
+                <dd>
+                    <span>{{ journalEntry.subState2 }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceJournalEntry.bovine">Bovine</span></dt>
+                <dd>
+                    <div *ngIf="journalEntry.bovine">
+                        <a [routerLink]="['/bovine', journalEntry.bovine?.id, 'view']">{{ journalEntry.bovine?.earTagId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+{
+  "bonGatewayApp": {
+    "bonReplicaServiceJournalEntry": {
+      "home": {
+        "title": "Journal Entries",
+        "createLabel": "Create a new Journal Entry",
+        "createOrEditLabel": "Create or edit a Journal Entry",
+        "notFound": "No Journal Entries found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Journal Entry {{ id }}?"
+      },
+      "detail": {
+        "title": "Journal Entry"
+      },
+      "status": "Status",
+      "date": "Date",
+      "edited": "Edited",
+      "herdId": "Herd Id",
+      "newHerdId": "New Herd Id",
+      "subState1": "Sub State 1",
+      "subState2": "Sub State 2",
+      "bovine": "Bovine"
+    }
+  },
+  "bonReplicaServiceApp": {
+    "bonReplicaServiceJournalEntry": {
+      "created": "A new Journal Entry is created with identifier {{ param }}",
+      "updated": "A Journal Entry is updated with identifier {{ param }}",
+      "deleted": "A Journal Entry is deleted with identifier {{ param }}"
+    }
+  }
+}

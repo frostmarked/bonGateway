@@ -1,0 +1,29 @@
+{
+  "bonGatewayApp": {
+    "bonContentServiceStory": {
+      "home": {
+        "title": "Stories",
+        "createLabel": "Skapa en ny Story",
+        "createOrEditLabel": "Skapa eller ändra en Story",
+        "notFound": "No Stories found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Story {{ id }}?"
+      },
+      "detail": {
+        "title": "Story"
+      },
+      "category": "Category",
+      "name": "Name",
+      "visibility": "Visibility",
+      "fragment": "Fragment"
+    }
+  },
+  "bonContentServiceApp": {
+    "bonContentServiceStory": {
+      "created": "En ny Story är skapad med id {{ param }}",
+      "updated": "En Story är uppdaterad med id  {{ param }}",
+      "deleted": "En Story är borttagen med id  {{ param }}"
+    }
+  }
+}

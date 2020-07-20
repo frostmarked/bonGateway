@@ -1,0 +1,12 @@
+{
+  "bonGatewayApp": {
+    "EntryStatus": {
+      "null": "",
+      "FOD": "FOD",
+      "IB": "IB",
+      "TU": "TU",
+      "RET": "RET",
+      "UTG": "UTG"
+    }
+  }
+}

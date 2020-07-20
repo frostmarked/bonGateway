@@ -1,0 +1,175 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-fragment-heading" jhiTranslate="bonGatewayApp.bonContentServiceFragment.home.createOrEditLabel">Create or edit a Fragment</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.template" for="field_template">Template</label>
+                    <select class="form-control" name="template" formControlName="template" id="field_template">
+                        <option value="V1">{{ 'bonGatewayApp.FragmentTemplate.V1' | translate }}</option>
+                        <option value="V2">{{ 'bonGatewayApp.FragmentTemplate.V2' | translate }}</option>
+                        <option value="V3">{{ 'bonGatewayApp.FragmentTemplate.V3' | translate }}</option>
+                    </select>
+                    <div *ngIf="editForm.get('template')!.invalid && (editForm.get('template')!.dirty || editForm.get('template')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('template')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.name" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name')?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 2 }">
+                        This field is required to be at least 2 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.title" for="field_title">Title</label>
+                    <input type="text" class="form-control" name="title" id="field_title"
+                           formControlName="title"/>
+                    <div *ngIf="editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('title')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 127 }">
+                        This field cannot be longer than 127 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.ingress" for="field_ingress">Ingress</label>
+                    <input type="text" class="form-control" name="ingress" id="field_ingress"
+                           formControlName="ingress"/>
+                    <div *ngIf="editForm.get('ingress')!.invalid && (editForm.get('ingress')!.dirty || editForm.get('ingress')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('ingress')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                        This field cannot be longer than 255 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.body" for="field_body">Body</label>
+                    <textarea class="form-control" name="body" id="field_body"
+                              formControlName="body"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.image" for="field_image">Image</label>
+                    <div>
+                        <img [src]="'data:' + editForm.get('imageContentType')!.value + ';base64,' + editForm.get('image')!.value" style="max-height: 100px;" *ngIf="editForm.get('image')!.value" alt="fragment image"/>
+                        <div *ngIf="editForm.get('image')!.value" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{ editForm.get('imageContentType')!.value }}, {{ byteSize(editForm.get('image')!.value) }}</span>
+                            <button type="button" (click)="clearInputImage('image', 'imageContentType', 'file_image')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_image" (change)="setFileData($event, 'image', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="image" id="field_image"
+                           formControlName="image"/>
+                    <input type="hidden" class="form-control" name="imageContentType" id="field_imageContentType"
+                           formControlName="imageContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.caption" for="field_caption">Caption</label>
+                    <input type="text" class="form-control" name="caption" id="field_caption"
+                           formControlName="caption"/>
+                    <div *ngIf="editForm.get('caption')!.invalid && (editForm.get('caption')!.dirty || editForm.get('caption')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('caption')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                        This field cannot be longer than 255 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.width" for="field_width">Width</label>
+                    <input type="number" class="form-control" name="width" id="field_width"
+                           formControlName="width"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.height" for="field_height">Height</label>
+                    <input type="number" class="form-control" name="height" id="field_height"
+                           formControlName="height"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.orderNo" for="field_orderNo">Order No</label>
+                    <input type="number" class="form-control" name="orderNo" id="field_orderNo"
+                           formControlName="orderNo"/>
+                    <div *ngIf="editForm.get('orderNo')!.invalid && (editForm.get('orderNo')!.dirty || editForm.get('orderNo')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('orderNo')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('orderNo')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.visibility" for="field_visibility">Visibility</label>
+                    <select class="form-control" name="visibility" formControlName="visibility" id="field_visibility">
+                        <option value="ROLE_ADMIN">{{ 'bonGatewayApp.UserRole.ROLE_ADMIN' | translate }}</option>
+                        <option value="ROLE_USER">{{ 'bonGatewayApp.UserRole.ROLE_USER' | translate }}</option>
+                        <option value="ROLE_ANONYMOUS">{{ 'bonGatewayApp.UserRole.ROLE_ANONYMOUS' | translate }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label jhiTranslate="bonGatewayApp.bonContentServiceFragment.tag" for="field_tags">Tag</label>
+                    <select class="form-control" id="field_tags" multiple name="tags" formControlName="tags">
+                        <option [ngValue]="getSelected(editForm.get('tags')!.value, tagOption)" *ngFor="let tagOption of tags; trackBy: trackById">{{ tagOption.name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.story" for="field_story">Story</label>
+                    <select class="form-control" id="field_story" name="story" formControlName="story">
+                        <option *ngIf="!editForm.get('story')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="storyOption.id === editForm.get('story')!.value?.id ? editForm.get('story')!.value : storyOption" *ngFor="let storyOption of stories; trackBy: trackById">{{ storyOption.name }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('story')!.invalid && (editForm.get('story')!.dirty || editForm.get('story')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('story')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

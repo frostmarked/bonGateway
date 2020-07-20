@@ -1,0 +1,30 @@
+{
+  "bonGatewayApp": {
+    "bonLivestockServiceNote": {
+      "home": {
+        "title": "Notes",
+        "createLabel": "Skapa en ny Note",
+        "createOrEditLabel": "Skapa eller ändra en Note",
+        "notFound": "No Notes found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Note {{ id }}?"
+      },
+      "detail": {
+        "title": "Note"
+      },
+      "category": "Category",
+      "note": "Note",
+      "actualDate": "Actual Date",
+      "pasture": "Pasture",
+      "cattle": "Cattle"
+    }
+  },
+  "bonLivestockServiceApp": {
+    "bonLivestockServiceNote": {
+      "created": "En ny Note är skapad med id {{ param }}",
+      "updated": "En Note är uppdaterad med id  {{ param }}",
+      "deleted": "En Note är borttagen med id  {{ param }}"
+    }
+  }
+}

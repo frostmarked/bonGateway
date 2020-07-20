@@ -1,0 +1,29 @@
+{
+  "bonGatewayApp": {
+    "bonContentServiceStory": {
+      "home": {
+        "title": "Stories",
+        "createLabel": "Create a new Story",
+        "createOrEditLabel": "Create or edit a Story",
+        "notFound": "No Stories found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Story {{ id }}?"
+      },
+      "detail": {
+        "title": "Story"
+      },
+      "category": "Category",
+      "name": "Name",
+      "visibility": "Visibility",
+      "fragment": "Fragment"
+    }
+  },
+  "bonContentServiceApp": {
+    "bonContentServiceStory": {
+      "created": "A new Story is created with identifier {{ param }}",
+      "updated": "A Story is updated with identifier {{ param }}",
+      "deleted": "A Story is deleted with identifier {{ param }}"
+    }
+  }
+}

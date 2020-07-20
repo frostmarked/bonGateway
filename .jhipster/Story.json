@@ -1,0 +1,42 @@
+{
+  "name": "Story",
+  "fields": [
+    {
+      "fieldName": "category",
+      "fieldType": "StoryCategory",
+      "fieldValues": "NEWS,MATRILINEALITY,CATTLE,IT",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "unique"],
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "visibility",
+      "fieldType": "UserRole",
+      "fieldValues": "ROLE_ADMIN,ROLE_USER,ROLE_ANONYMOUS"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "fragment",
+      "otherEntityRelationshipName": "story",
+      "relationshipName": "fragment"
+    }
+  ],
+  "changelogDate": "20200702175922",
+  "entityTableName": "bon_content_story",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["bonGateway", "bonContentService"],
+  "microserviceName": "bonContentService"
+}

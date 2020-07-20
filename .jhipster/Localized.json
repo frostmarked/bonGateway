@@ -1,0 +1,64 @@
+{
+  "name": "Localized",
+  "fields": [
+    {
+      "fieldName": "i18n",
+      "fieldType": "String",
+      "fieldValidateRules": ["minlength", "pattern", "required"],
+      "fieldValidateRulesMinlength": "2",
+      "fieldValidateRulesPattern": "[a-z]+"
+    },
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "required"],
+      "fieldValidateRulesMaxlength": "127"
+    },
+    {
+      "fieldName": "ingress",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "body",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "caption",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "visibility",
+      "fieldType": "UserRole",
+      "fieldValues": "ROLE_ADMIN,ROLE_USER,ROLE_ANONYMOUS"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "fragment",
+      "otherEntityRelationshipName": "localizedFragment",
+      "relationshipValidateRules": "required",
+      "relationshipName": "fragment",
+      "otherEntityField": "orderNo"
+    }
+  ],
+  "changelogDate": "20200702180122",
+  "entityTableName": "bon_content_localized",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["bonGateway", "bonContentService"],
+  "microserviceName": "bonContentService",
+  "searchEngine": "elasticsearch"
+}

@@ -1,0 +1,36 @@
+{
+  "bonGatewayApp": {
+    "bonReplicaServiceBlup": {
+      "home": {
+        "title": "Blups",
+        "createLabel": "Skapa en ny Blup",
+        "createOrEditLabel": "Skapa eller ändra en Blup",
+        "notFound": "No Blups found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Blup {{ id }}?"
+      },
+      "detail": {
+        "title": "Blup"
+      },
+      "t0": "T 0",
+      "d0": "D 0",
+      "m0": "M 0",
+      "t200": "T 200",
+      "d200": "D 200",
+      "m200": "M 200",
+      "t365": "T 365",
+      "d365": "D 365",
+      "total": "Total",
+      "status": "Status",
+      "bovine": "Bovine"
+    }
+  },
+  "bonReplicaServiceApp": {
+    "bonReplicaServiceBlup": {
+      "created": "En ny Blup är skapad med id {{ param }}",
+      "updated": "En Blup är uppdaterad med id  {{ param }}",
+      "deleted": "En Blup är borttagen med id  {{ param }}"
+    }
+  }
+}

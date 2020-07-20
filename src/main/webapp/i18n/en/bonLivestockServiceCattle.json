@@ -1,0 +1,35 @@
+{
+  "bonGatewayApp": {
+    "bonLivestockServiceCattle": {
+      "home": {
+        "title": "Cattles",
+        "createLabel": "Create a new Cattle",
+        "createOrEditLabel": "Create or edit a Cattle",
+        "notFound": "No Cattles found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Cattle {{ id }}?"
+      },
+      "detail": {
+        "title": "Cattle"
+      },
+      "earTagId": "Ear Tag Id",
+      "name": "Name",
+      "visibility": "Visibility",
+      "upForSale": "Up For Sale",
+      "showBlup": "Show Blup",
+      "alert": "Alert",
+      "storyHandle": "Story Handle",
+      "photo": "Photo",
+      "note": "Note",
+      "matrilineality": "Matrilineality"
+    }
+  },
+  "bonLivestockServiceApp": {
+    "bonLivestockServiceCattle": {
+      "created": "A new Cattle is created with identifier {{ param }}",
+      "updated": "A Cattle is updated with identifier {{ param }}",
+      "deleted": "A Cattle is deleted with identifier {{ param }}"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="cattle">
+            <h2><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.detail.title">Cattle</span> {{ cattle.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.earTagId">Ear Tag Id</span></dt>
+                <dd>
+                    <span>{{ cattle.earTagId }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.name">Name</span></dt>
+                <dd>
+                    <span>{{ cattle.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.visibility">Visibility</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.UserRole.' + cattle.visibility }}">{{ cattle.visibility }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.upForSale">Up For Sale</span></dt>
+                <dd>
+                    <span>{{ cattle.upForSale }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.showBlup">Show Blup</span></dt>
+                <dd>
+                    <span>{{ cattle.showBlup }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.alert">Alert</span></dt>
+                <dd>
+                    <span>{{ cattle.alert }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.storyHandle">Story Handle</span></dt>
+                <dd>
+                    <span>{{ cattle.storyHandle }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceCattle.matrilineality">Matrilineality</span></dt>
+                <dd>
+                    <div *ngIf="cattle.matrilineality">
+                        <a [routerLink]="['/matrilineality', cattle.matrilineality?.id, 'view']">{{ cattle.matrilineality?.name }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/cattle', cattle.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

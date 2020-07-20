@@ -1,0 +1,74 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="matrilineality">
+            <h2><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.detail.title">Matrilineality</span> {{ matrilineality.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.familyname">Familyname</span></dt>
+                <dd>
+                    <span>{{ matrilineality.familyname }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.earTagId">Ear Tag Id</span></dt>
+                <dd>
+                    <span>{{ matrilineality.earTagId }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.name">Name</span></dt>
+                <dd>
+                    <span>{{ matrilineality.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.country">Country</span></dt>
+                <dd>
+                    <span>{{ matrilineality.country }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.description">Description</span></dt>
+                <dd>
+                    <span>{{ matrilineality.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.cattleNameRegexPattern">Cattle Name Regex Pattern</span></dt>
+                <dd>
+                    <span>{{ matrilineality.cattleNameRegexPattern }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.patriId">Patri Id</span></dt>
+                <dd>
+                    <span>{{ matrilineality.patriId }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.patriName">Patri Name</span></dt>
+                <dd>
+                    <span>{{ matrilineality.patriName }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.patriCountry">Patri Country</span></dt>
+                <dd>
+                    <span>{{ matrilineality.patriCountry }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.polled">Polled</span></dt>
+                <dd>
+                    <span>{{ matrilineality.polled }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.storyHandle">Story Handle</span></dt>
+                <dd>
+                    <span>{{ matrilineality.storyHandle }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonLivestockServiceMatrilineality.visibility">Visibility</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'bonGatewayApp.UserRole.' + matrilineality.visibility }}">{{ matrilineality.visibility }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/matrilineality', matrilineality.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-source-file-heading" jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.home.createOrEditLabel">Create or edit a Source File</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.name" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 127 }">
+                        This field cannot be longer than 127 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.zipFile" for="field_zipFile">Zip File</label>
+                    <div>
+                        <div *ngIf="editForm.get('zipFile')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(editForm.get('zipFileContentType')!.value, editForm.get('zipFile')!.value)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{ editForm.get('zipFileContentType')!.value }}, {{ byteSize(editForm.get('zipFile')!.value) }}</span>
+                            <button type="button" (click)="editForm.patchValue({zipFile: null});editForm.patchValue({zipFileContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_zipFile" (change)="setFileData($event, 'zipFile', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="zipFile" id="field_zipFile"
+                           formControlName="zipFile"/>
+                    <input type="hidden" class="form-control" name="zipFileContentType" id="field_zipFileContentType"
+                           formControlName="zipFileContentType" />
+                    <div *ngIf="editForm.get('zipFile')!.invalid && (editForm.get('zipFile')!.dirty || editForm.get('zipFile')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('zipFile')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.processed" for="field_processed">Processed</label>
+                    <div class="d-flex">
+                        <input id="field_processed" type="datetime-local" class="form-control" name="processed" formControlName="processed" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.outcome" for="field_outcome">Outcome</label>
+                    <input type="text" class="form-control" name="outcome" id="field_outcome"
+                           formControlName="outcome"/>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-note-heading" jhiTranslate="bonGatewayApp.bonLivestockServiceNote.home.createOrEditLabel">Create or edit a Note</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServiceNote.category" for="field_category">Category</label>
+                    <select class="form-control" name="category" formControlName="category" id="field_category">
+                        <option value="GENERAL">{{ 'bonGatewayApp.NoteCategory.GENERAL' | translate }}</option>
+                        <option value="TREATMENT">{{ 'bonGatewayApp.NoteCategory.TREATMENT' | translate }}</option>
+                        <option value="HOOF_CARE">{{ 'bonGatewayApp.NoteCategory.HOOF_CARE' | translate }}</option>
+                        <option value="DEHORNING">{{ 'bonGatewayApp.NoteCategory.DEHORNING' | translate }}</option>
+                        <option value="PASTURE_CHANGE">{{ 'bonGatewayApp.NoteCategory.PASTURE_CHANGE' | translate }}</option>
+                        <option value="PASTURE_PLANNED">{{ 'bonGatewayApp.NoteCategory.PASTURE_PLANNED' | translate }}</option>
+                        <option value="WEIGHT">{{ 'bonGatewayApp.NoteCategory.WEIGHT' | translate }}</option>
+                        <option value="WEIGHING0">{{ 'bonGatewayApp.NoteCategory.WEIGHING0' | translate }}</option>
+                        <option value="WEIGHING200">{{ 'bonGatewayApp.NoteCategory.WEIGHING200' | translate }}</option>
+                        <option value="WEIGHING365">{{ 'bonGatewayApp.NoteCategory.WEIGHING365' | translate }}</option>
+                        <option value="ALERT">{{ 'bonGatewayApp.NoteCategory.ALERT' | translate }}</option>
+                        <option value="TEMPER">{{ 'bonGatewayApp.NoteCategory.TEMPER' | translate }}</option>
+                        <option value="ESTRUS">{{ 'bonGatewayApp.NoteCategory.ESTRUS' | translate }}</option>
+                        <option value="INSEMINATION">{{ 'bonGatewayApp.NoteCategory.INSEMINATION' | translate }}</option>
+                    </select>
+                    <div *ngIf="editForm.get('category')!.invalid && (editForm.get('category')!.dirty || editForm.get('category')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('category')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServiceNote.note" for="field_note">Note</label>
+                    <input type="text" class="form-control" name="note" id="field_note"
+                           formControlName="note"/>
+                    <div *ngIf="editForm.get('note')!.invalid && (editForm.get('note')!.dirty || editForm.get('note')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('note')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 512 }">
+                        This field cannot be longer than 512 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServiceNote.actualDate" for="field_actualDate">Actual Date</label>
+                    <div class="input-group">
+                        <input id="field_actualDate" type="text" class="form-control" name="actualDate" ngbDatepicker #actualDateDp="ngbDatepicker" formControlName="actualDate"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="actualDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServiceNote.pasture" for="field_pasture">Pasture</label>
+                    <select class="form-control" id="field_pasture" name="pasture" formControlName="pasture">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="pastureOption.id === editForm.get('pasture')!.value?.id ? editForm.get('pasture')!.value : pastureOption" *ngFor="let pastureOption of pastures; trackBy: trackById">{{ pastureOption.name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServiceNote.cattle" for="field_cattle">Cattle</label>
+                    <select class="form-control" id="field_cattle" name="cattle" formControlName="cattle">
+                        <option *ngIf="!editForm.get('cattle')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="cattleOption.id === editForm.get('cattle')!.value?.id ? editForm.get('cattle')!.value : cattleOption" *ngFor="let cattleOption of cattles; trackBy: trackById">{{ cattleOption.earTagId }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('cattle')!.invalid && (editForm.get('cattle')!.dirty || editForm.get('cattle')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('cattle')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

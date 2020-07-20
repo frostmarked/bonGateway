@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sourceFile">
+            <h2><span jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.detail.title">Source File</span> {{ sourceFile.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.name">Name</span></dt>
+                <dd>
+                    <span>{{ sourceFile.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.zipFile">Zip File</span></dt>
+                <dd>
+                    <div *ngIf="sourceFile.zipFile">
+                        <a (click)="openFile(sourceFile.zipFileContentType, sourceFile.zipFile)" jhiTranslate="entity.action.open">open</a>
+                        {{ sourceFile.zipFileContentType }}, {{ byteSize(sourceFile.zipFile) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.processed">Processed</span></dt>
+                <dd>
+                    <span>{{ sourceFile.processed }}</span>
+                </dd>
+                <dt><span jhiTranslate="bonGatewayApp.bonReplicaServiceSourceFile.outcome">Outcome</span></dt>
+                <dd>
+                    <span>{{ sourceFile.outcome }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/source-file', sourceFile.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

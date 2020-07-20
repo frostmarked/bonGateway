@@ -1,0 +1,33 @@
+{
+  "bonGatewayApp": {
+    "bonReplicaServiceJournalEntry": {
+      "home": {
+        "title": "Journal Entries",
+        "createLabel": "Skapa en ny Journal Entry",
+        "createOrEditLabel": "Skapa eller ändra en Journal Entry",
+        "notFound": "No Journal Entries found"
+      },
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Journal Entry {{ id }}?"
+      },
+      "detail": {
+        "title": "Journal Entry"
+      },
+      "status": "Status",
+      "date": "Date",
+      "edited": "Edited",
+      "herdId": "Herd Id",
+      "newHerdId": "New Herd Id",
+      "subState1": "Sub State 1",
+      "subState2": "Sub State 2",
+      "bovine": "Bovine"
+    }
+  },
+  "bonReplicaServiceApp": {
+    "bonReplicaServiceJournalEntry": {
+      "created": "En ny Journal Entry är skapad med id {{ param }}",
+      "updated": "En Journal Entry är uppdaterad med id  {{ param }}",
+      "deleted": "En Journal Entry är borttagen med id  {{ param }}"
+    }
+  }
+}

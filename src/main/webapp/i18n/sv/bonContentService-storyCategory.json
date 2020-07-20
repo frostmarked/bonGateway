@@ -1,0 +1,11 @@
+{
+  "bonGatewayApp": {
+    "StoryCategory": {
+      "null": "",
+      "NEWS": "NEWS",
+      "MATRILINEALITY": "MATRILINEALITY",
+      "CATTLE": "CATTLE",
+      "IT": "IT"
+    }
+  }
+}
