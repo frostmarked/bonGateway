@@ -5,6 +5,8 @@ Visit the parent project https://github.com/frostmarked/bonParent for more infor
 <br/>
 <br/>
 <br/>
+![](https://github.com/frostmarked/bonGateway/workflows/Bon%20Gateway%20CI/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=frostmarked_bonGateway&metric=alert_status)](https://sonarcloud.io/dashboard?id=frostmarked_bonGateway)
 
 # bonGateway
 
