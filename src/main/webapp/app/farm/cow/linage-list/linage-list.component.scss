@@ -1,0 +1,20 @@
+.linage-item {
+  &.is-role-user,
+  &.is-role-admin {
+    opacity: 0.5;
+  }
+}
+
+.linage-img {
+  min-width: 200px;
+  max-width: 400px;
+  min-height: 200px;
+}
+
+a > .linage-figure {
+  font-size: 1.5rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

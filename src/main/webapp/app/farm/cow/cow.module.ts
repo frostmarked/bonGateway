@@ -8,6 +8,7 @@ import { DamListComponent } from './dam-list/dam-list.component';
 import { DamDetailsComponent } from './dam-details/dam-details.component';
 import { LinageListComponent } from './linage-list/linage-list.component';
 import { LinageDetailsComponent } from './linage-details/linage-details.component';
+import { BonGatewaySharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,6 @@ import { LinageDetailsComponent } from './linage-details/linage-details.componen
     LinageListComponent,
     LinageDetailsComponent,
   ],
-  imports: [CommonModule, CowRoutingModule],
+  imports: [BonGatewaySharedModule, CommonModule, CowRoutingModule],
 })
 export class CowModule {}

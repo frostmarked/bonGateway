@@ -1,26 +1,32 @@
-<p>linage-list works!</p>
+<div>
+  <h2 id="page-heading">
+      <span jhiTranslate="bonGatewayApp.farm.cow.linage-list.title">Linages</span>
+  </h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Familyname</th>
-      <th>Visibility</th>
-      <th>Link</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let linage of linages">
-      <td>{{ linage?.id }}</td>
-      <td>{{ linage?.name }}</td>
-      <td>{{ linage?.familyname }}</td>
-      <td>{{ linage?.visibility }}</td>
-      <td>
+  <div class="clearfix" *ngIf="loading">
+    <div class="spinner-border spinner-border-sm float-right" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="linage-container d-flex align-content-start flex-wrap">
+    <div *ngFor="let linage of linages$ | async" class="linage-item p-2"
+      [ngClass]="{
+        'is-role-anonymous': linage?.visibility == 'ROLE_ANONYMOUS',
+        'is-role-user': linage?.visibility == 'ROLE_USER',
+        'is-role-admin': linage?.visibility == 'ROLE_ADMIN'
+      }">    
         <a [title]="'Linage' + linage?.id" [routerLink]="['/farm', 'cow', 'linage', linage?.id]">
-          <span>EarTagId {{linage?.earTagId}}</span>
+          <figure class="linage-figure figure">
+            <img [src]="linage.photo$ | async" alt="{{linage?.earTagId}} {{ linage?.familyname }}" class="linage-img figure-img img-fluid rounded">          
+            <figcaption class="linage-img-caption text-center">{{linage?.earTagId}} {{ linage?.familyname }}</figcaption>
+          </figure>
         </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    </div>
+  </div>
+
+</div>
