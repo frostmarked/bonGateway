@@ -53,3 +53,16 @@ application:
       sourcefile:
         name: bonReplicaService
         url: http://localhost:9002
+
+ribbon:
+  eureka:
+    enabled: false
+
+zuul:
+  routes:
+    boncontentservice:
+      url: http://localhost:9003
+    bonlivestockservice:
+      url: http://localhost:9001
+    bonreplicaservice:
+      url: http://localhost:9002
