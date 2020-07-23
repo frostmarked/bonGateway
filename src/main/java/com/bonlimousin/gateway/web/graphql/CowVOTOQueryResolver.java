@@ -13,7 +13,7 @@ import com.bonlimousin.gateway.bff.mapper.graphql.CowVOTOMapper;
 import com.bonlimousin.gateway.bff.mapper.graphql.PhotographVOTOMapper;
 import com.bonlimousin.gateway.web.api.model.CowVO;
 import com.bonlimousin.gateway.web.api.model.PhotographVO;
-import com.bonlimousin.gateway.web.graphql.model.ApiPublicCowPhotographsQueryResolver;
+import com.bonlimousin.gateway.web.graphql.model.ApiPublicCowsPhotographsQueryResolver;
 import com.bonlimousin.gateway.web.graphql.model.ApiPublicCowsQueryResolver;
 import com.bonlimousin.gateway.web.graphql.model.BlupVOQueryResolver;
 import com.bonlimousin.gateway.web.graphql.model.BlupVOTO;
@@ -27,7 +27,7 @@ import graphql.kickstart.tools.GraphQLQueryResolver;
 
 @Component
 public class CowVOTOQueryResolver
-		implements ApiPublicCowsQueryResolver, ApiPublicCowPhotographsQueryResolver, 
+		implements ApiPublicCowsQueryResolver, ApiPublicCowsPhotographsQueryResolver, 
 		BlupVOQueryResolver, CowVOQueryResolver, GraphQLQueryResolver {
 
 	private CowVOResourceDelegateImpl cowVOResourceDelegateImpl;
@@ -57,7 +57,7 @@ public class CowVOTOQueryResolver
 	}
 
 	@Override
-	public List<PhotographVOTO> apiPublicCowPhotographs(Double earTagId, Integer page, Integer size,
+	public List<PhotographVOTO> apiPublicCowsPhotographs(Double earTagId, Integer page, Integer size,
 			List<String> sort) throws Exception {
 		GraphQLPageable p = GraphQLPageable.of(page, size, sort);
 		List<PhotographVO> list = this.cowVOResourceDelegateImpl

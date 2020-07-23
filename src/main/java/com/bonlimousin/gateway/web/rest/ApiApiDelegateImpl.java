@@ -32,6 +32,11 @@ public class ApiApiDelegateImpl implements ApiApiDelegate {
 	}
 
 	@Override
+	public ResponseEntity<LinageVO> getLinageVO(Long earTagId) {		
+		return this.linageVODelegate.getLinageVO(earTagId);
+	}
+
+	@Override
 	public ResponseEntity<List<LinageVO>> findAllLinageVOs(Integer page, Integer size, List<String> sort) {
 		return this.linageVODelegate.findAllLinageVOs(page, size, sort);
 	}

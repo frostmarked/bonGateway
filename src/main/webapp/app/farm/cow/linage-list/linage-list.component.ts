@@ -56,7 +56,7 @@ export class LinageListComponent implements OnInit {
   // or return default if none exists
   private getLinagePhoto(earTagId: number): Observable<string> {
     return this.findCowPhotosGQL.fetch({ earTagId, size: 1 }).pipe(
-      map(result => result.data.apiPublicCowPhotographs),
+      map(result => result.data.apiPublicCowsPhotographs),
       map(photos => {
         if (photos && photos[0]) {
           return `data:${photos[0].imageContentType};base64,${photos[0].image}`;

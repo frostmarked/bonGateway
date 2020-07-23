@@ -242,6 +242,35 @@ paths:
           description: Not Implemented
           content: {}
       deprecated: false
+  '/api/public/linages/{earTagId}':
+    get:
+      tags:
+        - linagevo-resource
+      summary: Get LinageVO
+      description: ''
+      operationId: getLinageVO
+      parameters:
+        - name: earTagId
+          in: path
+          description: Numeric identifier for cattle
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:                
+                $ref: '#/components/schemas/LinageVO'
+        '404':
+          description: Not Found
+          content: {}
+        '501':
+          description: Not Implemented
+          content: {}
+      deprecated: false
   '/api/public/cows/{earTagId}/photographs':
     get:
       tags:

@@ -5,7 +5,7 @@ query FindCowPhotos(
     $sort: [String]
     $excludeImage: Boolean = false
   ) {
-  apiPublicCowPhotographs(    
+  apiPublicCowsPhotographs(    
     earTagId: $earTagId
     page: $page
     size: $size

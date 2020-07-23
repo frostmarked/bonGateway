@@ -60,7 +60,7 @@ public class GraphqlArticleQueriesIT {
 				.thenReturn(ResponseEntity.ok(article1));
 
 		ObjectNode variables = new ObjectMapper().createObjectNode();
-		variables.put("i18n", I18nTO.SV.name());
+		variables.put("i18n", I18nTO.sv.name());
 		variables.put("id", "1");
 		variables.put("isSummary", "false");
 
@@ -87,7 +87,7 @@ public class GraphqlArticleQueriesIT {
 				Mockito.any())).thenReturn(ResponseEntity.ok(Arrays.asList(article1)));
 
 		ObjectNode variables = new ObjectMapper().createObjectNode();
-		variables.put("i18n", I18nTO.SV.name());
+		variables.put("i18n", I18nTO.sv.name());
 		variables.put("isSummary", "false");
 
 		String graphqlOps = "graphql/testoperations";
@@ -114,7 +114,7 @@ public class GraphqlArticleQueriesIT {
 
 		ObjectNode variables = new ObjectMapper().createObjectNode();
 		variables.put("query", "abc");
-		variables.put("i18n", I18nTO.SV.name());
+		variables.put("i18n", I18nTO.sv.name());
 		variables.put("isSummary", "false");
 
 		String graphqlOps = "graphql/testoperations";

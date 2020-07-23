@@ -1,0 +1,19 @@
+query GetLinage(
+    $earTagId: Float!
+  ) {
+  linageVO(
+    earTagId: $earTagId
+  ) {    
+    id
+    visibility
+    name
+    earTagId
+    familyname
+    polled
+    country
+    storyHandle    
+    patriId
+    patriName  
+    patriCountry
+  }
+}

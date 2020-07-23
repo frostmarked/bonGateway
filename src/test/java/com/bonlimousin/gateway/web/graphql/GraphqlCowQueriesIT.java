@@ -69,13 +69,14 @@ public class GraphqlCowQueriesIT {
 		Assert.assertNotNull(response);
 		Assert.assertTrue(response.isOk());
 
-		Assert.assertEquals(vo.getId().floatValue() + "", response.get("$.data.apiPublicCowPhotographs[0].id"));
-		Assert.assertEquals(vo.getCaption(), response.get("$.data.apiPublicCowPhotographs[0].caption"));
-		Assert.assertEquals(vo.getEarTagId().toString(), response.get("$.data.apiPublicCowPhotographs[0].earTagId"));
-		Assert.assertEquals(vo.getHeight().toString(), response.get("$.data.apiPublicCowPhotographs[0].height"));
-		Assert.assertEquals(vo.getWidth().toString(), response.get("$.data.apiPublicCowPhotographs[0].width"));
+		String photoPath = "$.data.apiPublicCowsPhotographs[0]";
+		Assert.assertEquals(vo.getId().floatValue() + "", response.get(photoPath + ".id"));
+		Assert.assertEquals(vo.getCaption(), response.get(photoPath + ".caption"));
+		Assert.assertEquals(vo.getEarTagId().toString(), response.get(photoPath + ".earTagId"));
+		Assert.assertEquals(vo.getHeight().toString(), response.get(photoPath + ".height"));
+		Assert.assertEquals(vo.getWidth().toString(), response.get(photoPath + ".width"));
 		Assert.assertEquals(vo.getTaken().format(DateTimeFormatter.ofPattern(DATETIME_FORMAT)),
-				response.get("$.data.apiPublicCowPhotographs[0].taken"));
+				response.get(photoPath + ".taken"));
 	}
 
 	@Test

@@ -79,8 +79,8 @@ enum HornStatusInListItem {
 }
 
 enum I18n {
-  SV
-  EN
+  sv
+  en
 }
 
 type LinageVO {
@@ -109,6 +109,7 @@ type PhotographVO {
   width: Int
 }
 
+"""The start of any query"""
 type Query {
   """
   Get all ArticleVOs
@@ -133,28 +134,6 @@ type Query {
     """
     sort: [String]
   ): [ArticleVO]
-
-  """
-  Get all PhotographVOs for a cow
-  
-  Equivalent to GET /api/public/cows/{earTagId}/photographs
-  """
-  apiPublicCowPhotographs(
-    """Numeric identifier for cattle"""
-    earTagId: Float!
-
-    """Page number of the requested page"""
-    page: Int
-
-    """Size of a page"""
-    size: Int
-
-    """
-    Sorting criteria in the format: property(,asc|desc). Default sort order is
-    ascending. Multiple sort criteria are supported.
-    """
-    sort: [String]
-  ): [PhotographVO]
 
   """
   Find all cows matching criteria
@@ -191,6 +170,28 @@ type Query {
     weight365LessThan: Int
     weight365Specified: Boolean
   ): [CowVO]
+
+  """
+  Get all PhotographVOs for a cow
+  
+  Equivalent to GET /api/public/cows/{earTagId}/photographs
+  """
+  apiPublicCowsPhotographs(
+    """Numeric identifier for cattle"""
+    earTagId: Float!
+
+    """Page number of the requested page"""
+    page: Int
+
+    """Size of a page"""
+    size: Int
+
+    """
+    Sorting criteria in the format: property(,asc|desc). Default sort order is
+    ascending. Multiple sort criteria are supported.
+    """
+    sort: [String]
+  ): [PhotographVO]
 
   """
   Find all LinageVOs
@@ -292,6 +293,16 @@ type Query {
     """Numeric identifier for cattle"""
     earTagId: Float!
   ): CowVO
+
+  """
+  Get LinageVO
+  
+  Equivalent to GET /api/public/linages/{earTagId}
+  """
+  linageVO(
+    """Numeric identifier for cattle"""
+    earTagId: Float!
+  ): LinageVO
 }
 
 type SectionVO {

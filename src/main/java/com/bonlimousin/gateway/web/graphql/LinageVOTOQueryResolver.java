@@ -10,12 +10,13 @@ import com.bonlimousin.gateway.bff.delegate.LinageVOResourceDelegateImpl;
 import com.bonlimousin.gateway.bff.mapper.graphql.LinageVOTOMapper;
 import com.bonlimousin.gateway.web.api.model.LinageVO;
 import com.bonlimousin.gateway.web.graphql.model.ApiPublicLinagesQueryResolver;
+import com.bonlimousin.gateway.web.graphql.model.LinageVOQueryResolver;
 import com.bonlimousin.gateway.web.graphql.model.LinageVOTO;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
 
 @Component
-public class LinageVOTOQueryResolver implements ApiPublicLinagesQueryResolver, GraphQLQueryResolver {
+public class LinageVOTOQueryResolver implements ApiPublicLinagesQueryResolver, LinageVOQueryResolver, GraphQLQueryResolver {
 
 	private LinageVOResourceDelegateImpl linageVOResourceDelegateImpl;
 
@@ -29,5 +30,11 @@ public class LinageVOTOQueryResolver implements ApiPublicLinagesQueryResolver, G
 		GraphQLPageable p = GraphQLPageable.of(page, size, sort);
 		List<LinageVO> list = this.linageVOResourceDelegateImpl.findAllLinageVOs(p.getPage(), p.getSize(), p.getSort()).getBody();
 		return list.stream().map(vo -> LinageVOTOMapper.INSTANCE.voToTO(vo)).collect(Collectors.toList());
+	}
+	
+	@Override
+	public LinageVOTO linageVO(Double earTagId) throws Exception {
+		LinageVO vo = this.linageVOResourceDelegateImpl.getLinageVO(earTagId.longValue()).getBody();
+		return LinageVOTOMapper.INSTANCE.voToTO(vo);
 	}
 }
