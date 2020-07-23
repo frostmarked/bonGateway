@@ -20,7 +20,7 @@
         'is-role-user': linage?.visibility == 'ROLE_USER',
         'is-role-admin': linage?.visibility == 'ROLE_ADMIN'
       }">    
-        <a [title]="'Linage' + linage?.id" [routerLink]="['/farm', 'cow', 'linage', linage?.id]">
+        <a [title]="'Linage' + linage?.earTagId" [routerLink]="['/farm', 'cow', 'linage', linage?.earTagId]">
           <figure class="linage-figure figure">
             <img [src]="linage.photo$ | async" alt="{{linage?.earTagId}} {{ linage?.familyname }}" class="linage-img figure-img img-fluid rounded">          
             <figcaption class="linage-img-caption text-center">{{linage?.earTagId}} {{ linage?.familyname }}</figcaption>

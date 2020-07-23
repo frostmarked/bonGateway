@@ -5,24 +5,21 @@ import { DamDetailsComponent } from './dam-details/dam-details.component';
 import { LinageDetailsComponent } from './linage-details/linage-details.component';
 import { SireListComponent } from './sire-list/sire-list.component';
 import { SireDetailsComponent } from './sire-details/sire-details.component';
-import { LinageVo, FindLinagesGQL, Maybe, CowVo, GetCowGQL } from 'app/bonpublicgraphql/bonpublicgraphql';
+import { LinageVo, GetLinageGQL, CowVo, GetCowGQL } from 'app/bonpublicgraphql/bonpublicgraphql';
 import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class LinageVoResolve implements Resolve<LinageVo> {
-  constructor(private findLinagesGQL: FindLinagesGQL, private router: Router) {}
+  constructor(private getLinageGQL: GetLinageGQL, private router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<LinageVo> | Observable<never> {
-    const id = route.params['id'];
-    if (id) {
-      return this.findLinagesGQL.fetch({ size: 100 }).pipe(
+    const earTagId = route.params['earTagId'];
+    if (earTagId) {
+      return this.getLinageGQL.fetch({ earTagId }).pipe(
         map(result => {
-          const marr: any = result.data.apiPublicLinages;
-          const list: Maybe<Array<Maybe<LinageVo>>> = marr ? marr : null;
-          const match = list && list.length > 0 ? list.find(m => m && m.id === +id) : null;
-          if (match) {
-            return match;
+          if (result.data.linageVO) {
+            return result.data.linageVO;
           } else {
             this.router.navigate(['404']);
             return {};
@@ -66,7 +63,7 @@ const routes: Routes = [
     component: LinageListComponent,
   },
   {
-    path: 'linage/:id',
+    path: 'linage/:earTagId',
     component: LinageDetailsComponent,
     resolve: {
       linageVo: LinageVoResolve,

@@ -1,37 +1,47 @@
-<p>linage-details works!</p>
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="bonGatewayApp.farm.cow.linage-details.title"
+            [translateValues]="{ earTagId: linage!.earTagId, familyname: linage!.familyname }">Linage X</span>
+    </h2>
 
-<dl>
-  <dt>id</dt>
-  <dd>{{ linageVo?.id }}</dd>
-  <dt>name</dt>
-  <dd>{{ linageVo?.name }}</dd>
-  <dt>familyname</dt>
-  <dd>{{ linageVo?.familyname }}</dd>
-  <dt>visibility</dt>
-  <dd>{{ linageVo?.visibility }}</dd>
-</dl>
+    <div class="clearfix" *ngIf="loading">
+        <div class="spinner-border spinner-border-sm float-right" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>EarTagId</th>
-      <th>Gender</th>
-      <th>Visibility</th>
-      <th>Link</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let cow of cowVos">
-      <td>{{ cow?.earTagId }}</td>
-      <td>{{ cow?.name }}</td>
-      <td>{{ cow?.gender }}</td>
-      <td>{{ cow?.visibility }}</td>
-      <td>
-        <a [title]="'Cow' + cow?.earTagId" [routerLink]="['/farm', 'cow', 'dam', cow?.earTagId]">
-          <span>EarTagId {{cow?.earTagId}}</span>
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <article *ngIf="article$ | async as article" class="linage-article-container">
+        <section *ngFor="let section of article.sections" class="linage-section">
+            <h4 *ngIf="section?.title">{{ section?.title }}</h4>
+            <p *ngIf="section?.ingress">{{ section?.ingress }}</p>
+            <p *ngIf="section?.body">{{ section?.body }}</p>
+
+            <figure *ngIf="section?.imageContentType" class="figure linage-section-figure">
+                <img [src]="'data:' + section?.imageContentType + ';base64,' + section?.image" alt="" class="figure-img img-fluid">
+                <figcaption *ngIf="section?.caption" class="figure-caption">{{section?.caption}}</figcaption>
+            </figure>
+        </section>
+    </article>
+
+    <h3>Descendants</h3>
+    <div class="dam-container d-flex align-content-start flex-wrap">
+        <div *ngFor="let dam of dams$ | async" class="dam-item p-2" [ngClass]="{
+        'is-role-anonymous': dam?.visibility == 'ROLE_ANONYMOUS',
+        'is-role-user': dam?.visibility == 'ROLE_USER',
+        'is-role-admin': dam?.visibility == 'ROLE_ADMIN'
+      }">
+            <a [title]="'Dam' + dam?.id" [routerLink]="['/farm', 'cow', 'dam', dam?.earTagId]">
+                <figure class="dam-figure figure">
+                    <img [src]="dam.photo$ | async" alt="{{dam?.earTagId}} {{ dam?.familyname }}"
+                        class="dam-img figure-img img-fluid rounded">
+                    <figcaption class="dam-img-caption text-center">{{dam?.earTagId}} {{ dam?.familyname }}</figcaption>
+                </figure>
+            </a>
+        </div>
+    </div>
+
+</div>

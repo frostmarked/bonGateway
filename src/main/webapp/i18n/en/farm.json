@@ -4,6 +4,9 @@
       "cow": {
         "linage-list": {
           "title": "Linages"
+        },
+        "linage-details": {
+          "title": "Linage {{ earTagId }} {{ familyname }}"
         }
       }
     }
