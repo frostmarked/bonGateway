@@ -1,10 +1,10 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="bonGatewayApp.farm.cow.linage-details.title"
-            [translateValues]="{ earTagId: linage!.earTagId, familyname: linage!.familyname }">Linage X</span>
+            [translateValues]="{ earTagId: linage?.earTagId, familyname: linage?.familyname }">Linage X</span>
     </h2>
 
-    <div class="clearfix" *ngIf="loading">
+    <div class="clearfix" *ngIf="loading$ | async">
         <div class="spinner-border spinner-border-sm float-right" role="status">
             <span class="sr-only">Loading...</span>
         </div>

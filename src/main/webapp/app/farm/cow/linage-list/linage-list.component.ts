@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FindLinagesGQL, FindCowPhotosGQL } from 'app/bonpublicgraphql/bonpublicgraphql';
 import { map, startWith, finalize } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 interface LinageItemVM {
   id: number;
@@ -20,7 +20,8 @@ const DEFAULT_IMG = '/content/images/bon/simple-cow-logo-limousin.png';
   styleUrls: ['./linage-list.component.scss'],
 })
 export class LinageListComponent implements OnInit {
-  loading = true;
+  loadingSubject = new BehaviorSubject<boolean>(false);
+  loading$ = this.loadingSubject.asObservable();
   linages$?: Observable<Array<LinageItemVM>>;
 
   constructor(private findLinagesGQL: FindLinagesGQL, private findCowPhotosGQL: FindCowPhotosGQL) {}
@@ -30,7 +31,7 @@ export class LinageListComponent implements OnInit {
   }
 
   private getLinages(): Observable<Array<LinageItemVM>> {
-    this.loading = true;
+    setTimeout(() => this.loadingSubject.next(true));
     return this.findLinagesGQL
       .fetch({ size: 100 }) // unlikly that there will be more then 20
       .pipe(
@@ -48,7 +49,7 @@ export class LinageListComponent implements OnInit {
               } as LinageItemVM)
           )
         ),
-        finalize(() => (this.loading = false))
+        finalize(() => this.loadingSubject.next(false))
       );
   }
 

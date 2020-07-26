@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FindCowPhotosGQL, LinageVo, FindCowsGQL, GetArticleGQL, ArticleVo, I18n } from 'app/bonpublicgraphql/bonpublicgraphql';
 import { map, startWith, finalize } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { JhiLanguageService } from 'ng-jhipster';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
 interface DamItemVM {
@@ -22,13 +23,15 @@ const DEFAULT_IMG = '/content/images/bon/simple-cow-logo-limousin.png';
   styleUrls: ['./linage-details.component.scss'],
 })
 export class LinageDetailsComponent implements OnInit {
-  loading = true;
+  loadingSubject = new BehaviorSubject<boolean>(false);
+  loading$ = this.loadingSubject.asObservable();
   linage?: LinageVo;
   article$?: Observable<Maybe<ArticleVo>>;
   dams$?: Observable<Array<DamItemVM>>;
 
   constructor(
     public activatedRoute: ActivatedRoute,
+    private languageService: JhiLanguageService,
     private getArticleGQL: GetArticleGQL,
     private findCowsGQL: FindCowsGQL,
     private findCowPhotosGQL: FindCowPhotosGQL
@@ -38,20 +41,23 @@ export class LinageDetailsComponent implements OnInit {
     this.activatedRoute.data.subscribe(data => {
       this.linage = data.linageVo;
       if (this.linage!.storyHandle) {
-        this.article$ = this.getArticle(this.linage!.storyHandle);
+        // TODO subscribe to changes to language?
+        const curLang = this.languageService.getCurrentLanguage();
+        this.article$ = this.getArticle(this.linage!.storyHandle, curLang);
       }
       this.dams$ = this.getDams(this.linage!.id!);
     });
   }
 
-  private getArticle(storyHandle: string): Observable<Maybe<ArticleVo>> {
+  private getArticle(storyHandle: string, currentLanguage: string): Observable<Maybe<ArticleVo>> {
+    const i18nkey = Object.keys(I18n).filter(key => I18n[key] === currentLanguage)[0];
     return this.getArticleGQL
-      .fetch({ i18n: I18n.En, isSummary: false, isHandle: true, id: storyHandle })
+      .fetch({ i18n: I18n[i18nkey], isSummary: false, isHandle: true, id: storyHandle })
       .pipe(map(result => result.data.articleVO));
   }
 
   private getDams(linageId: number): Observable<Array<DamItemVM>> {
-    this.loading = true;
+    setTimeout(() => this.loadingSubject.next(true));
     return this.findCowsGQL
       .fetch({ linageIdEquals: linageId, size: 100 }) // unlikly that there will be more then 30
       .pipe(
@@ -66,7 +72,7 @@ export class LinageDetailsComponent implements OnInit {
               } as DamItemVM)
           )
         ),
-        finalize(() => (this.loading = false))
+        finalize(() => this.loadingSubject.next(false))
       );
   }
 

@@ -3,7 +3,7 @@
       <span jhiTranslate="bonGatewayApp.farm.cow.linage-list.title">Linages</span>
   </h2>
 
-  <div class="clearfix" *ngIf="loading">
+  <div class="clearfix" *ngIf="loading$ | async">
     <div class="spinner-border spinner-border-sm float-right" role="status">
       <span class="sr-only">Loading...</span>
     </div>
