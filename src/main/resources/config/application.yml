@@ -169,6 +169,12 @@ info:
   # Comma separated list of profiles that will trigger the ribbon to show
   display-ribbon-on-profiles: 'dev'
 
+# GraphQL
+graphql:
+  servlet:
+    exception-handlers-enabled: true
+  
+
 # ===================================================================
 # JHipster specific properties
 #

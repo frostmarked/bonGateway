@@ -3,10 +3,9 @@ package com.bonlimousin.gateway.bff.delegate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.zalando.problem.Status;
 
 import com.bonlimousin.gateway.bff.BFFUtil;
 import com.bonlimousin.gateway.bff.mapper.LinageVOMapper;
@@ -14,6 +13,9 @@ import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.api.Matrilinea
 import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.model.MatrilinealityEntity;
 import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.querymap.MatrilinealityCriteria;
 import com.bonlimousin.gateway.web.api.model.LinageVO;
+import com.bonlimousin.gateway.web.problem.AlertProblem;
+import com.bonlimousin.gateway.web.problem.AlertProblemSeverity;
+import com.bonlimousin.gateway.web.rest.errors.WhileFetchingDataException;
 
 import io.github.jhipster.service.filter.IntegerFilter;
 
@@ -45,7 +47,7 @@ public class LinageVOResourceDelegateImpl {
 		ResponseEntity<List<MatrilinealityEntity>> response = matrilinealityResourceApiClient
 				.getAllMatrilinealitiesUsingGET(criteria, 0, 1, null);
 		if (response.getBody().size() == 0) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			throw new WhileFetchingDataException(new AlertProblem("LineageVO does not exist", Status.NOT_FOUND, AlertProblemSeverity.WARNING, "entitynotfound", String.valueOf(earTagId)));
 		}		
 		MatrilinealityEntity entity = response.getBody().get(0);		
 		LinageVO vo = LinageVOMapper.INSTANCE.matrilinealityEntityToLinageVO(entity);		

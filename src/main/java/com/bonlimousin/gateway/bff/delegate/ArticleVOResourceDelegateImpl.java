@@ -7,10 +7,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.zalando.problem.Status;
 
 import com.bonlimousin.gateway.bff.BFFUtil;
 import com.bonlimousin.gateway.bff.mapper.ArticleVOMapper;
@@ -32,6 +31,9 @@ import com.bonlimousin.gateway.client.boncontentservice.apidocs.querymap.TagCrit
 import com.bonlimousin.gateway.config.Constants;
 import com.bonlimousin.gateway.web.api.model.ArticleVO;
 import com.bonlimousin.gateway.web.api.model.TagVO;
+import com.bonlimousin.gateway.web.problem.AlertProblem;
+import com.bonlimousin.gateway.web.problem.AlertProblemSeverity;
+import com.bonlimousin.gateway.web.rest.errors.WhileFetchingDataException;
 
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
@@ -113,8 +115,8 @@ public class ArticleVOResourceDelegateImpl {
 
 	public ResponseEntity<ArticleVO> getArticleVOByIdOrHandle(String id, String i18n, Boolean isHandle) {
 		Optional<StoryEntity> optStory = getStory(id, isHandle);
-		if (!optStory.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if (!optStory.isPresent()) {						
+			throw new WhileFetchingDataException(new AlertProblem("ArticleVO does not exist", Status.NOT_FOUND, AlertProblemSeverity.WARNING, "entitynotfound", id));
 		}
 		StoryEntity storyEntity = populateStoryEntity(optStory.get(), i18n);
 		ArticleVO vo = ArticleVOMapper.INSTANCE.storyEntityToArticleVO(storyEntity);

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.zalando.problem.Status;
 
 import com.bonlimousin.gateway.bff.BFFUtil;
 import com.bonlimousin.gateway.bff.mapper.CowVOMapper;
@@ -34,6 +35,9 @@ import com.bonlimousin.gateway.client.bonreplicaservice.apidocs.querymap.Gender;
 import com.bonlimousin.gateway.client.bonreplicaservice.apidocs.querymap.HornStatus;
 import com.bonlimousin.gateway.web.api.model.CowVO;
 import com.bonlimousin.gateway.web.api.model.PhotographVO;
+import com.bonlimousin.gateway.web.problem.AlertProblem;
+import com.bonlimousin.gateway.web.problem.AlertProblemSeverity;
+import com.bonlimousin.gateway.web.rest.errors.WhileFetchingDataException;
 
 import io.github.jhipster.service.filter.InstantFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
@@ -180,7 +184,7 @@ public class CowVOResourceDelegateImpl {
 		ResponseEntity<List<CattleEntity>> cattleResponse = this.cattleResourceApiClient
 				.getAllCattlesUsingGET(cattleCriteria, 0, 1, null);
 		if (cattleResponse.getBody().size() == 0) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			throw new WhileFetchingDataException(new AlertProblem("CowVO does not exist", Status.NOT_FOUND, AlertProblemSeverity.WARNING, "entitynotfound", String.valueOf(cattleId)));
 		}
 		CattleEntity cattleEntity = cattleResponse.getBody().get(0);
 

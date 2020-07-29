@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.zalando.problem.Status;
 
 import com.bonlimousin.gateway.bff.delegate.ArticleVOResourceDelegateImpl;
 import com.bonlimousin.gateway.bff.delegate.CowVOResourceDelegateImpl;
@@ -23,6 +24,9 @@ import com.bonlimousin.gateway.web.api.model.ArticleVO;
 import com.bonlimousin.gateway.web.api.model.SectionVO;
 import com.bonlimousin.gateway.web.api.model.TagVO;
 import com.bonlimousin.gateway.web.graphql.model.I18nTO;
+import com.bonlimousin.gateway.web.problem.AlertProblem;
+import com.bonlimousin.gateway.web.problem.AlertProblemSeverity;
+import com.bonlimousin.gateway.web.rest.errors.WhileFetchingDataException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.graphql.spring.boot.test.GraphQLResponse;
@@ -41,8 +45,8 @@ public class GraphqlArticleQueriesIT {
 	private GraphQLTestTemplate graphQLTestTemplate;
 
 	@Test
-	public void findTags() throws IOException {		
-		TagVO vo = new TagVO().id(1L).name(RandomStringUtils.random(5));		
+	public void findTags() throws IOException {
+		TagVO vo = new TagVO().id(1L).name(RandomStringUtils.random(5));
 		Mockito.when(mockArticleResource.getAllTagVOs(Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenReturn(ResponseEntity.ok(Arrays.asList(vo)));
 
@@ -78,6 +82,37 @@ public class GraphqlArticleQueriesIT {
 		validateSection(response, sectionPath, article1.getSections().get(0), true);
 
 		validateTag(response, sectionPath + ".tags[0]", article1.getSections().get(0).getTags().get(0));
+	}
+
+	@Test
+	public void getMissingArticleByHandle() throws IOException {
+		AlertProblem ap = new AlertProblem()
+				.message("hoho")
+				.status(Status.BAD_REQUEST)
+				.severity(AlertProblemSeverity.DANGER)
+				.key("akey")
+				.params("somepars");
+		WhileFetchingDataException ex = new WhileFetchingDataException(ap);
+		Mockito.when(mockArticleResource.getArticleVOByIdOrHandle(Mockito.any(), Mockito.any(), Mockito.any()))
+				.thenThrow(ex);
+
+		ObjectNode variables = new ObjectMapper().createObjectNode();
+		variables.put("i18n", I18nTO.sv.name());
+		variables.put("id", "abc");
+		variables.put("isSummary", "false");
+		variables.put("isHandle", "true");
+
+		String graphqlOps = "graphql/testoperations";
+		GraphQLResponse response = this.graphQLTestTemplate.perform(graphqlOps + "/article.query.graphql", variables,
+				Arrays.asList(graphqlOps + "/sectionimage.fragment.graphql"));
+
+		Assert.assertNotNull(response);
+		Assert.assertTrue(response.isOk());
+
+		Assert.assertNull(response.get("$.data.articleVO"));
+		
+		String problemPath = "$.errors[0].extensions.problems[0]";
+		validateProblem(response, problemPath, ap);
 	}
 
 	@Test
@@ -187,5 +222,13 @@ public class GraphqlArticleQueriesIT {
 
 	protected void validateTag(GraphQLResponse response, String tagPath, TagVO tag) {
 		Assert.assertEquals(tag.getName(), response.get(tagPath + ".name"));
+	}
+	
+	protected void validateProblem(GraphQLResponse response, String problemPath, AlertProblem ap) {
+		Assert.assertEquals(ap.getMessage(), response.get(problemPath + ".message"));
+		Assert.assertEquals(ap.getSeverity().toString(), response.get(problemPath + ".severity"));
+		Assert.assertEquals(ap.getStatus().getStatusCode() + "", response.get(problemPath + ".status"));
+		Assert.assertEquals(ap.getKey(), response.get(problemPath + ".key"));
+		Assert.assertEquals(ap.getParams(), response.get(problemPath + ".params"));		
 	}
 }

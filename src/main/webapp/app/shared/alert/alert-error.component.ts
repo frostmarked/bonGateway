@@ -5,6 +5,7 @@ import { JhiEventManager, JhiAlert, JhiAlertService, JhiEventWithContent } from 
 import { Subscription } from 'rxjs';
 
 import { AlertError } from './alert-error.model';
+import { AlertProblem } from './alert-problem.model';
 
 @Component({
   selector: 'jhi-alert-error',
@@ -20,11 +21,21 @@ export class AlertErrorComponent implements OnDestroy {
   alerts: JhiAlert[] = [];
   errorListener: Subscription;
   httpErrorListener: Subscription;
+  graphqlErrorListener: Subscription;
 
   constructor(private alertService: JhiAlertService, private eventManager: JhiEventManager, translateService: TranslateService) {
     this.errorListener = eventManager.subscribe('bonGatewayApp.error', (response: JhiEventWithContent<AlertError>) => {
       const errorResponse = response.content;
       this.addErrorAlert(errorResponse.message, errorResponse.key, errorResponse.params);
+    });
+
+    this.graphqlErrorListener = eventManager.subscribe('bonGatewayApp.graphqlError', (response: JhiEventWithContent<AlertProblem>) => {
+      const problem = response.content;
+      // ignore 403 and 404 for global alerts, for now. 
+      // other subscribers could handle that if necessary
+      if(!problem.status || !["403", "404"].includes(problem.status)) {
+        this.addErrorAlert(problem.message, problem.key, problem.params);
+      }    
     });
 
     this.httpErrorListener = eventManager.subscribe('bonGatewayApp.httpError', (response: JhiEventWithContent<HttpErrorResponse>) => {
@@ -93,6 +104,9 @@ export class AlertErrorComponent implements OnDestroy {
   ngOnDestroy(): void {
     if (this.errorListener) {
       this.eventManager.destroy(this.errorListener);
+    }
+    if (this.graphqlErrorListener) {
+      this.eventManager.destroy(this.graphqlErrorListener);
     }
     if (this.httpErrorListener) {
       this.eventManager.destroy(this.httpErrorListener);

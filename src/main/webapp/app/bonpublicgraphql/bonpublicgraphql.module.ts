@@ -15,6 +15,7 @@ import { DefaultOptions } from 'apollo-client';
 import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { BonGatewaySharedModule } from 'app/shared/shared.module';
+import { AlertProblem } from 'app/shared/alert/alert-problem.model';
 
 const serverUrl = SERVER_API_URL || location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
 const uri = `${serverUrl}/graphql`;
@@ -44,22 +45,35 @@ export function provideApollo(httpLink: HttpLink, authServerProvider: AuthServer
     },
   };
 
-  const errorLink = onError(({ graphQLErrors, networkError }) => {
+  // TODO add error messages 
+  const errorLink = onError(({ graphQLErrors, networkError, response }) => {
     if (graphQLErrors) {
-      graphQLErrors.map(({ message, locations, path }) => {
-        if (DEBUG_INFO_ENABLED) console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-        eventManager.broadcast(
-          // TODO e.g. add key: "graphql.query", params: [locations, path]
-          new JhiEventWithContent<AlertError>('bonGatewayApp.error', { message })
-        );
+      graphQLErrors.map(({ message, locations, path, extensions, }) => {
+        if (DEBUG_INFO_ENABLED) {
+          console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Extensions: ${JSON.stringify(extensions)}`);
+          console.warn(response);
+        }
+
+        if (extensions && extensions.problems && extensions.problems.length) {          
+          extensions.problems.forEach((pro: AlertProblem) => {
+            eventManager.broadcast(
+              new JhiEventWithContent<AlertProblem>('bonGatewayApp.graphqlError', { ...pro })
+            );
+          });
+        } else {
+          eventManager.broadcast(
+            new JhiEventWithContent<AlertProblem>('bonGatewayApp.graphqlError', { message })
+          );
+        }
       });
     }
 
     if (networkError) {
-      if (DEBUG_INFO_ENABLED) console.error(`[Network error]: ${networkError}`);
+      if (DEBUG_INFO_ENABLED) {
+        console.error(`[Network error]: ${networkError}`);
+      }
       eventManager.broadcast(
-        // TODO e.g. add key: "graphql.network", params: networkError
-        new JhiEventWithContent<AlertError>('bonGatewayApp.error', { message: `[Network error]: ${networkError}` })
+        new JhiEventWithContent<AlertError>('bonGatewayApp.graphqlError', { message: `[Network error]: ${networkError}` })
       );
     }
   });
@@ -81,4 +95,4 @@ export function provideApollo(httpLink: HttpLink, authServerProvider: AuthServer
   ],
   imports: [BonGatewaySharedModule],
 })
-export class BonPublicGraphQLModule {}
+export class BonPublicGraphQLModule { }
