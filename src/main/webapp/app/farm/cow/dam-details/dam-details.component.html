@@ -1,12 +1,74 @@
-<p>dam-details works!</p>
+<div>
+  <h2 id="page-heading">
+      <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.title"
+          [translateValues]="{ earTagId: dam?.earTagId, familyname: dam?.name }">Dam X</span>
+  </h2>
 
-<dl>
-  <dt>earTagId</dt>
-  <dd>{{ cowVo?.earTagId }}</dd>
-  <dt>name</dt>
-  <td>{{ cowVo?.name }}</td>
-  <dt>gender</dt>
-  <td>{{ cowVo?.gender }}</td>
-  <dt>visibility</dt>
-  <td>{{ cowVo?.visibility }}</td>
-</dl>
+  <div class="clearfix" *ngIf="loading$ | async">
+      <div class="spinner-border spinner-border-sm float-right" role="status">
+          <span class="sr-only">Loading...</span>
+      </div>
+  </div>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div *ngIf="dam" class="cow-container" 
+  [ngClass]="{
+    'is-role-anonymous': dam?.visibility == 'ROLE_ANONYMOUS',
+    'is-role-user': dam?.visibility == 'ROLE_USER',
+    'is-role-admin': dam?.visibility == 'ROLE_ADMIN'
+  }">      
+    <p>BORN: {{ dam!.birthDate | date:'yyyy-MM-dd' }}</p>    
+    <p>W0: {{ dam!.weight0 }} - W200: {{ dam!.weight200 }} - W365: {{ dam!.weight365 }}</p>
+
+    <p *ngIf="matri$ | async as matri">
+      <span>MATRI: </span>
+      <a *ngIf="matri; else noMatri" 
+        [title]="'Matri' + matri?.earTagId" 
+        [routerLink]="['/farm', 'cow', 'dam', matri?.earTagId]">{{ matri?.earTagId }} {{ matri?.name }}</a>        
+      <ng-template #noMatri>{{ dam?.matriId }}</ng-template>
+    </p>
+    
+    <p *ngIf="patri$ | async as patri">
+      <span>PATRI: </span>
+      <a *ngIf="patri; else noPatri" 
+        [title]="'Patri' + patri?.earTagId" 
+        [routerLink]="['/farm', 'cow', 'sire', patri?.earTagId]">{{ patri?.earTagId }} {{ patri?.name }}</a>        
+      <ng-template #noPatri>{{ dam?.patriId }}</ng-template>
+    </p>
+  </div>    
+
+
+  <article *ngIf="article$ | async as article" class="dam-article-container">
+      <section *ngFor="let section of article.sections" class="dam-section">
+          <h4 *ngIf="section?.title">{{ section?.title }}</h4>
+          <p *ngIf="section?.ingress">{{ section?.ingress }}</p>
+          <p *ngIf="section?.body">{{ section?.body }}</p>
+
+          <figure *ngIf="section?.imageContentType" class="figure dam-section-figure">
+              <img [src]="'data:' + section?.imageContentType + ';base64,' + section?.image" alt="" class="figure-img img-fluid">
+              <figcaption *ngIf="section?.caption" class="figure-caption">{{section?.caption}}</figcaption>
+          </figure>
+      </section>
+  </article>
+  
+  <h3>Photos</h3>
+
+  <div *ngFor="let photo of photos$ | async" class="dam-item p-2" [ngClass]="{
+    'is-role-anonymous': photo?.visibility == 'ROLE_ANONYMOUS',
+    'is-role-user': photo?.visibility == 'ROLE_USER',
+    'is-role-admin': photo?.visibility == 'ROLE_ADMIN'
+  }">      
+    <figure class="dam-figure figure">
+      <img [src]="'data:' + photo!.imageContentType + ';base64,' + photo!.image" 
+            alt="{{dam?.earTagId}} {{ dam?.linageName }}"
+            class="dam-img figure-img img-fluid rounded">
+        <figcaption class="dam-img-caption text-center">{{dam?.earTagId}} {{ dam?.linageName }}</figcaption>
+    </figure>
+
+  </div>
+
+
+</div>

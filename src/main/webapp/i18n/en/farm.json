@@ -7,6 +7,9 @@
         },
         "linage-details": {
           "title": "Linage {{ earTagId }} {{ familyname }}"
+        },
+        "dam-details": {
+          "title": "Dam {{ earTagId }} {{ familyname }}"
         }
       }
     }
