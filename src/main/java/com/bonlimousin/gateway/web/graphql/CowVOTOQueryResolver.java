@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import com.bonlimousin.gateway.bff.BFFGraphQLUtil;
@@ -11,6 +12,7 @@ import com.bonlimousin.gateway.bff.BFFGraphQLUtil.GraphQLPageable;
 import com.bonlimousin.gateway.bff.delegate.CowVOResourceDelegateImpl;
 import com.bonlimousin.gateway.bff.mapper.graphql.CowVOTOMapper;
 import com.bonlimousin.gateway.bff.mapper.graphql.PhotographVOTOMapper;
+import com.bonlimousin.gateway.config.CacheConfiguration;
 import com.bonlimousin.gateway.web.api.model.CowVO;
 import com.bonlimousin.gateway.web.api.model.PhotographVO;
 import com.bonlimousin.gateway.web.graphql.model.ApiPublicCowsPhotographsQueryResolver;
@@ -37,6 +39,8 @@ public class CowVOTOQueryResolver
 	}
 
 	@Override
+	@Cacheable(value = CacheConfiguration.CACHE_COWS, 
+		condition = "T(com.bonlimousin.gateway.security.SecurityUtils).isAuthenticated() == false")
 	public List<CowVOTO> apiPublicCows(String birthDateGreaterThan, String birthDateLessThan,
 			GenderEqualsTO genderEquals, List<HornStatusInListItemTO> hornStatusIn, Integer linageIdEquals,
 			Integer matriIdEquals, Integer page, Integer patriIdEquals, Integer size, List<String> sort,
@@ -53,16 +57,16 @@ public class CowVOTOQueryResolver
 				linageIdEquals, birthDateGT, birthDateLT, gender, hornStatusList, matriIdEquals, patriIdEquals,
 				weight0GreaterThan, weight0LessThan, weight0Specified, weight200GreaterThan, weight200LessThan,
 				weight200Specified, weight365GreaterThan, weight365LessThan, weight365Specified).getBody();
-		return list.stream().map(vo -> CowVOTOMapper.INSTANCE.voToTO(vo)).collect(Collectors.toList());
+		return list.stream().map(CowVOTOMapper.INSTANCE::voToTO).collect(Collectors.toList());
 	}
 
-	@Override
+	@Override	
 	public List<PhotographVOTO> apiPublicCowsPhotographs(Double earTagId, Integer page, Integer size,
 			List<String> sort) throws Exception {
 		GraphQLPageable p = GraphQLPageable.of(page, size, sort);
 		List<PhotographVO> list = this.cowVOResourceDelegateImpl
 				.getAllPhotographVOsByCow(earTagId.longValue(), p.getPage(), p.getSize(), p.getSort()).getBody();
-		return list.stream().map(vo -> PhotographVOTOMapper.INSTANCE.voToTO(vo)).collect(Collectors.toList());
+		return list.stream().map(PhotographVOTOMapper.INSTANCE::voToTO).collect(Collectors.toList());
 	}
 
 	@Override
@@ -72,6 +76,8 @@ public class CowVOTOQueryResolver
 	}
 
 	@Override
+	@Cacheable(value = CacheConfiguration.CACHE_COWS, 
+		condition = "T(com.bonlimousin.gateway.security.SecurityUtils).isAuthenticated() == false")
 	public CowVOTO cowVO(Double earTagId) throws Exception {
 		CowVO vo = this.cowVOResourceDelegateImpl.getCowVO(earTagId.longValue()).getBody();
 		return CowVOTOMapper.INSTANCE.voToTO(vo);
