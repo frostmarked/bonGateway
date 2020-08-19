@@ -45,8 +45,6 @@ import io.github.jhipster.service.filter.LongFilter;
 
 @Service
 public class CowVOResourceDelegateImpl {
-
-//	private static final Logger log = LoggerFactory.getLogger(CowVOResourceDelegateImpl.class);
 	
 	private final CattleResourceApiClient cattleResourceApiClient;
 	private final BovineResourceApiClient bovineResourceApiClient;
@@ -78,8 +76,8 @@ public class CowVOResourceDelegateImpl {
 				.getAllCattlesUsingGET(cattleCriteria, 0, 1000, null);
 		Map<Integer, CattleEntity> cattleIdMap = cattleResponse.getBody().stream()
 				.collect(Collectors.toMap(CattleEntity::getEarTagId, Function.identity()));
-		List<Integer> cattleIds = cattleIdMap.entrySet().stream().map(ent -> ent.getKey()).collect(Collectors.toList());
-		if(cattleIds.size() == 0) {
+		List<Integer> cattleIds = cattleIdMap.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
+		if(cattleIds.isEmpty()) {
 			return BFFUtil.createResponse(Collections.emptyList(), page, size, sort, 0);
 		}		
 		
@@ -183,7 +181,7 @@ public class CowVOResourceDelegateImpl {
 		cattleCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(cattleId.intValue()));
 		ResponseEntity<List<CattleEntity>> cattleResponse = this.cattleResourceApiClient
 				.getAllCattlesUsingGET(cattleCriteria, 0, 1, null);
-		if (cattleResponse.getBody().size() == 0) {
+		if (cattleResponse.getBody().isEmpty()) {
 			throw new WhileFetchingDataException(new AlertProblem("CowVO does not exist", Status.NOT_FOUND, AlertProblemSeverity.WARNING, "entitynotfound", String.valueOf(cattleId)));
 		}
 		CattleEntity cattleEntity = cattleResponse.getBody().get(0);
@@ -192,7 +190,7 @@ public class CowVOResourceDelegateImpl {
 		bovineCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(cattleId.intValue()));
 		ResponseEntity<List<BovineEntity>> bovineResponse = this.bovineResourceApiClient
 				.getAllBovinesUsingGET(bovineCriteria, 0, 1, null);
-		if (bovineResponse.getBody().size() == 0) {
+		if (bovineResponse.getBody().isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 		BovineEntity bovineEntity = bovineResponse.getBody().get(0);
@@ -208,7 +206,7 @@ public class CowVOResourceDelegateImpl {
 		cattleCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(cattleId.intValue()));
 		ResponseEntity<List<CattleEntity>> cattleResponse = this.cattleResourceApiClient
 				.getAllCattlesUsingGET(cattleCriteria, 0, 1, null);
-		if(cattleResponse.getBody().size() == 0) {
+		if(cattleResponse.getBody().isEmpty()) {
 			return BFFUtil.createResponse(Collections.emptyList(), page, size, sort, 0);
 		}
 		Long cId = cattleResponse.getBody().get(0).getId();
@@ -219,7 +217,7 @@ public class CowVOResourceDelegateImpl {
 		List<PhotoEntity> photoEntities = response.getBody();
 		long totalCount = BFFUtil.extractTotalCount(response);
 				
-		List<PhotographVO> list = photoEntities.stream().map(entity -> PhotographVOMapper.INSTANCE.photoEntityToPhotographVO(entity))
+		List<PhotographVO> list = photoEntities.stream().map(PhotographVOMapper.INSTANCE::photoEntityToPhotographVO)
 				.collect(Collectors.toList());
 		return BFFUtil.createResponse(list, page, size, sort, totalCount);
 	}

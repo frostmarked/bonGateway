@@ -30,7 +30,7 @@ public final class TestUtil {
 
     private static final ObjectMapper mapper = createObjectMapper();
 
-    private static ObjectMapper createObjectMapper() {
+    public static ObjectMapper createObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);

@@ -34,7 +34,7 @@ public class LinageVOResourceDelegateImpl {
 		criteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
 		ResponseEntity<List<MatrilinealityEntity>> response = matrilinealityResourceApiClient
 				.getAllMatrilinealitiesUsingGET(criteria, page, size, sort);
-		List<LinageVO> list = response.getBody().stream().map(entity -> LinageVOMapper.INSTANCE.matrilinealityEntityToLinageVO(entity))
+		List<LinageVO> list = response.getBody().stream().map(LinageVOMapper.INSTANCE::matrilinealityEntityToLinageVO)
 				.collect(Collectors.toList());
 		long totalCount = BFFUtil.extractTotalCount(response);
 		return BFFUtil.createResponse(list, page, size, sort, totalCount);
@@ -46,7 +46,7 @@ public class LinageVOResourceDelegateImpl {
 		criteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(earTagId.intValue()));
 		ResponseEntity<List<MatrilinealityEntity>> response = matrilinealityResourceApiClient
 				.getAllMatrilinealitiesUsingGET(criteria, 0, 1, null);
-		if (response.getBody().size() == 0) {
+		if (response.getBody().isEmpty()) {
 			throw new WhileFetchingDataException(new AlertProblem("LineageVO does not exist", Status.NOT_FOUND, AlertProblemSeverity.WARNING, "entitynotfound", String.valueOf(earTagId)));
 		}		
 		MatrilinealityEntity entity = response.getBody().get(0);		

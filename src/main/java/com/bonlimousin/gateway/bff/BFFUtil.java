@@ -19,7 +19,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 
 public final class BFFUtil {
 
-	private static final String HEADER_X_TOTAL_COUNT = "X-Total-Count";
+	public static final String HEADER_X_TOTAL_COUNT = "X-Total-Count";
 
 	private BFFUtil() {
 

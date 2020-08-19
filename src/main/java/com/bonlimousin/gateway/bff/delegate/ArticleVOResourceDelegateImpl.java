@@ -67,7 +67,7 @@ public class ArticleVOResourceDelegateImpl {
 		ResponseEntity<List<StoryEntity>> response = this.storyResourceApiClient.getAllStoriesUsingGET(criteria, page,
 				size, sort);
 		List<ArticleVO> list = response.getBody().stream().map(se -> this.populateStoryEntity(se, i18n))
-				.map(se -> ArticleVOMapper.INSTANCE.storyEntityToArticleVO(se)).collect(Collectors.toList());
+				.map(ArticleVOMapper.INSTANCE::storyEntityToArticleVO).collect(Collectors.toList());
 		long totalCount = BFFUtil.extractTotalCount(response);
 		return BFFUtil.createResponse(list, page, size, sort, totalCount);
 	}
@@ -82,7 +82,7 @@ public class ArticleVOResourceDelegateImpl {
 		 * fragment or localized pageSize times 10 should be, by far, enough... or how
 		 * many fragments are created in general
 		 */
-		List<Long> storyEntityIds = new ArrayList<>();
+		List<Long> storyEntityIds;
 		if (Constants.DEFAULT_LANGUAGE.equals(i18n)) {
 			ResponseEntity<List<FragmentEntity>> response = this.fragmentResourceApiClient
 					.searchFragmentsUsingGET(query, 0, size * 10, null);
@@ -108,7 +108,7 @@ public class ArticleVOResourceDelegateImpl {
 		ResponseEntity<List<StoryEntity>> response = this.storyResourceApiClient.getAllStoriesUsingGET(criteria, page,
 				size, sort);
 		List<ArticleVO> list = response.getBody().stream().map(se -> this.populateStoryEntity(se, i18n))
-				.map(se -> ArticleVOMapper.INSTANCE.storyEntityToArticleVO(se)).collect(Collectors.toList());
+				.map(ArticleVOMapper.INSTANCE::storyEntityToArticleVO).collect(Collectors.toList());
 		long totalCount = BFFUtil.extractTotalCount(response);
 		return BFFUtil.createResponse(list, page, size, sort, totalCount);
 	}
@@ -128,7 +128,7 @@ public class ArticleVOResourceDelegateImpl {
 		ResponseEntity<List<TagEntity>> response = this.tagResourceApiClient.getAllTagsUsingGET(criteria, page, size,
 				sort);
 		List<TagVO> list = response.getBody().stream()
-				.map(entity -> TagVOMapper.INSTANCE.tagEntityEntityToTagVO(entity)).collect(Collectors.toList());
+				.map(TagVOMapper.INSTANCE::tagEntityEntityToTagVO).collect(Collectors.toList());
 		long totalCount = BFFUtil.extractTotalCount(response);
 		return BFFUtil.createResponse(list, page, size, sort, totalCount);
 	}
@@ -181,7 +181,7 @@ public class ArticleVOResourceDelegateImpl {
 		}
 		ResponseEntity<List<StoryEntity>> response = this.storyResourceApiClient.getAllStoriesUsingGET(storyCriteria, 0,
 				1, null);
-		if (response.getBody().size() == 0) {
+		if (response.getBody().isEmpty()) {
 			return Optional.empty();
 		}
 		return Optional.of(response.getBody().get(0));
