@@ -1,5 +1,10 @@
 package com.bonlimousin.gateway.bff.delegate;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +15,13 @@ import java.util.stream.Collectors;
 
 import javax.validation.ValidationException;
 
+import org.apache.tika.mime.MimeTypeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,6 +30,9 @@ import org.zalando.problem.Status;
 import com.bonlimousin.gateway.bff.BFFUtil;
 import com.bonlimousin.gateway.bff.mapper.CowVOMapper;
 import com.bonlimousin.gateway.bff.mapper.PhotographVOMapper;
+import com.bonlimousin.gateway.bff.mapper.PictureVOMapper;
+import com.bonlimousin.gateway.bff.service.AbstractPictureSourceService.PictureSize;
+import com.bonlimousin.gateway.bff.service.CowPictureSourceService;
 import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.api.CattleResourceApiClient;
 import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.api.PhotoResourceApiClient;
 import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.model.CattleEntity;
@@ -35,6 +49,7 @@ import com.bonlimousin.gateway.client.bonreplicaservice.apidocs.querymap.Gender;
 import com.bonlimousin.gateway.client.bonreplicaservice.apidocs.querymap.HornStatus;
 import com.bonlimousin.gateway.web.api.model.CowVO;
 import com.bonlimousin.gateway.web.api.model.PhotographVO;
+import com.bonlimousin.gateway.web.api.model.PictureVO;
 import com.bonlimousin.gateway.web.problem.AlertProblem;
 import com.bonlimousin.gateway.web.problem.AlertProblemSeverity;
 import com.bonlimousin.gateway.web.rest.errors.WhileFetchingDataException;
@@ -42,18 +57,27 @@ import com.bonlimousin.gateway.web.rest.errors.WhileFetchingDataException;
 import io.github.jhipster.service.filter.InstantFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
-
+/* 
+ * TODO 
+ * fetch photo-entity without image-bytes
+ * if a thumbnail etc is missing? then fetch the bytes
+ */
 @Service
 public class CowVOResourceDelegateImpl {
 	
+	private final Logger log = LoggerFactory.getLogger(CowVOResourceDelegateImpl.class);
+	
+	private final CowPictureSourceService cowPictureSourceService;
 	private final CattleResourceApiClient cattleResourceApiClient;
 	private final BovineResourceApiClient bovineResourceApiClient;
 	private final PhotoResourceApiClient photoResourceApiClient;
 
-	public CowVOResourceDelegateImpl(CattleResourceApiClient cattleResourceApiClient,
+	public CowVOResourceDelegateImpl(CowPictureSourceService pictureSourceVOHelper,
+			CattleResourceApiClient cattleResourceApiClient,
 			BovineResourceApiClient bovineResourceApiClient,
 			PhotoResourceApiClient photoResourceApiClient) {
 		super();
+		this.cowPictureSourceService = pictureSourceVOHelper;
 		this.cattleResourceApiClient = cattleResourceApiClient;
 		this.bovineResourceApiClient = bovineResourceApiClient;
 		this.photoResourceApiClient = photoResourceApiClient;
@@ -175,50 +199,121 @@ public class CowVOResourceDelegateImpl {
 		return bovineCriteria;
 	}
 
-	public ResponseEntity<CowVO> getCowVO(Long cattleId) {
-		CattleCriteria cattleCriteria = new CattleCriteria();
-		cattleCriteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
-		cattleCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(cattleId.intValue()));
-		ResponseEntity<List<CattleEntity>> cattleResponse = this.cattleResourceApiClient
-				.getAllCattlesUsingGET(cattleCriteria, 0, 1, null);
+	public ResponseEntity<CowVO> getCowVO(Long earTagId) {
+		ResponseEntity<List<CattleEntity>> cattleResponse = fetchCattleByEarTagIdAndRole(earTagId);
 		if (cattleResponse.getBody().isEmpty()) {
-			throw new WhileFetchingDataException(new AlertProblem("CowVO does not exist", Status.NOT_FOUND, AlertProblemSeverity.WARNING, "entitynotfound", String.valueOf(cattleId)));
+			throw new WhileFetchingDataException(new AlertProblem("CowVO does not exist", Status.NOT_FOUND, AlertProblemSeverity.WARNING, "entitynotfound", String.valueOf(earTagId)));
 		}
 		CattleEntity cattleEntity = cattleResponse.getBody().get(0);
 
 		BovineCriteria bovineCriteria = new BovineCriteria();
-		bovineCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(cattleId.intValue()));
+		bovineCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(earTagId.intValue()));
 		ResponseEntity<List<BovineEntity>> bovineResponse = this.bovineResourceApiClient
 				.getAllBovinesUsingGET(bovineCriteria, 0, 1, null);
 		if (bovineResponse.getBody().isEmpty()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			throw new WhileFetchingDataException(new AlertProblem("CowVO does not exist", Status.NOT_FOUND, AlertProblemSeverity.WARNING, "entitynotfound", String.valueOf(earTagId)));
 		}
 		BovineEntity bovineEntity = bovineResponse.getBody().get(0);
 
 		CowVO vo = CowVOMapper.INSTANCE.entitiesToCowVO(cattleEntity.getMatrilineality(), cattleEntity, bovineEntity);
-
 		return ResponseEntity.ok(vo);
 	}
 	
-	public ResponseEntity<List<PhotographVO>> getAllPhotographVOsByCow(Long cattleId, Integer page, Integer size, List<String> sort) {		
-		CattleCriteria cattleCriteria = new CattleCriteria();
-		cattleCriteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
-		cattleCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(cattleId.intValue()));
-		ResponseEntity<List<CattleEntity>> cattleResponse = this.cattleResourceApiClient
-				.getAllCattlesUsingGET(cattleCriteria, 0, 1, null);
+	public ResponseEntity<List<PhotographVO>> getAllPhotographVOsByCow(Long earTagId, Integer page, Integer size, List<String> sort) {		
+		ResponseEntity<List<PhotoEntity>> response = fetchPhotosByEarTagId(earTagId, page, size, sort);				
+		List<PhotographVO> list = response.getBody().stream()
+				.map(PhotographVOMapper.INSTANCE::photoEntityToPhotographVO)
+				.collect(Collectors.toList());
+		long totalCount = BFFUtil.extractTotalCount(response);
+		return BFFUtil.createResponse(list, page, size, sort, totalCount);
+	}
+	
+	public ResponseEntity<List<PictureVO>> getAllPictureVOsByCow(Long earTagId, Integer page, Integer size, List<String> sort) {				
+		ResponseEntity<List<PhotoEntity>> response = fetchPhotosByEarTagId(earTagId, page, size, sort);					
+		List<PictureVO> list = new ArrayList<>();		
+		for(PhotoEntity entity : response.getBody()) {
+			PictureVO vo = PictureVOMapper.INSTANCE.photoEntityToPictureVO(entity);
+			for(PictureSize picSize : PictureSize.values()) {
+				try {					
+					cowPictureSourceService.createPictureSourceVO(entity, picSize)
+						.ifPresent(psvo -> {							
+							psvo.setUrl(getCowImageUrl(earTagId, entity.getId(), psvo.getName()));
+							vo.addSourcesItem(psvo);
+						});									
+				} catch (MimeTypeException e) {
+					log.warn("Extract file-extension failed", e);
+				} catch (IOException e) {
+					log.warn("Read image failed", e);
+				}			
+			}
+			list.add(vo);
+		}
+		long totalCount = BFFUtil.extractTotalCount(response);
+		return BFFUtil.createResponse(list, page, size, sort, totalCount);
+	}
+	
+	private String getCowImageUrl(long earTagId, long pictureId, String imageName) {
+		return MessageFormat.format("/api/public/cows/{0}/pictures/{1}/{2}", String.valueOf(earTagId),
+				String.valueOf(pictureId), imageName);
+	}
+		
+	public ResponseEntity<Resource> getImageForCow(Long earTagId, Long pictureId, String name) {
+		ResponseEntity<List<CattleEntity>> cattleResponse = this.fetchCattleByEarTagIdAndRole(earTagId);
+		if(cattleResponse.getBody().isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		CattleEntity cattleEntity = cattleResponse.getBody().get(0);
+		
+		PhotoCriteria criteria = new PhotoCriteria();
+		criteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
+		criteria.setCattleId((LongFilter) new LongFilter().setEquals(cattleEntity.getId()));
+		criteria.setId((LongFilter) new LongFilter().setEquals(pictureId));
+		ResponseEntity<List<PhotoEntity>> photoResponse = this.photoResourceApiClient.getAllPhotosUsingGET(criteria, 0, 1, null);
+		if(photoResponse.getBody().isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		PhotoEntity photoEntity = photoResponse.getBody().get(0);
+						
+		try {
+			List<String> availableImageNames = cowPictureSourceService.getImageNames(earTagId, pictureId, photoEntity.getImageContentType());
+			if(!availableImageNames.contains(name)) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			}
+			Path imagePath = cowPictureSourceService.getImagePath(name);
+			if (!Files.exists(imagePath)) {
+				imagePath = cowPictureSourceService.getImagePath(name, photoEntity);
+			}
+			return ResponseEntity
+	                .ok()
+	                .contentType(MediaType.parseMediaType(photoEntity.getImageContentType()))
+	                .body(new InputStreamResource(new FileInputStream(imagePath.toFile())));
+		} catch (IOException | MimeTypeException e) {
+			log.warn("Image with name {} for cow {} and id {} not found", name, earTagId, pictureId, e);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	private ResponseEntity<List<PhotoEntity>> fetchPhotosByEarTagId(Long earTagId, Integer page, Integer size, List<String> sort) {
+		ResponseEntity<List<CattleEntity>> cattleResponse = this.fetchCattleByEarTagIdAndRole(earTagId);
 		if(cattleResponse.getBody().isEmpty()) {
 			return BFFUtil.createResponse(Collections.emptyList(), page, size, sort, 0);
 		}
-		Long cId = cattleResponse.getBody().get(0).getId();
-		
+		Long cId = cattleResponse.getBody().get(0).getId();		
+		return this.fetchPhotosByCattleId(cId, page, size, sort);		
+	}
+	
+	private ResponseEntity<List<CattleEntity>> fetchCattleByEarTagIdAndRole(Long earTagId) {
+		CattleCriteria cattleCriteria = new CattleCriteria();
+		cattleCriteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
+		cattleCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(earTagId.intValue()));
+		return this.cattleResourceApiClient
+				.getAllCattlesUsingGET(cattleCriteria, 0, 1, null);
+	}
+	
+	private ResponseEntity<List<PhotoEntity>> fetchPhotosByCattleId(Long cattleId, Integer page, Integer size, List<String> sort) {
 		PhotoCriteria criteria = new PhotoCriteria();
-		criteria.setCattleId((LongFilter) new LongFilter().setEquals(cId));
-		ResponseEntity<List<PhotoEntity>> response = this.photoResourceApiClient.getAllPhotosUsingGET(criteria, page, size, sort);
-		List<PhotoEntity> photoEntities = response.getBody();
-		long totalCount = BFFUtil.extractTotalCount(response);
-				
-		List<PhotographVO> list = photoEntities.stream().map(PhotographVOMapper.INSTANCE::photoEntityToPhotographVO)
-				.collect(Collectors.toList());
-		return BFFUtil.createResponse(list, page, size, sort, totalCount);
+		criteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
+		criteria.setCattleId((LongFilter) new LongFilter().setEquals(cattleId));
+		return this.photoResourceApiClient.getAllPhotosUsingGET(criteria, page, size, sort);		
 	}
 }

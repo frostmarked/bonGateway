@@ -3,6 +3,7 @@ package com.bonlimousin.gateway.web.rest;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import com.bonlimousin.gateway.web.api.model.ArticleVO;
 import com.bonlimousin.gateway.web.api.model.CowVO;
 import com.bonlimousin.gateway.web.api.model.LinageVO;
 import com.bonlimousin.gateway.web.api.model.PhotographVO;
+import com.bonlimousin.gateway.web.api.model.PictureVO;
 import com.bonlimousin.gateway.web.api.model.TagVO;
 
 @Service
@@ -63,6 +65,21 @@ public class ApiApiDelegateImpl implements ApiApiDelegate {
 	public ResponseEntity<List<PhotographVO>> getAllPhotographVOsByCow(Long earTagId, Integer page, Integer size,
 			List<String> sort) {
 		return this.cowVOResourceDelegate.getAllPhotographVOsByCow(earTagId, page, size, sort);
+	}
+	
+	@Override
+	public ResponseEntity<List<PictureVO>> getAllPictureVOsByCow(Long earTagId,
+	        Integer page,
+	        Integer size,
+	        List<String> sort) {
+		return this.cowVOResourceDelegate.getAllPictureVOsByCow(earTagId, page, size, sort);
+	}
+	
+	@Override
+	public ResponseEntity<Resource> getImageForCow(Long earTagId,
+	        Long pictureId,
+	        String name) {
+		return this.cowVOResourceDelegate.getImageForCow(earTagId, pictureId, name);
 	}
 
 	@Override

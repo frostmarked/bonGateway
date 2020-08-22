@@ -139,6 +139,7 @@ kafka:
 
 application:
   public-account-registration: false
+  image-base-dir: target/images
   bff:
     client:
       username: gatewayclient

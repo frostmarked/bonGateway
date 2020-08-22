@@ -14,6 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
 	
 	private Boolean publicAccountRegistration;
+	private String imageBaseDir;
 	private Bff bff;
 
 	public Boolean getPublicAccountRegistration() {
@@ -22,6 +23,14 @@ public class ApplicationProperties {
 
 	public void setPublicAccountRegistration(Boolean publicAccountRegistration) {
 		this.publicAccountRegistration = publicAccountRegistration;
+	}
+	
+	public String getImageBaseDir() {
+		return imageBaseDir;
+	}
+
+	public void setImageBaseDir(String imageBaseDir) {
+		this.imageBaseDir = imageBaseDir;
 	}
 	
 	public Bff getBff() {
