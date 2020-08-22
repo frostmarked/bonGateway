@@ -157,6 +157,7 @@ jhipster:
 # ===================================================================
 
 application:
+  image-base-dir: ${java.io.tmpdir}
   bff:
     client:
       username: gatewayclient

@@ -96,6 +96,8 @@
         <!-- Bon -->
         <com.graphql-java-kickstart.version>7.1.0</com.graphql-java-kickstart.version>
         <spring-cloud-contract.version>2.2.2.RELEASE</spring-cloud-contract.version>
+        <net.coobird.thumbnailator.version>0.4.11</net.coobird.thumbnailator.version>
+        <org.apache.tika.version>1.24.1</org.apache.tika.version>
     </properties>
 
     <dependencyManagement>
@@ -132,6 +134,16 @@
 				<version>${spring-cloud-contract.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+			    <groupId>net.coobird</groupId>
+			    <artifactId>thumbnailator</artifactId>
+			    <version>${net.coobird.thumbnailator.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.tika</groupId>
+			    <artifactId>tika-core</artifactId>
+			    <version>${org.apache.tika.version}</version>
 			</dependency>
         </dependencies>
     </dependencyManagement>
@@ -436,6 +448,14 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>net.coobird</groupId>
+		    <artifactId>thumbnailator</artifactId>		    
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.tika</groupId>
+		    <artifactId>tika-core</artifactId>		
 		</dependency>
     </dependencies>
 
