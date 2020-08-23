@@ -12,10 +12,14 @@ import com.bonlimousin.gateway.bff.BFFGraphQLUtil.GraphQLPageable;
 import com.bonlimousin.gateway.bff.delegate.CowVOResourceDelegateImpl;
 import com.bonlimousin.gateway.bff.mapper.graphql.CowVOTOMapper;
 import com.bonlimousin.gateway.bff.mapper.graphql.PhotographVOTOMapper;
+import com.bonlimousin.gateway.bff.mapper.graphql.PictureVOTOMapper;
 import com.bonlimousin.gateway.config.CacheConfiguration;
 import com.bonlimousin.gateway.web.api.model.CowVO;
 import com.bonlimousin.gateway.web.api.model.PhotographVO;
+import com.bonlimousin.gateway.web.api.model.PictureVO;
 import com.bonlimousin.gateway.web.graphql.model.ApiPublicCowsPhotographsQueryResolver;
+import com.bonlimousin.gateway.web.graphql.model.ApiPublicCowsPictures2QueryResolver;
+import com.bonlimousin.gateway.web.graphql.model.ApiPublicCowsPicturesQueryResolver;
 import com.bonlimousin.gateway.web.graphql.model.ApiPublicCowsQueryResolver;
 import com.bonlimousin.gateway.web.graphql.model.BlupVOQueryResolver;
 import com.bonlimousin.gateway.web.graphql.model.BlupVOTO;
@@ -24,12 +28,14 @@ import com.bonlimousin.gateway.web.graphql.model.CowVOTO;
 import com.bonlimousin.gateway.web.graphql.model.GenderEqualsTO;
 import com.bonlimousin.gateway.web.graphql.model.HornStatusInListItemTO;
 import com.bonlimousin.gateway.web.graphql.model.PhotographVOTO;
+import com.bonlimousin.gateway.web.graphql.model.PictureVOTO;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
 
 @Component
 public class CowVOTOQueryResolver
 		implements ApiPublicCowsQueryResolver, ApiPublicCowsPhotographsQueryResolver, 
+		ApiPublicCowsPicturesQueryResolver, ApiPublicCowsPictures2QueryResolver, 
 		BlupVOQueryResolver, CowVOQueryResolver, GraphQLQueryResolver {
 
 	private CowVOResourceDelegateImpl cowVOResourceDelegateImpl;
@@ -81,6 +87,21 @@ public class CowVOTOQueryResolver
 	public CowVOTO cowVO(Double earTagId) throws Exception {
 		CowVO vo = this.cowVOResourceDelegateImpl.getCowVO(earTagId.longValue()).getBody();
 		return CowVOTOMapper.INSTANCE.voToTO(vo);
+	}
+
+	@Override
+	public List<PictureVOTO> apiPublicCowsPictures(Double earTagId, Integer page, Integer size, List<String> sort)
+			throws Exception {
+		GraphQLPageable p = GraphQLPageable.of(page, size, sort);
+		List<PictureVO> list = this.cowVOResourceDelegateImpl
+				.getAllPictureVOsByCow(earTagId.longValue(), p.getPage(), p.getSize(), p.getSort()).getBody();
+		return list.stream().map(PictureVOTOMapper.INSTANCE::voToTO).collect(Collectors.toList());
+	}
+
+	@Override
+	public String apiPublicCowsPictures2(Double earTagId, String name, Double pictureId) throws Exception {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 
 }

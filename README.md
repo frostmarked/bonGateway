@@ -194,12 +194,8 @@ Run app and use graphiql to test it
 Re-generate typescript from graphql schema and given queries plus fragments etc
 
 ```
-npm run gqltypes
+npm run gqlcodegen
 ```
-
-Strange choise of case settings by generator. Probably need to add
-/_ eslint-disable _/
-to generated ts file
 
 ## Building for production
 
