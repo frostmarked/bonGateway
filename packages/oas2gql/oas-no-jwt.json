@@ -487,6 +487,150 @@
         "deprecated": false
       }
     },
+    "/api/public/cows/{earTagId}/pictures": {
+      "get": {
+        "tags": [
+          "cowvo-resource"
+        ],
+        "summary": "Get all PictureVOs for a cow",
+        "description": "",
+        "operationId": "getAllPictureVOsByCow",
+        "parameters": [
+          {
+            "name": "earTagId",
+            "in": "path",
+            "description": "Numeric identifier for cattle",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of the requested page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of a page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "default": 10
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PictureVO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/public/cows/{earTagId}/pictures/{pictureId}/{name}": {
+      "get": {
+        "tags": [
+          "cowvo-resource"
+        ],
+        "summary": "Get image for a cow",
+        "description": "",
+        "operationId": "getImageForCow",
+        "parameters": [
+          {
+            "name": "earTagId",
+            "in": "path",
+            "description": "Numeric identifier for cattle",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pictureId",
+            "in": "path",
+            "description": "Numeric identifier for picture",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Name of photo",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "image/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/api/public/cows/{earTagId}/blup": {
       "get": {
         "tags": [
@@ -1053,6 +1197,60 @@
               "ROLE_USER",
               "ROLE_ANONYMOUS"
             ]
+          }
+        }
+      },
+      "PictureVO": {
+        "title": "PictureVO",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "caption": {
+            "type": "string"
+          },
+          "taken": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "ROLE_ADMIN",
+              "ROLE_USER",
+              "ROLE_ANONYMOUS"
+            ]
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PictureSourceVO"
+            }
+          }
+        }
+      },
+      "PictureSourceVO": {
+        "title": "PictureSourceVO",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

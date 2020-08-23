@@ -109,6 +109,22 @@ type PhotographVO {
   width: Int
 }
 
+type PictureSourceVO {
+  contentType: String
+  height: Int
+  name: String
+  url: String
+  width: Int
+}
+
+type PictureVO {
+  caption: String
+  id: Float
+  sources: [PictureSourceVO]
+  taken: String
+  visibility: Visibility
+}
+
 """The start of any query"""
 type Query {
   """
@@ -192,6 +208,44 @@ type Query {
     """
     sort: [String]
   ): [PhotographVO]
+
+  """
+  Get all PictureVOs for a cow
+  
+  Equivalent to GET /api/public/cows/{earTagId}/pictures
+  """
+  apiPublicCowsPictures(
+    """Numeric identifier for cattle"""
+    earTagId: Float!
+
+    """Page number of the requested page"""
+    page: Int
+
+    """Size of a page"""
+    size: Int
+
+    """
+    Sorting criteria in the format: property(,asc|desc). Default sort order is
+    ascending. Multiple sort criteria are supported.
+    """
+    sort: [String]
+  ): [PictureVO]
+
+  """
+  Get image for a cow
+  
+  Equivalent to GET /api/public/cows/{earTagId}/pictures/{pictureId}/{name}
+  """
+  apiPublicCowsPictures2(
+    """Numeric identifier for cattle"""
+    earTagId: Float!
+
+    """Name of photo"""
+    name: String!
+
+    """Numeric identifier for picture"""
+    pictureId: Float!
+  ): String
 
   """
   Find all LinageVOs
