@@ -1,27 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-  FindCowPhotosGQL,
-  GetArticleGQL,
-  ArticleVo,
-  I18n,
-  CowVo,
-  PhotographVo,
-  Visibility,
-  GetCowGQL,
-} from 'app/bonpublicgraphql/bonpublicgraphql';
+import { FindCowPicturesGQL, GetArticleGQL, ArticleVo, I18n, CowVo, GetCowGQL, PictureVo } from 'app/bonpublicgraphql/bonpublicgraphql';
 import { map, finalize, startWith } from 'rxjs/operators';
 import { Observable, BehaviorSubject, EMPTY } from 'rxjs';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Maybe } from 'graphql/jsutils/Maybe';
-
-const DEFAULT_PHOTOGRAPH = {
-  image: 'R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
-  imageContentType: 'image/gif',
-  caption: 'image is missing',
-  visibility: Visibility.RoleAnonymous,
-  taken: new Date().toISOString(),
-} as PhotographVo;
+import { DEFAULT_PICTURE } from 'app/shared/bon/picturevo-util';
 
 @Component({
   selector: 'jhi-dam-details',
@@ -33,7 +17,7 @@ export class DamDetailsComponent implements OnInit {
   loading$ = this.loadingSubject.asObservable();
   dam?: CowVo;
   article$?: Observable<Maybe<ArticleVo>>;
-  photos$?: Observable<Maybe<Array<Maybe<PhotographVo>>>>;
+  pictures$?: Observable<Maybe<Array<Maybe<PictureVo>>>>;
   matri$?: Observable<Maybe<CowVo>>;
   patri$?: Observable<Maybe<CowVo>>;
 
@@ -42,14 +26,14 @@ export class DamDetailsComponent implements OnInit {
     private languageService: JhiLanguageService,
     private getArticleGQL: GetArticleGQL,
     private getCowGQL: GetCowGQL,
-    private findCowPhotosGQL: FindCowPhotosGQL
+    private findCowPicturesGQL: FindCowPicturesGQL
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(data => {
       this.dam = data.cowVo;
       this.article$ = this.dam!.storyHandle ? this.getArticle(this.dam!.storyHandle, this.languageService.getCurrentLanguage()) : EMPTY;
-      this.photos$ = this.getCowPhotos(this.dam!.earTagId!);
+      this.pictures$ = this.getCowPictures(this.dam!.earTagId!);
       this.matri$ = this.dam!.matriId && this.dam!.matriId > 0 ? this.getCow(this.dam!.matriId) : EMPTY;
       this.patri$ = this.dam!.patriId && this.dam!.patriId > 0 ? this.getCow(this.dam!.patriId) : EMPTY;
     });
@@ -63,22 +47,23 @@ export class DamDetailsComponent implements OnInit {
   }
 
   private getCow(earTagId: number): Observable<Maybe<CowVo>> {
-    return this.getCowGQL.fetch({ earTagId }).pipe(map(result => result.data.cowVO));
+    return this.getCowGQL.fetch({ earTagId }).pipe(
+      map(result => result.data.cowVO),
+      finalize(() => this.loadingSubject.next(false))
+    );
   }
 
-  private getCowPhotos(earTagId: number): Observable<Maybe<Array<Maybe<PhotographVo>>>> {
-    setTimeout(() => this.loadingSubject.next(true));
-    return this.findCowPhotosGQL.fetch({ earTagId }).pipe(
-      map(result => result.data.apiPublicCowsPhotographs),
-      map(photographs => {
-        if (photographs && photographs.length) {
-          return photographs;
+  private getCowPictures(earTagId: number): Observable<Maybe<Array<Maybe<PictureVo>>>> {
+    return this.findCowPicturesGQL.fetch({ earTagId }).pipe(
+      map(result => result.data.apiPublicCowsPictures),
+      map(pics => {
+        if (pics && pics.length) {
+          return pics;
         } else {
-          return [DEFAULT_PHOTOGRAPH];
+          return [DEFAULT_PICTURE];
         }
       }),
-      startWith([DEFAULT_PHOTOGRAPH]),
-      finalize(() => this.loadingSubject.next(false))
+      startWith([DEFAULT_PICTURE])
     );
   }
 }

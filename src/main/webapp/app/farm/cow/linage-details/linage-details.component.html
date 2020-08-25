@@ -29,14 +29,12 @@
 
     <h3>Descendants</h3>
     <div class="dam-container d-flex align-content-start flex-wrap">
-        <div *ngFor="let dam of dams$ | async" class="dam-item p-2" [ngClass]="{
-        'is-role-anonymous': dam?.visibility == 'ROLE_ANONYMOUS',
-        'is-role-user': dam?.visibility == 'ROLE_USER',
-        'is-role-admin': dam?.visibility == 'ROLE_ADMIN'
-      }">
+        <div *ngFor="let dam of dams$ | async" class="dam-item p-2" [jhiBonVisibilityClass]="dam?.visibility">
             <a [title]="'Dam' + dam?.id" [routerLink]="['/farm', 'cow', 'dam', dam?.earTagId]">
                 <figure class="dam-figure figure">
-                    <img [src]="dam.photo$ | async" alt="{{dam?.earTagId}} {{ dam?.familyname }}"
+                    <img [jhiCowPicture]="dam.picture$ | async"
+                        sizes="300px" 
+                        alt="{{dam?.earTagId}} {{ dam?.familyname }}"
                         class="dam-img figure-img img-fluid rounded">
                     <figcaption class="dam-img-caption text-center">{{dam?.earTagId}} {{ dam?.familyname }}</figcaption>
                 </figure>

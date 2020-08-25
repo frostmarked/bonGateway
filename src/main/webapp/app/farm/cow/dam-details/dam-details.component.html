@@ -52,23 +52,17 @@
               <figcaption *ngIf="section?.caption" class="figure-caption">{{section?.caption}}</figcaption>
           </figure>
       </section>
-  </article>
-  
-  <h3>Photos</h3>
+  </article>  
 
-  <div *ngFor="let photo of photos$ | async" class="dam-item p-2" [ngClass]="{
-    'is-role-anonymous': photo?.visibility == 'ROLE_ANONYMOUS',
-    'is-role-user': photo?.visibility == 'ROLE_USER',
-    'is-role-admin': photo?.visibility == 'ROLE_ADMIN'
-  }">      
-    <figure class="dam-figure figure">
-      <img [src]="'data:' + photo!.imageContentType + ';base64,' + photo!.image" 
-            alt="{{dam?.earTagId}} {{ dam?.linageName }}"
-            class="dam-img figure-img img-fluid rounded">
-        <figcaption class="dam-img-caption text-center">{{dam?.earTagId}} {{ dam?.linageName }}</figcaption>
+  <h3>Pictures</h3>
+
+  <div *ngFor="let pic of pictures$ | async" class="dam-item p-2">    
+    <figure class="dam-figure figure" [jhiBonVisibilityClass]="pic?.visibility">
+      <img [jhiCowPicture]="pic"
+        sizes="(min-width: 768px) 50vw, 100vw"
+        alt="{{ pic?.caption }}" 
+        class="img-fluid" />
     </figure>
-
   </div>
-
 
 </div>
