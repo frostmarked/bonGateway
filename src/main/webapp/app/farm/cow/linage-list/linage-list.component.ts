@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FindLinagesGQL, FindCowPhotosGQL } from 'app/bonpublicgraphql/bonpublicgraphql';
+import { FindLinagesGQL, FindCowPicturesGQL, PictureVo } from 'app/bonpublicgraphql/bonpublicgraphql';
 import { map, startWith, finalize } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { DEFAULT_PICTURE } from 'app/shared/bon/picturevo-util';
 
 interface LinageItemVM {
   id: number;
@@ -9,10 +10,8 @@ interface LinageItemVM {
   familyname: string;
   visibility: string;
   polled: boolean;
-  photo$: Observable<string>;
+  picture$: Observable<PictureVo>;
 }
-
-const DEFAULT_IMG = '/content/images/bon/simple-cow-logo-limousin.png';
 
 @Component({
   selector: 'jhi-linage-list',
@@ -24,7 +23,7 @@ export class LinageListComponent implements OnInit {
   loading$ = this.loadingSubject.asObservable();
   linages$?: Observable<Array<LinageItemVM>>;
 
-  constructor(private findLinagesGQL: FindLinagesGQL, private findCowPhotosGQL: FindCowPhotosGQL) {}
+  constructor(private findLinagesGQL: FindLinagesGQL, private findCowPicturesGQL: FindCowPicturesGQL) {}
 
   ngOnInit(): void {
     this.linages$ = this.getLinages();
@@ -45,7 +44,7 @@ export class LinageListComponent implements OnInit {
                 familyname: linage!.familyname,
                 visibility: linage!.visibility,
                 polled: linage!.polled,
-                photo$: this.getLinagePhoto(linage!.earTagId!),
+                picture$: this.getLinagePicture(linage!.earTagId!),
               } as LinageItemVM)
           )
         ),
@@ -53,19 +52,11 @@ export class LinageListComponent implements OnInit {
       );
   }
 
-  // use default image until actual photo is fetched
-  // or return default if none exists
-  private getLinagePhoto(earTagId: number): Observable<string> {
-    return this.findCowPhotosGQL.fetch({ earTagId, size: 1 }).pipe(
-      map(result => result.data.apiPublicCowsPhotographs),
-      map(photos => {
-        if (photos && photos[0]) {
-          return `data:${photos[0].imageContentType};base64,${photos[0].image}`;
-        } else {
-          return DEFAULT_IMG;
-        }
-      }),
-      startWith(DEFAULT_IMG)
+  private getLinagePicture(earTagId: number): Observable<PictureVo> {
+    return this.findCowPicturesGQL.fetch({ earTagId, size: 1 }).pipe(
+      map(result => result.data.apiPublicCowsPictures),
+      map(pics => (pics && pics[0] ? pics[0] : DEFAULT_PICTURE)),
+      startWith(DEFAULT_PICTURE)
     );
   }
 }

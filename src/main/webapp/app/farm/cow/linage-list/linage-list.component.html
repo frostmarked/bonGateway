@@ -14,15 +14,13 @@
   <jhi-alert></jhi-alert>
 
   <div class="linage-container d-flex align-content-start flex-wrap">
-    <div *ngFor="let linage of linages$ | async" class="linage-item p-2"
-      [ngClass]="{
-        'is-role-anonymous': linage?.visibility == 'ROLE_ANONYMOUS',
-        'is-role-user': linage?.visibility == 'ROLE_USER',
-        'is-role-admin': linage?.visibility == 'ROLE_ADMIN'
-      }">    
+    <div *ngFor="let linage of linages$ | async" class="linage-item p-2" [jhiBonVisibilityClass]="linage?.visibility">    
         <a [title]="'Linage' + linage?.earTagId" [routerLink]="['/farm', 'cow', 'linage', linage?.earTagId]">
           <figure class="linage-figure figure">
-            <img [src]="linage.photo$ | async" alt="{{linage?.earTagId}} {{ linage?.familyname }}" class="linage-img figure-img img-fluid rounded">          
+            <img [jhiCowPicture]="linage.picture$ | async"
+              sizes="300px" 
+              alt="{{linage?.earTagId}} {{ linage?.familyname }}" 
+              class="linage-img figure-img img-fluid rounded">          
             <figcaption class="linage-img-caption text-center">{{linage?.earTagId}} {{ linage?.familyname }}</figcaption>
           </figure>
         </a>

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { CowRoutingModule } from './cow-routing.module';
+import { CowPictureDirective } from './cow-pictures.directive';
 import { SireDetailsComponent } from './sire-details/sire-details.component';
 import { SireListComponent } from './sire-list/sire-list.component';
 import { DamListComponent } from './dam-list/dam-list.component';
@@ -12,6 +11,7 @@ import { BonGatewaySharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   declarations: [
+    CowPictureDirective,
     SireDetailsComponent,
     SireListComponent,
     DamListComponent,
@@ -19,6 +19,6 @@ import { BonGatewaySharedModule } from 'app/shared/shared.module';
     LinageListComponent,
     LinageDetailsComponent,
   ],
-  imports: [BonGatewaySharedModule, CommonModule, CowRoutingModule],
+  imports: [BonGatewaySharedModule, CowRoutingModule],
 })
 export class CowModule {}

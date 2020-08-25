@@ -1,10 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FindCowPhotosGQL, LinageVo, FindCowsGQL, GetArticleGQL, ArticleVo, I18n } from 'app/bonpublicgraphql/bonpublicgraphql';
+import {
+  FindCowPicturesGQL,
+  LinageVo,
+  FindCowsGQL,
+  GetArticleGQL,
+  ArticleVo,
+  I18n,
+  Maybe,
+  PictureVo,
+} from 'app/bonpublicgraphql/bonpublicgraphql';
+import { DEFAULT_PICTURE } from 'app/shared/bon/picturevo-util';
 import { map, startWith, finalize } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
-import { Maybe } from 'graphql/jsutils/Maybe';
 
 interface DamItemVM {
   id: number;
@@ -12,10 +21,8 @@ interface DamItemVM {
   familyname: string;
   visibility: string;
   polled: boolean;
-  photo$: Observable<string>;
+  picture$: Observable<PictureVo>;
 }
-
-const DEFAULT_IMG = '/content/images/bon/simple-cow-logo-limousin.png';
 
 @Component({
   selector: 'jhi-linage-details',
@@ -34,7 +41,7 @@ export class LinageDetailsComponent implements OnInit {
     private languageService: JhiLanguageService,
     private getArticleGQL: GetArticleGQL,
     private findCowsGQL: FindCowsGQL,
-    private findCowPhotosGQL: FindCowPhotosGQL
+    private findCowPicturesGQL: FindCowPicturesGQL
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +60,7 @@ export class LinageDetailsComponent implements OnInit {
     const i18nkey = Object.keys(I18n).filter(key => I18n[key] === currentLanguage)[0];
     return this.getArticleGQL
       .fetch({ i18n: I18n[i18nkey], isSummary: false, isHandle: true, id: storyHandle })
-      .pipe(map(result => result.data.articleVO));
+      .pipe(map(result => result.data.articleVO ? result.data.articleVO : null));
   }
 
   private getDams(linageId: number): Observable<Array<DamItemVM>> {
@@ -68,7 +75,7 @@ export class LinageDetailsComponent implements OnInit {
               ({
                 earTagId: cow!.earTagId,
                 visibility: cow!.visibility,
-                photo$: this.getCowPhoto(cow!.earTagId!),
+                picture$: this.getCowPicture(cow!.earTagId!),
               } as DamItemVM)
           )
         ),
@@ -76,19 +83,11 @@ export class LinageDetailsComponent implements OnInit {
       );
   }
 
-  // use default image until actual photo is fetched
-  // or return default if none exists
-  private getCowPhoto(earTagId: number): Observable<string> {
-    return this.findCowPhotosGQL.fetch({ earTagId, size: 1 }).pipe(
-      map(result => result.data.apiPublicCowsPhotographs),
-      map(photos => {
-        if (photos && photos[0]) {
-          return `data:${photos[0].imageContentType};base64,${photos[0].image}`;
-        } else {
-          return DEFAULT_IMG;
-        }
-      }),
-      startWith(DEFAULT_IMG)
+  private getCowPicture(earTagId: number): Observable<PictureVo> {
+    return this.findCowPicturesGQL.fetch({ earTagId, size: 1 }).pipe(
+      map(result => result.data.apiPublicCowsPictures),
+      map(pics => (pics && pics[0] ? pics[0] : DEFAULT_PICTURE)),
+      startWith(DEFAULT_PICTURE)
     );
   }
 }

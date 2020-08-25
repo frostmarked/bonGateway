@@ -7,27 +7,36 @@ import { of } from 'rxjs';
 
 import { BonGatewayTestModule } from 'src/test/javascript/spec/test.module';
 import { LinageListComponent } from 'app/farm/cow/linage-list/linage-list.component';
-import { FindLinagesGQL, FindCowPhotosGQL, LinageVo, PhotographVo } from 'app/bonpublicgraphql/bonpublicgraphql';
+import { 
+  FindLinagesGQL, 
+  FindCowPicturesGQL, 
+  LinageVo, 
+  PictureVo,
+  PictureSourceVo, 
+  Visibility
+} from 'app/bonpublicgraphql/bonpublicgraphql';
 import { ApolloModule } from 'apollo-angular';
+import { BonVisibilityClassDirective } from 'app/shared/bon/bon-visibility-class.directive';
+import { CowPictureDirective } from 'app/farm/cow/cow-pictures.directive';
 
 describe('Component Tests', () => {
   describe('LinageListComponent', () => {
     let comp: LinageListComponent;
     let fixture: ComponentFixture<LinageListComponent>;
     let findLinagesGQL: FindLinagesGQL;
-    let findCowPhotosGQL: FindCowPhotosGQL;
+    let findCowPicturesGQL: FindCowPicturesGQL;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [BonGatewayTestModule, RouterTestingModule, ApolloModule],
-        declarations: [LinageListComponent],
+        declarations: [LinageListComponent, BonVisibilityClassDirective, CowPictureDirective],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
 
       fixture = TestBed.createComponent(LinageListComponent);
       comp = fixture.componentInstance;
       findLinagesGQL = fixture.debugElement.injector.get(FindLinagesGQL);
-      findCowPhotosGQL = fixture.debugElement.injector.get(FindCowPhotosGQL);
+      findCowPicturesGQL = fixture.debugElement.injector.get(FindCowPicturesGQL);
     });
 
     it('should find lineages and provide a default image on load', done => {
@@ -44,23 +53,34 @@ describe('Component Tests', () => {
       let imageCount = 0;
       spyOn(findLinagesGQL, 'fetch').and.returnValue(API_LINEAGE_RESPONSE$);
 
-      const TEST_PHOTO = {
-        image: 'R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
-        imageContentType: 'image/gif',
-      } as PhotographVo;
-      const API_PHOTOS_RESPONSE$ = of(
+      const TEST_PICTURE_SOURCE = {
+        name: 'cow1_1.png',
+        contentType: 'image/png',
+        width: 192,
+        height: 192,
+        url: '/api/public/cows/200/pictures/1/cow1_1.png'
+      } as PictureSourceVo;
+  
+      const TEST_PICTURE = {
+        id: 1,
+        taken: Date.now().toLocaleString(),
+        visibility: Visibility.RoleAnonymous,
+        caption: 'cap',
+        sources: [TEST_PICTURE_SOURCE]
+      } as PictureVo;
+      const API_PICTURES_RESPONSE$ = of(
         {
           data: {
-            apiPublicCowsPhotographs: [TEST_PHOTO],
+            apiPublicCowsPictures: [TEST_PICTURE],
           },
         } /* test missing photo */,
         {
           data: {
-            apiPublicCowsPhotographs: [],
+            apiPublicCowsPictures: [],
           },
         }
       );
-      spyOn(findCowPhotosGQL, 'fetch').and.returnValue(API_PHOTOS_RESPONSE$);
+      spyOn(findCowPicturesGQL, 'fetch').and.returnValue(API_PICTURES_RESPONSE$);
 
       // WHEN
       comp.ngOnInit();
@@ -76,19 +96,20 @@ describe('Component Tests', () => {
         const liElements = fixture.debugElement.queryAll(By.css('.linage-item'));
         expect(liElements.length).toBe(1);
 
-        expect(findCowPhotosGQL.fetch).toHaveBeenCalled();
-        lineages[0].photo$.subscribe(src => {
+        expect(findCowPicturesGQL.fetch).toHaveBeenCalled();
+        lineages[0].picture$.subscribe(picture => {
+          const ps = picture?.sources ? picture?.sources[0] : null;
           if (imageCount === 0) {
             // startwith default
-            expect(src).toContain('/content/images/');
+            expect(ps?.url).toContain('/content/images/');
             imageCount++;
           } else if (imageCount === 1) {
             // found image
-            expect(src).toContain('base64');
+            expect(ps?.url).toContain('/api/public/cows/');
             imageCount++;
           } else {
             // didnt find any image
-            expect(src).toContain('/content/images/');
+            expect(ps?.url).toContain('/content/images/');
             done();
           }
         });

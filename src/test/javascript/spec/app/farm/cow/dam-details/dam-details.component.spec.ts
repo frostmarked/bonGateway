@@ -10,8 +10,9 @@ import { DamDetailsComponent } from 'app/farm/cow/dam-details/dam-details.compon
 import {
   GetArticleGQL,
   GetCowGQL,
-  FindCowPhotosGQL,
-  PhotographVo,
+  FindCowPicturesGQL,
+  PictureVo,
+  PictureSourceVo,
   Visibility,
   ArticleVo,
   Category,
@@ -21,6 +22,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { JhiTranslateDirective } from 'ng-jhipster';
 import { ApolloModule } from 'apollo-angular';
+import { BonVisibilityClassDirective } from 'app/shared/bon/bon-visibility-class.directive'
+import { CowPictureDirective } from 'app/farm/cow/cow-pictures.directive'
 
 describe('Component Tests', () => {
   describe('DamDetailsComponent', () => {
@@ -28,7 +31,7 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<DamDetailsComponent>;
     let getArticleGQL: GetArticleGQL;
     let getCowGQL: GetCowGQL;
-    let findCowPhotosGQL: FindCowPhotosGQL;
+    let findCowPicturesGQL: FindCowPicturesGQL;
 
     const TEST_COW = {
       id: 100,
@@ -40,13 +43,24 @@ describe('Component Tests', () => {
       patriId: 20,
     } as CowVo;
 
-    const TEST_PHOTO = {
-      image: 'R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
-      imageContentType: 'image/gif',
-    } as PhotographVo;
-    const API_PHOTOS_RESPONSE$ = of({
+    const TEST_PICTURE_SOURCE = {
+      name: 'cow1_1.png',
+      contentType: 'image/png',
+      width: 192,
+      height: 192,
+      url: '/api/public/cows/200/pictures/1/cow1_1.png'
+    } as PictureSourceVo;
+
+    const TEST_PICTURE = {
+      id: 1,
+      taken: Date.now().toLocaleString(),
+      visibility: Visibility.RoleAnonymous,
+      caption: 'cap',
+      sources: [TEST_PICTURE_SOURCE]
+    } as PictureVo;
+    const API_PICTURES_RESPONSE$ = of({
       data: {
-        apiPublicCowsPhotographs: [TEST_PHOTO],
+        apiPublicCowsPictures: [TEST_PICTURE],
       },
     });
 
@@ -83,7 +97,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [BonGatewayTestModule, RouterTestingModule, ApolloModule],
-        declarations: [DamDetailsComponent, JhiTranslateDirective],
+        declarations: [DamDetailsComponent, JhiTranslateDirective, BonVisibilityClassDirective, CowPictureDirective],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: [
           {
@@ -99,12 +113,12 @@ describe('Component Tests', () => {
       comp = fixture.componentInstance;
       getArticleGQL = fixture.debugElement.injector.get(GetArticleGQL);
       getCowGQL = fixture.debugElement.injector.get(GetCowGQL);
-      findCowPhotosGQL = fixture.debugElement.injector.get(FindCowPhotosGQL);
+      findCowPicturesGQL = fixture.debugElement.injector.get(FindCowPicturesGQL);
     });
 
     it('should find dam on load', () => {
       // GIVEN
-      spyOn(findCowPhotosGQL, 'fetch').and.returnValue(API_PHOTOS_RESPONSE$);
+      spyOn(findCowPicturesGQL, 'fetch').and.returnValue(API_PICTURES_RESPONSE$);
       spyOn(getArticleGQL, 'fetch').and.returnValue(API_ARTICLE_RESPONSE$);
       spyOn(getCowGQL, 'fetch').and.returnValue(API_COWPARENT_RESPONSE$);
 
@@ -123,7 +137,7 @@ describe('Component Tests', () => {
 
     it('should find dam photos on load', done => {
       // GIVEN
-      spyOn(findCowPhotosGQL, 'fetch').and.returnValue(API_PHOTOS_RESPONSE$);
+      spyOn(findCowPicturesGQL, 'fetch').and.returnValue(API_PICTURES_RESPONSE$);
       spyOn(getArticleGQL, 'fetch').and.returnValue(API_ARTICLE_RESPONSE$);
       spyOn(getCowGQL, 'fetch').and.returnValue(API_COWPARENT_RESPONSE$);
 
@@ -132,23 +146,25 @@ describe('Component Tests', () => {
       fixture.detectChanges();
 
       // THEN
-      expect(findCowPhotosGQL.fetch).toHaveBeenCalled();
-      comp.photos$!.subscribe(photos => {
-        expect(photos).not.toBeNull();
-        expect(photos?.length).toEqual(1);
-        const photo = photos ? photos[0] : null;
-        expect(photo).not.toBeNull();
-        expect(photo?.imageContentType).toEqual(TEST_PHOTO.imageContentType);
+      expect(findCowPicturesGQL.fetch).toHaveBeenCalled();
+      comp.pictures$!.subscribe(pics => {
+        expect(pics).not.toBeNull();
+        expect(pics?.length).toEqual(1);
+        const pic = pics ? pics[0] : null;
+        expect(pic).not.toBeNull();
+        expect(pic?.sources?.length).toEqual(1);
+        const ps = pic?.sources ? pic?.sources[0] : null;        
+        expect(ps?.contentType).toEqual(TEST_PICTURE_SOURCE.contentType);
         done();
       });
     });
 
     it('should not find dam photos so use fallback image on load', done => {
       // GIVEN
-      spyOn(findCowPhotosGQL, 'fetch').and.returnValue(
+      spyOn(findCowPicturesGQL, 'fetch').and.returnValue(
         of({
           data: {
-            apiPublicCowsPhotographs: [],
+            apiPublicCowsPictures: [],
           },
         })
       );
@@ -160,19 +176,19 @@ describe('Component Tests', () => {
       fixture.detectChanges();
 
       // THEN
-      expect(findCowPhotosGQL.fetch).toHaveBeenCalled();
-      comp.photos$!.subscribe(photos => {
-        expect(photos).not.toBeNull();
-        expect(photos?.length).toEqual(1);
-        const photo = photos ? photos[0] : null;
-        expect(photo).not.toBeNull();
+      expect(findCowPicturesGQL.fetch).toHaveBeenCalled();
+      comp.pictures$!.subscribe(pics => {
+        expect(pics).not.toBeNull();
+        expect(pics?.length).toEqual(1);
+        const pic = pics ? pics[0] : null;
+        expect(pic).not.toBeNull();
         done();
       });
     });
 
     it('should find dam mother on load', done => {
       // GIVEN
-      spyOn(findCowPhotosGQL, 'fetch').and.returnValue(API_PHOTOS_RESPONSE$);
+      spyOn(findCowPicturesGQL, 'fetch').and.returnValue(API_PICTURES_RESPONSE$);
       spyOn(getArticleGQL, 'fetch').and.returnValue(API_ARTICLE_RESPONSE$);
       spyOn(getCowGQL, 'fetch').and.returnValue(API_COWPARENT_RESPONSE$);
 
@@ -190,7 +206,7 @@ describe('Component Tests', () => {
 
     it('should find dam father on load', done => {
       // GIVEN
-      spyOn(findCowPhotosGQL, 'fetch').and.returnValue(API_PHOTOS_RESPONSE$);
+      spyOn(findCowPicturesGQL, 'fetch').and.returnValue(API_PICTURES_RESPONSE$);
       spyOn(getArticleGQL, 'fetch').and.returnValue(API_ARTICLE_RESPONSE$);
       spyOn(getCowGQL, 'fetch').and.returnValue(API_COWPARENT_RESPONSE$);
 
@@ -212,7 +228,7 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<DamDetailsComponent>;
     let getArticleGQL: GetArticleGQL;
     let getCowGQL: GetCowGQL;
-    let findCowPhotosGQL: FindCowPhotosGQL;
+    let findCowPicturesGQL: FindCowPicturesGQL;
 
     const TEST_COW = {
       id: 100,
@@ -224,9 +240,9 @@ describe('Component Tests', () => {
       patriId: null,
     } as CowVo;
 
-    const API_PHOTOS_RESPONSE$ = of({
+    const API_PICTURES_RESPONSE$ = of({
       data: {
-        apiPublicCowsPhotographs: [],
+        apiPublicCowsPictures: [],
       },
     });
 
@@ -245,7 +261,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [BonGatewayTestModule, RouterTestingModule, ApolloModule],
-        declarations: [DamDetailsComponent, JhiTranslateDirective],
+        declarations: [DamDetailsComponent, JhiTranslateDirective, BonVisibilityClassDirective, CowPictureDirective],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: [
           {
@@ -261,12 +277,12 @@ describe('Component Tests', () => {
       comp = fixture.componentInstance;
       getArticleGQL = fixture.debugElement.injector.get(GetArticleGQL);
       getCowGQL = fixture.debugElement.injector.get(GetCowGQL);
-      findCowPhotosGQL = fixture.debugElement.injector.get(FindCowPhotosGQL);
+      findCowPicturesGQL = fixture.debugElement.injector.get(FindCowPicturesGQL);
     });
 
     it('should not query article on load', () => {
       // GIVEN
-      spyOn(findCowPhotosGQL, 'fetch').and.returnValue(API_PHOTOS_RESPONSE$);
+      spyOn(findCowPicturesGQL, 'fetch').and.returnValue(API_PICTURES_RESPONSE$);
       spyOn(getArticleGQL, 'fetch').and.returnValue(API_ARTICLE_RESPONSE$);
       spyOn(getCowGQL, 'fetch').and.returnValue(API_COWPARENT_RESPONSE$);
 
@@ -280,7 +296,7 @@ describe('Component Tests', () => {
 
     it('should not query mother or father on load', () => {
       // GIVEN
-      spyOn(findCowPhotosGQL, 'fetch').and.returnValue(API_PHOTOS_RESPONSE$);
+      spyOn(findCowPicturesGQL, 'fetch').and.returnValue(API_PICTURES_RESPONSE$);
       spyOn(getArticleGQL, 'fetch').and.returnValue(API_ARTICLE_RESPONSE$);
       spyOn(getCowGQL, 'fetch').and.returnValue(API_COWPARENT_RESPONSE$);
 
