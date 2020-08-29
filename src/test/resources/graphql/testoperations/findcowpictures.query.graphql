@@ -1,0 +1,25 @@
+query FindCowPictures(
+    $earTagId: Float!
+    $page: Int
+    $size: Int
+    $sort: [String]
+  ) {
+  apiPublicCowsPictures(    
+    earTagId: $earTagId
+    page: $page
+    size: $size
+    sort: $sort
+  ) {
+    id
+    caption
+    taken
+    visibility
+    sources {
+      name
+      contentType
+      height      
+      width
+      url
+    }    
+  }
+}
