@@ -406,87 +406,6 @@
         "deprecated": false
       }
     },
-    "/api/public/cows/{earTagId}/photographs": {
-      "get": {
-        "tags": [
-          "cowvo-resource"
-        ],
-        "summary": "Get all PhotographVOs for a cow",
-        "description": "",
-        "operationId": "getAllPhotographVOsByCow",
-        "parameters": [
-          {
-            "name": "earTagId",
-            "in": "path",
-            "description": "Numeric identifier for cattle",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number of the requested page",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0,
-              "default": 0
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "Size of a page",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 1,
-              "default": 10
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PhotographVO"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {}
-          },
-          "501": {
-            "description": "Not Implemented",
-            "content": {}
-          }
-        },
-        "deprecated": false
-      }
-    },
     "/api/public/cows/{earTagId}/pictures": {
       "get": {
         "tags": [
@@ -1145,50 +1064,6 @@
           },
           "storyHandle": {
             "type": "string"
-          },
-          "visibility": {
-            "type": "string",
-            "enum": [
-              "ROLE_ADMIN",
-              "ROLE_USER",
-              "ROLE_ANONYMOUS"
-            ]
-          }
-        }
-      },
-      "PhotographVO": {
-        "title": "PhotographVO",
-        "type": "object",
-        "properties": {
-          "caption": {
-            "type": "string"
-          },
-          "earTagId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "height": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "image": {
-            "type": "string",
-            "format": "byte"
-          },
-          "imageContentType": {
-            "type": "string"
-          },
-          "taken": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "width": {
-            "type": "integer",
-            "format": "int32"
           },
           "visibility": {
             "type": "string",

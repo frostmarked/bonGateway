@@ -12,6 +12,8 @@ export type Scalars = {
   Float: number;
 };
 
+
+
 export type ArticleVo = {
   __typename?: 'ArticleVO';
   category?: Maybe<Category>;
@@ -39,14 +41,14 @@ export enum Category {
   News = 'NEWS',
   It = 'IT',
   Matrilineality = 'MATRILINEALITY',
-  Cattle = 'CATTLE',
+  Cattle = 'CATTLE'
 }
 
 export enum CategoryInListItem {
   News = 'NEWS',
   It = 'IT',
   Matrilineality = 'MATRILINEALITY',
-  Cattle = 'CATTLE',
+  Cattle = 'CATTLE'
 }
 
 export type CowVo = {
@@ -69,12 +71,12 @@ export type CowVo = {
 
 export enum Gender {
   Heifer = 'HEIFER',
-  Bull = 'BULL',
+  Bull = 'BULL'
 }
 
 export enum GenderEquals {
   Heifer = 'HEIFER',
-  Bull = 'BULL',
+  Bull = 'BULL'
 }
 
 export enum HornStatus {
@@ -83,7 +85,7 @@ export enum HornStatus {
   Polled = 'POLLED',
   Scurs = 'SCURS',
   Dehorned = 'DEHORNED',
-  Disbudded = 'DISBUDDED',
+  Disbudded = 'DISBUDDED'
 }
 
 export enum HornStatusInListItem {
@@ -92,12 +94,12 @@ export enum HornStatusInListItem {
   Polled = 'POLLED',
   Scurs = 'SCURS',
   Dehorned = 'DEHORNED',
-  Disbudded = 'DISBUDDED',
+  Disbudded = 'DISBUDDED'
 }
 
 export enum I18n {
   Sv = 'sv',
-  En = 'en',
+  En = 'en'
 }
 
 export type LinageVo = {
@@ -113,19 +115,6 @@ export type LinageVo = {
   polled?: Maybe<Scalars['Boolean']>;
   storyHandle?: Maybe<Scalars['String']>;
   visibility?: Maybe<Visibility>;
-};
-
-export type PhotographVo = {
-  __typename?: 'PhotographVO';
-  caption?: Maybe<Scalars['String']>;
-  earTagId?: Maybe<Scalars['Int']>;
-  height?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Float']>;
-  image?: Maybe<Scalars['String']>;
-  imageContentType?: Maybe<Scalars['String']>;
-  taken?: Maybe<Scalars['String']>;
-  visibility?: Maybe<Visibility>;
-  width?: Maybe<Scalars['Int']>;
 };
 
 export type PictureSourceVo = {
@@ -151,77 +140,72 @@ export type Query = {
   __typename?: 'Query';
   /**
    * Get all ArticleVOs
-   *
+   * 
    * Equivalent to GET /api/public/articles
    */
   apiPublicArticles?: Maybe<Array<Maybe<ArticleVo>>>;
   /**
    * Find all cows matching criteria
-   *
+   * 
    * Equivalent to GET /api/public/cows
    */
   apiPublicCows?: Maybe<Array<Maybe<CowVo>>>;
   /**
-   * Get all PhotographVOs for a cow
-   *
-   * Equivalent to GET /api/public/cows/{earTagId}/photographs
-   */
-  apiPublicCowsPhotographs?: Maybe<Array<Maybe<PhotographVo>>>;
-  /**
    * Get all PictureVOs for a cow
-   *
+   * 
    * Equivalent to GET /api/public/cows/{earTagId}/pictures
    */
   apiPublicCowsPictures?: Maybe<Array<Maybe<PictureVo>>>;
   /**
    * Get image for a cow
-   *
+   * 
    * Equivalent to GET /api/public/cows/{earTagId}/pictures/{pictureId}/{name}
    */
   apiPublicCowsPictures2?: Maybe<Scalars['String']>;
   /**
    * Find all LinageVOs
-   *
+   * 
    * Equivalent to GET /api/public/linages
    */
   apiPublicLinages?: Maybe<Array<Maybe<LinageVo>>>;
   /**
    * Search ArticleVOs
-   *
+   * 
    * Equivalent to GET /api/public/_search/articles
    */
   apiPublicSearchArticles?: Maybe<Array<Maybe<ArticleVo>>>;
   /**
    * Get all TagVOs
-   *
+   * 
    * Equivalent to GET /api/public/tags
    */
   apiPublicTags?: Maybe<Array<Maybe<TagVo>>>;
   /**
    * Get ArticleVO by Id or handle
-   *
+   * 
    * Equivalent to GET /api/public/articles/{id}
    */
   articleVO?: Maybe<ArticleVo>;
   /**
    * Get BLUP for a cow
-   *
+   * 
    * Equivalent to GET /api/public/cows/{earTagId}/blup
    */
   blupVO?: Maybe<BlupVo>;
   /**
    * getCowVO
-   *
+   * 
    * Equivalent to GET /api/public/cows/{earTagId}
    */
   cowVO?: Maybe<CowVo>;
   /**
    * Get LinageVO
-   *
+   * 
    * Equivalent to GET /api/public/linages/{earTagId}
    */
   linageVO?: Maybe<LinageVo>;
 };
+
 
 /** The start of any query */
 export type QueryApiPublicArticlesArgs = {
@@ -231,6 +215,7 @@ export type QueryApiPublicArticlesArgs = {
   size?: Maybe<Scalars['Int']>;
   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
+
 
 /** The start of any query */
 export type QueryApiPublicCowsArgs = {
@@ -255,13 +240,6 @@ export type QueryApiPublicCowsArgs = {
   weight365Specified?: Maybe<Scalars['Boolean']>;
 };
 
-/** The start of any query */
-export type QueryApiPublicCowsPhotographsArgs = {
-  earTagId: Scalars['Float'];
-  page?: Maybe<Scalars['Int']>;
-  size?: Maybe<Scalars['Int']>;
-  sort?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
 
 /** The start of any query */
 export type QueryApiPublicCowsPicturesArgs = {
@@ -271,6 +249,7 @@ export type QueryApiPublicCowsPicturesArgs = {
   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
+
 /** The start of any query */
 export type QueryApiPublicCowsPictures2Args = {
   earTagId: Scalars['Float'];
@@ -278,12 +257,14 @@ export type QueryApiPublicCowsPictures2Args = {
   pictureId: Scalars['Float'];
 };
 
+
 /** The start of any query */
 export type QueryApiPublicLinagesArgs = {
   page?: Maybe<Scalars['Int']>;
   size?: Maybe<Scalars['Int']>;
   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
+
 
 /** The start of any query */
 export type QueryApiPublicSearchArticlesArgs = {
@@ -295,12 +276,14 @@ export type QueryApiPublicSearchArticlesArgs = {
   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
+
 /** The start of any query */
 export type QueryApiPublicTagsArgs = {
   page?: Maybe<Scalars['Int']>;
   size?: Maybe<Scalars['Int']>;
   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
+
 
 /** The start of any query */
 export type QueryArticleVoArgs = {
@@ -309,15 +292,18 @@ export type QueryArticleVoArgs = {
   isHandle?: Maybe<Scalars['Boolean']>;
 };
 
+
 /** The start of any query */
 export type QueryBlupVoArgs = {
   earTagId: Scalars['Float'];
 };
 
+
 /** The start of any query */
 export type QueryCowVoArgs = {
   earTagId: Scalars['Float'];
 };
+
 
 /** The start of any query */
 export type QueryLinageVoArgs = {
@@ -350,13 +336,13 @@ export type TagVo = {
 export enum Template {
   V1 = 'V1',
   V2 = 'V2',
-  V3 = 'V3',
+  V3 = 'V3'
 }
 
 export enum Visibility {
   RoleAdmin = 'ROLE_ADMIN',
   RoleUser = 'ROLE_USER',
-  RoleAnonymous = 'ROLE_ANONYMOUS',
+  RoleAnonymous = 'ROLE_ANONYMOUS'
 }
 
 export type GetArticleQueryVariables = Exact<{
@@ -366,48 +352,36 @@ export type GetArticleQueryVariables = Exact<{
   isSummary?: Maybe<Scalars['Boolean']>;
 }>;
 
-export type GetArticleQuery = { __typename?: 'Query' } & {
-  articleVO?: Maybe<
-    { __typename?: 'ArticleVO' } & Pick<ArticleVo, 'id' | 'category' | 'name' | 'visibility'> & {
-        sections?: Maybe<
-          Array<
-            Maybe<
-              { __typename?: 'SectionVO' } & Pick<
-                SectionVo,
-                'id' | 'body' | 'ingress' | 'orderNo' | 'template' | 'title' | 'visibility'
-              > & { tags?: Maybe<Array<Maybe<{ __typename?: 'TagVO' } & Pick<TagVo, 'name'>>>> } & SectionImageFragmentFragment
-            >
-          >
-        >;
-      }
-  >;
-};
+
+export type GetArticleQuery = (
+  { __typename?: 'Query' }
+  & { articleVO?: Maybe<(
+    { __typename?: 'ArticleVO' }
+    & Pick<ArticleVo, 'id' | 'category' | 'name' | 'visibility'>
+    & { sections?: Maybe<Array<Maybe<(
+      { __typename?: 'SectionVO' }
+      & Pick<SectionVo, 'id' | 'body' | 'ingress' | 'orderNo' | 'template' | 'title' | 'visibility'>
+      & { tags?: Maybe<Array<Maybe<(
+        { __typename?: 'TagVO' }
+        & Pick<TagVo, 'name'>
+      )>>> }
+      & SectionImageFragmentFragment
+    )>>> }
+  )> }
+);
 
 export type GetCowQueryVariables = Exact<{
   earTagId: Scalars['Float'];
 }>;
 
-export type GetCowQuery = { __typename?: 'Query' } & {
-  cowVO?: Maybe<
-    { __typename?: 'CowVO' } & Pick<
-      CowVo,
-      | 'birthDate'
-      | 'earTagId'
-      | 'gender'
-      | 'hornStatus'
-      | 'linageId'
-      | 'linageName'
-      | 'matriId'
-      | 'name'
-      | 'patriId'
-      | 'storyHandle'
-      | 'visibility'
-      | 'weight0'
-      | 'weight200'
-      | 'weight365'
-    >
-  >;
-};
+
+export type GetCowQuery = (
+  { __typename?: 'Query' }
+  & { cowVO?: Maybe<(
+    { __typename?: 'CowVO' }
+    & Pick<CowVo, 'birthDate' | 'earTagId' | 'gender' | 'hornStatus' | 'linageId' | 'linageName' | 'matriId' | 'name' | 'patriId' | 'storyHandle' | 'visibility' | 'weight0' | 'weight200' | 'weight365'>
+  )> }
+);
 
 export type FindArticlesQueryVariables = Exact<{
   i18n: I18n;
@@ -418,47 +392,23 @@ export type FindArticlesQueryVariables = Exact<{
   isSummary?: Maybe<Scalars['Boolean']>;
 }>;
 
-export type FindArticlesQuery = { __typename?: 'Query' } & {
-  apiPublicArticles?: Maybe<
-    Array<
-      Maybe<
-        { __typename?: 'ArticleVO' } & Pick<ArticleVo, 'id' | 'category' | 'name' | 'visibility'> & {
-            sections?: Maybe<
-              Array<
-                Maybe<
-                  { __typename?: 'SectionVO' } & Pick<
-                    SectionVo,
-                    'id' | 'title' | 'body' | 'ingress' | 'orderNo' | 'template' | 'visibility'
-                  > & { tags?: Maybe<Array<Maybe<{ __typename?: 'TagVO' } & Pick<TagVo, 'name'>>>> } & SectionImageFragmentFragment
-                >
-              >
-            >;
-          }
-      >
-    >
-  >;
-};
 
-export type FindCowPhotosQueryVariables = Exact<{
-  earTagId: Scalars['Float'];
-  page?: Maybe<Scalars['Int']>;
-  size?: Maybe<Scalars['Int']>;
-  sort?: Maybe<Array<Maybe<Scalars['String']>>>;
-  excludeImage?: Maybe<Scalars['Boolean']>;
-}>;
-
-export type FindCowPhotosQuery = { __typename?: 'Query' } & {
-  apiPublicCowsPhotographs?: Maybe<
-    Array<
-      Maybe<
-        { __typename?: 'PhotographVO' } & Pick<
-          PhotographVo,
-          'caption' | 'earTagId' | 'height' | 'id' | 'image' | 'imageContentType' | 'taken' | 'visibility' | 'width'
-        >
-      >
-    >
-  >;
-};
+export type FindArticlesQuery = (
+  { __typename?: 'Query' }
+  & { apiPublicArticles?: Maybe<Array<Maybe<(
+    { __typename?: 'ArticleVO' }
+    & Pick<ArticleVo, 'id' | 'category' | 'name' | 'visibility'>
+    & { sections?: Maybe<Array<Maybe<(
+      { __typename?: 'SectionVO' }
+      & Pick<SectionVo, 'id' | 'title' | 'body' | 'ingress' | 'orderNo' | 'template' | 'visibility'>
+      & { tags?: Maybe<Array<Maybe<(
+        { __typename?: 'TagVO' }
+        & Pick<TagVo, 'name'>
+      )>>> }
+      & SectionImageFragmentFragment
+    )>>> }
+  )>>> }
+);
 
 export type FindCowPicturesQueryVariables = Exact<{
   earTagId: Scalars['Float'];
@@ -467,19 +417,18 @@ export type FindCowPicturesQueryVariables = Exact<{
   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 }>;
 
-export type FindCowPicturesQuery = { __typename?: 'Query' } & {
-  apiPublicCowsPictures?: Maybe<
-    Array<
-      Maybe<
-        { __typename?: 'PictureVO' } & Pick<PictureVo, 'id' | 'caption' | 'taken' | 'visibility'> & {
-            sources?: Maybe<
-              Array<Maybe<{ __typename?: 'PictureSourceVO' } & Pick<PictureSourceVo, 'name' | 'contentType' | 'height' | 'width' | 'url'>>>
-            >;
-          }
-      >
-    >
-  >;
-};
+
+export type FindCowPicturesQuery = (
+  { __typename?: 'Query' }
+  & { apiPublicCowsPictures?: Maybe<Array<Maybe<(
+    { __typename?: 'PictureVO' }
+    & Pick<PictureVo, 'id' | 'caption' | 'taken' | 'visibility'>
+    & { sources?: Maybe<Array<Maybe<(
+      { __typename?: 'PictureSourceVO' }
+      & Pick<PictureSourceVo, 'name' | 'contentType' | 'height' | 'width' | 'url'>
+    )>>> }
+  )>>> }
+);
 
 export type FindCowsQueryVariables = Exact<{
   page?: Maybe<Scalars['Int']>;
@@ -503,31 +452,14 @@ export type FindCowsQueryVariables = Exact<{
   weight365Specified?: Maybe<Scalars['Boolean']>;
 }>;
 
-export type FindCowsQuery = { __typename?: 'Query' } & {
-  apiPublicCows?: Maybe<
-    Array<
-      Maybe<
-        { __typename?: 'CowVO' } & Pick<
-          CowVo,
-          | 'birthDate'
-          | 'earTagId'
-          | 'gender'
-          | 'hornStatus'
-          | 'linageId'
-          | 'linageName'
-          | 'matriId'
-          | 'name'
-          | 'patriId'
-          | 'storyHandle'
-          | 'visibility'
-          | 'weight0'
-          | 'weight200'
-          | 'weight365'
-        >
-      >
-    >
-  >;
-};
+
+export type FindCowsQuery = (
+  { __typename?: 'Query' }
+  & { apiPublicCows?: Maybe<Array<Maybe<(
+    { __typename?: 'CowVO' }
+    & Pick<CowVo, 'birthDate' | 'earTagId' | 'gender' | 'hornStatus' | 'linageId' | 'linageName' | 'matriId' | 'name' | 'patriId' | 'storyHandle' | 'visibility' | 'weight0' | 'weight200' | 'weight365'>
+  )>>> }
+);
 
 export type FindLinagesQueryVariables = Exact<{
   page?: Maybe<Scalars['Int']>;
@@ -535,13 +467,14 @@ export type FindLinagesQueryVariables = Exact<{
   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 }>;
 
-export type FindLinagesQuery = { __typename?: 'Query' } & {
-  apiPublicLinages?: Maybe<
-    Array<
-      Maybe<{ __typename?: 'LinageVO' } & Pick<LinageVo, 'id' | 'visibility' | 'name' | 'earTagId' | 'familyname' | 'polled' | 'country'>>
-    >
-  >;
-};
+
+export type FindLinagesQuery = (
+  { __typename?: 'Query' }
+  & { apiPublicLinages?: Maybe<Array<Maybe<(
+    { __typename?: 'LinageVO' }
+    & Pick<LinageVo, 'id' | 'visibility' | 'name' | 'earTagId' | 'familyname' | 'polled' | 'country'>
+  )>>> }
+);
 
 export type FindTagsQueryVariables = Exact<{
   page?: Maybe<Scalars['Int']>;
@@ -549,32 +482,27 @@ export type FindTagsQueryVariables = Exact<{
   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 }>;
 
-export type FindTagsQuery = { __typename?: 'Query' } & {
-  apiPublicTags?: Maybe<Array<Maybe<{ __typename?: 'TagVO' } & Pick<TagVo, 'id' | 'name'>>>>;
-};
+
+export type FindTagsQuery = (
+  { __typename?: 'Query' }
+  & { apiPublicTags?: Maybe<Array<Maybe<(
+    { __typename?: 'TagVO' }
+    & Pick<TagVo, 'id' | 'name'>
+  )>>> }
+);
 
 export type GetLinageQueryVariables = Exact<{
   earTagId: Scalars['Float'];
 }>;
 
-export type GetLinageQuery = { __typename?: 'Query' } & {
-  linageVO?: Maybe<
-    { __typename?: 'LinageVO' } & Pick<
-      LinageVo,
-      | 'id'
-      | 'visibility'
-      | 'name'
-      | 'earTagId'
-      | 'familyname'
-      | 'polled'
-      | 'country'
-      | 'storyHandle'
-      | 'patriId'
-      | 'patriName'
-      | 'patriCountry'
-    >
-  >;
-};
+
+export type GetLinageQuery = (
+  { __typename?: 'Query' }
+  & { linageVO?: Maybe<(
+    { __typename?: 'LinageVO' }
+    & Pick<LinageVo, 'id' | 'visibility' | 'name' | 'earTagId' | 'familyname' | 'polled' | 'country' | 'storyHandle' | 'patriId' | 'patriName' | 'patriCountry'>
+  )> }
+);
 
 export type SearchArticlesQueryVariables = Exact<{
   i18n: I18n;
@@ -586,338 +514,271 @@ export type SearchArticlesQueryVariables = Exact<{
   isSummary?: Maybe<Scalars['Boolean']>;
 }>;
 
-export type SearchArticlesQuery = { __typename?: 'Query' } & {
-  apiPublicSearchArticles?: Maybe<
-    Array<
-      Maybe<
-        { __typename?: 'ArticleVO' } & Pick<ArticleVo, 'id' | 'category' | 'name' | 'visibility'> & {
-            sections?: Maybe<
-              Array<
-                Maybe<
-                  { __typename?: 'SectionVO' } & Pick<
-                    SectionVo,
-                    'id' | 'title' | 'body' | 'ingress' | 'orderNo' | 'template' | 'visibility'
-                  > & { tags?: Maybe<Array<Maybe<{ __typename?: 'TagVO' } & Pick<TagVo, 'name'>>>> } & SectionImageFragmentFragment
-                >
-              >
-            >;
-          }
-      >
-    >
-  >;
-};
 
-export type SectionImageFragmentFragment = { __typename?: 'SectionVO' } & Pick<
-  SectionVo,
-  'caption' | 'width' | 'height' | 'image' | 'imageContentType'
->;
+export type SearchArticlesQuery = (
+  { __typename?: 'Query' }
+  & { apiPublicSearchArticles?: Maybe<Array<Maybe<(
+    { __typename?: 'ArticleVO' }
+    & Pick<ArticleVo, 'id' | 'category' | 'name' | 'visibility'>
+    & { sections?: Maybe<Array<Maybe<(
+      { __typename?: 'SectionVO' }
+      & Pick<SectionVo, 'id' | 'title' | 'body' | 'ingress' | 'orderNo' | 'template' | 'visibility'>
+      & { tags?: Maybe<Array<Maybe<(
+        { __typename?: 'TagVO' }
+        & Pick<TagVo, 'name'>
+      )>>> }
+      & SectionImageFragmentFragment
+    )>>> }
+  )>>> }
+);
+
+export type SectionImageFragmentFragment = (
+  { __typename?: 'SectionVO' }
+  & Pick<SectionVo, 'caption' | 'width' | 'height' | 'image' | 'imageContentType'>
+);
 
 export const SectionImageFragmentFragmentDoc = gql`
-  fragment SectionImageFragment on SectionVO {
-    caption @skip(if: $isSummary)
-    width @skip(if: $isSummary)
-    height @skip(if: $isSummary)
-    image @skip(if: $isSummary)
-    imageContentType @skip(if: $isSummary)
-  }
-`;
+    fragment SectionImageFragment on SectionVO {
+  caption @skip(if: $isSummary)
+  width @skip(if: $isSummary)
+  height @skip(if: $isSummary)
+  image @skip(if: $isSummary)
+  imageContentType @skip(if: $isSummary)
+}
+    `;
 export const GetArticleDocument = gql`
-  query GetArticle($i18n: I18n!, $id: String!, $isHandle: Boolean, $isSummary: Boolean = false) {
-    articleVO(i18n: $i18n, id: $id, isHandle: $isHandle) {
+    query GetArticle($i18n: I18n!, $id: String!, $isHandle: Boolean, $isSummary: Boolean = false) {
+  articleVO(i18n: $i18n, id: $id, isHandle: $isHandle) {
+    id
+    category
+    name
+    visibility
+    sections {
       id
-      category
-      name
-      visibility
-      sections {
-        id
-        body
-        ingress
-        orderNo
-        tags {
-          name
-        }
-        template
-        title
-        visibility
-        ...SectionImageFragment
-      }
-    }
-  }
-  ${SectionImageFragmentFragmentDoc}
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class GetArticleGQL extends Apollo.Query<GetArticleQuery, GetArticleQueryVariables> {
-  document = GetArticleDocument;
-}
-export const GetCowDocument = gql`
-  query GetCow($earTagId: Float!) {
-    cowVO(earTagId: $earTagId) {
-      birthDate
-      earTagId
-      gender
-      hornStatus
-      linageId
-      linageName
-      matriId
-      name
-      patriId
-      storyHandle
-      visibility
-      weight0
-      weight200
-      weight365
-    }
-  }
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class GetCowGQL extends Apollo.Query<GetCowQuery, GetCowQueryVariables> {
-  document = GetCowDocument;
-}
-export const FindArticlesDocument = gql`
-  query FindArticles($i18n: I18n!, $categoryIn: [CategoryInListItem], $page: Int, $size: Int, $sort: [String], $isSummary: Boolean = true) {
-    apiPublicArticles(categoryIn: $categoryIn, i18n: $i18n, page: $page, size: $size, sort: $sort) {
-      id
-      category
-      name
-      visibility
-      sections {
-        id
-        title
-        body @skip(if: $isSummary)
-        ingress
-        orderNo
-        tags {
-          name
-        }
-        template
-        visibility
-        ...SectionImageFragment
-      }
-    }
-  }
-  ${SectionImageFragmentFragmentDoc}
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class FindArticlesGQL extends Apollo.Query<FindArticlesQuery, FindArticlesQueryVariables> {
-  document = FindArticlesDocument;
-}
-export const FindCowPhotosDocument = gql`
-  query FindCowPhotos($earTagId: Float!, $page: Int, $size: Int, $sort: [String], $excludeImage: Boolean = false) {
-    apiPublicCowsPhotographs(earTagId: $earTagId, page: $page, size: $size, sort: $sort) {
-      caption
-      earTagId
-      height
-      id
-      image @skip(if: $excludeImage)
-      imageContentType
-      taken
-      visibility
-      width
-    }
-  }
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class FindCowPhotosGQL extends Apollo.Query<FindCowPhotosQuery, FindCowPhotosQueryVariables> {
-  document = FindCowPhotosDocument;
-}
-export const FindCowPicturesDocument = gql`
-  query FindCowPictures($earTagId: Float!, $page: Int, $size: Int, $sort: [String]) {
-    apiPublicCowsPictures(earTagId: $earTagId, page: $page, size: $size, sort: $sort) {
-      id
-      caption
-      taken
-      visibility
-      sources {
+      body
+      ingress
+      orderNo
+      tags {
         name
-        contentType
-        height
-        width
-        url
       }
+      template
+      title
+      visibility
+      ...SectionImageFragment
     }
   }
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class FindCowPicturesGQL extends Apollo.Query<FindCowPicturesQuery, FindCowPicturesQueryVariables> {
-  document = FindCowPicturesDocument;
 }
+    ${SectionImageFragmentFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetArticleGQL extends Apollo.Query<GetArticleQuery, GetArticleQueryVariables> {
+    document = GetArticleDocument;
+    
+  }
+export const GetCowDocument = gql`
+    query GetCow($earTagId: Float!) {
+  cowVO(earTagId: $earTagId) {
+    birthDate
+    earTagId
+    gender
+    hornStatus
+    linageId
+    linageName
+    matriId
+    name
+    patriId
+    storyHandle
+    visibility
+    weight0
+    weight200
+    weight365
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetCowGQL extends Apollo.Query<GetCowQuery, GetCowQueryVariables> {
+    document = GetCowDocument;
+    
+  }
+export const FindArticlesDocument = gql`
+    query FindArticles($i18n: I18n!, $categoryIn: [CategoryInListItem], $page: Int, $size: Int, $sort: [String], $isSummary: Boolean = true) {
+  apiPublicArticles(categoryIn: $categoryIn, i18n: $i18n, page: $page, size: $size, sort: $sort) {
+    id
+    category
+    name
+    visibility
+    sections {
+      id
+      title
+      body @skip(if: $isSummary)
+      ingress
+      orderNo
+      tags {
+        name
+      }
+      template
+      visibility
+      ...SectionImageFragment
+    }
+  }
+}
+    ${SectionImageFragmentFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FindArticlesGQL extends Apollo.Query<FindArticlesQuery, FindArticlesQueryVariables> {
+    document = FindArticlesDocument;
+    
+  }
+export const FindCowPicturesDocument = gql`
+    query FindCowPictures($earTagId: Float!, $page: Int, $size: Int, $sort: [String]) {
+  apiPublicCowsPictures(earTagId: $earTagId, page: $page, size: $size, sort: $sort) {
+    id
+    caption
+    taken
+    visibility
+    sources {
+      name
+      contentType
+      height
+      width
+      url
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FindCowPicturesGQL extends Apollo.Query<FindCowPicturesQuery, FindCowPicturesQueryVariables> {
+    document = FindCowPicturesDocument;
+    
+  }
 export const FindCowsDocument = gql`
-  query FindCows(
-    $page: Int
-    $size: Int
-    $sort: [String]
-    $birthDateGreaterThan: String
-    $birthDateLessThan: String
-    $genderEquals: GenderEquals
-    $hornStatusIn: [HornStatusInListItem]
-    $linageIdEquals: Int
-    $matriIdEquals: Int
-    $patriIdEquals: Int
-    $weight0GreaterThan: Int
-    $weight0LessThan: Int
-    $weight0Specified: Boolean
-    $weight200GreaterThan: Int
-    $weight200LessThan: Int
-    $weight200Specified: Boolean
-    $weight365GreaterThan: Int
-    $weight365LessThan: Int
-    $weight365Specified: Boolean
-  ) {
-    apiPublicCows(
-      birthDateGreaterThan: $birthDateGreaterThan
-      birthDateLessThan: $birthDateLessThan
-      genderEquals: $genderEquals
-      hornStatusIn: $hornStatusIn
-      linageIdEquals: $linageIdEquals
-      matriIdEquals: $matriIdEquals
-      page: $page
-      patriIdEquals: $patriIdEquals
-      size: $size
-      sort: $sort
-      weight0GreaterThan: $weight0GreaterThan
-      weight0LessThan: $weight0LessThan
-      weight0Specified: $weight0Specified
-      weight200GreaterThan: $weight200GreaterThan
-      weight200LessThan: $weight200LessThan
-      weight200Specified: $weight200Specified
-      weight365GreaterThan: $weight365GreaterThan
-      weight365LessThan: $weight365LessThan
-      weight365Specified: $weight365Specified
-    ) {
-      birthDate
-      earTagId
-      gender
-      hornStatus
-      linageId
-      linageName
-      matriId
-      name
-      patriId
-      storyHandle
-      visibility
-      weight0
-      weight200
-      weight365
-    }
+    query FindCows($page: Int, $size: Int, $sort: [String], $birthDateGreaterThan: String, $birthDateLessThan: String, $genderEquals: GenderEquals, $hornStatusIn: [HornStatusInListItem], $linageIdEquals: Int, $matriIdEquals: Int, $patriIdEquals: Int, $weight0GreaterThan: Int, $weight0LessThan: Int, $weight0Specified: Boolean, $weight200GreaterThan: Int, $weight200LessThan: Int, $weight200Specified: Boolean, $weight365GreaterThan: Int, $weight365LessThan: Int, $weight365Specified: Boolean) {
+  apiPublicCows(birthDateGreaterThan: $birthDateGreaterThan, birthDateLessThan: $birthDateLessThan, genderEquals: $genderEquals, hornStatusIn: $hornStatusIn, linageIdEquals: $linageIdEquals, matriIdEquals: $matriIdEquals, page: $page, patriIdEquals: $patriIdEquals, size: $size, sort: $sort, weight0GreaterThan: $weight0GreaterThan, weight0LessThan: $weight0LessThan, weight0Specified: $weight0Specified, weight200GreaterThan: $weight200GreaterThan, weight200LessThan: $weight200LessThan, weight200Specified: $weight200Specified, weight365GreaterThan: $weight365GreaterThan, weight365LessThan: $weight365LessThan, weight365Specified: $weight365Specified) {
+    birthDate
+    earTagId
+    gender
+    hornStatus
+    linageId
+    linageName
+    matriId
+    name
+    patriId
+    storyHandle
+    visibility
+    weight0
+    weight200
+    weight365
   }
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class FindCowsGQL extends Apollo.Query<FindCowsQuery, FindCowsQueryVariables> {
-  document = FindCowsDocument;
 }
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FindCowsGQL extends Apollo.Query<FindCowsQuery, FindCowsQueryVariables> {
+    document = FindCowsDocument;
+    
+  }
 export const FindLinagesDocument = gql`
-  query FindLinages($page: Int, $size: Int, $sort: [String]) {
-    apiPublicLinages(page: $page, size: $size, sort: $sort) {
-      id
-      visibility
-      name
-      earTagId
-      familyname
-      polled
-      country
-    }
+    query FindLinages($page: Int, $size: Int, $sort: [String]) {
+  apiPublicLinages(page: $page, size: $size, sort: $sort) {
+    id
+    visibility
+    name
+    earTagId
+    familyname
+    polled
+    country
   }
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class FindLinagesGQL extends Apollo.Query<FindLinagesQuery, FindLinagesQueryVariables> {
-  document = FindLinagesDocument;
 }
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FindLinagesGQL extends Apollo.Query<FindLinagesQuery, FindLinagesQueryVariables> {
+    document = FindLinagesDocument;
+    
+  }
 export const FindTagsDocument = gql`
-  query FindTags($page: Int, $size: Int, $sort: [String]) {
-    apiPublicTags(page: $page, size: $size, sort: $sort) {
-      id
-      name
-    }
+    query FindTags($page: Int, $size: Int, $sort: [String]) {
+  apiPublicTags(page: $page, size: $size, sort: $sort) {
+    id
+    name
   }
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class FindTagsGQL extends Apollo.Query<FindTagsQuery, FindTagsQueryVariables> {
-  document = FindTagsDocument;
 }
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FindTagsGQL extends Apollo.Query<FindTagsQuery, FindTagsQueryVariables> {
+    document = FindTagsDocument;
+    
+  }
 export const GetLinageDocument = gql`
-  query GetLinage($earTagId: Float!) {
-    linageVO(earTagId: $earTagId) {
-      id
-      visibility
-      name
-      earTagId
-      familyname
-      polled
-      country
-      storyHandle
-      patriId
-      patriName
-      patriCountry
-    }
+    query GetLinage($earTagId: Float!) {
+  linageVO(earTagId: $earTagId) {
+    id
+    visibility
+    name
+    earTagId
+    familyname
+    polled
+    country
+    storyHandle
+    patriId
+    patriName
+    patriCountry
   }
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class GetLinageGQL extends Apollo.Query<GetLinageQuery, GetLinageQueryVariables> {
-  document = GetLinageDocument;
 }
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetLinageGQL extends Apollo.Query<GetLinageQuery, GetLinageQueryVariables> {
+    document = GetLinageDocument;
+    
+  }
 export const SearchArticlesDocument = gql`
-  query SearchArticles(
-    $i18n: I18n!
-    $query: String!
-    $categoryIn: [CategoryInListItem]
-    $page: Int
-    $size: Int
-    $sort: [String]
-    $isSummary: Boolean = true
-  ) {
-    apiPublicSearchArticles(categoryIn: $categoryIn, query: $query, i18n: $i18n, page: $page, size: $size, sort: $sort) {
+    query SearchArticles($i18n: I18n!, $query: String!, $categoryIn: [CategoryInListItem], $page: Int, $size: Int, $sort: [String], $isSummary: Boolean = true) {
+  apiPublicSearchArticles(categoryIn: $categoryIn, query: $query, i18n: $i18n, page: $page, size: $size, sort: $sort) {
+    id
+    category
+    name
+    visibility
+    sections {
       id
-      category
-      name
-      visibility
-      sections {
-        id
-        title
-        body @skip(if: $isSummary)
-        ingress
-        orderNo
-        tags {
-          name
-        }
-        template
-        visibility
-        ...SectionImageFragment
+      title
+      body @skip(if: $isSummary)
+      ingress
+      orderNo
+      tags {
+        name
       }
+      template
+      visibility
+      ...SectionImageFragment
     }
   }
-  ${SectionImageFragmentFragmentDoc}
-`;
-
-@Injectable({
-  providedIn: 'root',
-})
-export class SearchArticlesGQL extends Apollo.Query<SearchArticlesQuery, SearchArticlesQueryVariables> {
-  document = SearchArticlesDocument;
 }
+    ${SectionImageFragmentFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SearchArticlesGQL extends Apollo.Query<SearchArticlesQuery, SearchArticlesQueryVariables> {
+    document = SearchArticlesDocument;
+    
+  }

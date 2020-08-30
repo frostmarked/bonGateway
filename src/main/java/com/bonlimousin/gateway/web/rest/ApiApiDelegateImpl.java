@@ -14,7 +14,6 @@ import com.bonlimousin.gateway.web.api.ApiApiDelegate;
 import com.bonlimousin.gateway.web.api.model.ArticleVO;
 import com.bonlimousin.gateway.web.api.model.CowVO;
 import com.bonlimousin.gateway.web.api.model.LinageVO;
-import com.bonlimousin.gateway.web.api.model.PhotographVO;
 import com.bonlimousin.gateway.web.api.model.PictureVO;
 import com.bonlimousin.gateway.web.api.model.TagVO;
 
@@ -61,12 +60,6 @@ public class ApiApiDelegateImpl implements ApiApiDelegate {
 		return this.cowVOResourceDelegate.getCowVO(earTagId);
 	}
 
-	@Override
-	public ResponseEntity<List<PhotographVO>> getAllPhotographVOsByCow(Long earTagId, Integer page, Integer size,
-			List<String> sort) {
-		return this.cowVOResourceDelegate.getAllPhotographVOsByCow(earTagId, page, size, sort);
-	}
-	
 	@Override
 	public ResponseEntity<List<PictureVO>> getAllPictureVOsByCow(Long earTagId,
 	        Integer page,

@@ -7,6 +7,7 @@ import java.util.Base64;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import com.bonlimousin.gateway.bff.BFFGraphQLUtil;
 import com.bonlimousin.gateway.web.api.model.PictureVO;
 import com.bonlimousin.gateway.web.graphql.model.PictureVOTO;
 import com.bonlimousin.gateway.web.graphql.model.VisibilityTO;
@@ -23,7 +24,7 @@ public interface PictureVOTOMapper {
 	}
 	
 	default String offsetDateTimeToString(OffsetDateTime odt) {
-		return odt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+		return odt.format(DateTimeFormatter.ofPattern(BFFGraphQLUtil.DATETIME_FORMAT));
 	}
 	
 	default String bytesToString(byte[] bytes) {
