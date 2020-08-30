@@ -17,11 +17,11 @@ import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.bonlimousin.gateway.bff.BFFGraphQLUtil;
 import com.bonlimousin.gateway.bff.delegate.ArticleVOResourceDelegateImpl;
 import com.bonlimousin.gateway.bff.delegate.CowVOResourceDelegateImpl;
 import com.bonlimousin.gateway.bff.delegate.LinageVOResourceDelegateImpl;
 import com.bonlimousin.gateway.web.api.model.CowVO;
-import com.bonlimousin.gateway.web.api.model.PhotographVO;
 import com.bonlimousin.gateway.web.api.model.PictureSourceVO;
 import com.bonlimousin.gateway.web.api.model.PictureVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,45 +41,7 @@ class GraphqlCowQueriesIT {
 	@Autowired
 	private GraphQLTestTemplate graphQLTestTemplate;
 
-	private static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-
-	@Test
-	void findCowPhotos() throws IOException {
-		PhotographVO vo = new PhotographVO();
-		vo.setId(1L);
-		vo.setCaption(RandomStringUtils.random(10));
-		vo.setEarTagId(RandomUtils.nextInt(100000));
-		vo.setHeight(RandomUtils.nextInt(1000));
-		vo.setWidth(RandomUtils.nextInt(1000));
-		vo.setImage("image".getBytes());
-		vo.setImageContentType("ict");
-		vo.setTaken(OffsetDateTime.now().minusHours(6));
-		vo.setVisibility(PhotographVO.VisibilityEnum.ANONYMOUS);
-
-		Mockito.when(
-				mockCowResource.getAllPhotographVOsByCow(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
-				.thenReturn(ResponseEntity.ok(Arrays.asList(vo)));
-
-		ObjectNode variables = new ObjectMapper().createObjectNode();
-		variables.put("earTagId", "1");
-		variables.put("excludeImage", "true");
-
-		String graphqlOps = "graphql/testoperations";
-		GraphQLResponse response = this.graphQLTestTemplate.perform(graphqlOps + "/findcowphotos.query.graphql",
-				variables);
-
-		Assert.assertNotNull(response);
-		Assert.assertTrue(response.isOk());
-
-		String photoPath = "$.data.apiPublicCowsPhotographs[0]";
-		Assert.assertEquals(vo.getId().floatValue() + "", response.get(photoPath + ".id"));
-		Assert.assertEquals(vo.getCaption(), response.get(photoPath + ".caption"));
-		Assert.assertEquals(vo.getEarTagId().toString(), response.get(photoPath + ".earTagId"));
-		Assert.assertEquals(vo.getHeight().toString(), response.get(photoPath + ".height"));
-		Assert.assertEquals(vo.getWidth().toString(), response.get(photoPath + ".width"));
-		Assert.assertEquals(vo.getTaken().format(DateTimeFormatter.ofPattern(DATETIME_FORMAT)),
-				response.get(photoPath + ".taken"));
-	}
+	private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern(BFFGraphQLUtil.DATETIME_FORMAT);
 	
 	@Test
 	void findCowPictures() throws IOException {
@@ -115,7 +77,7 @@ class GraphqlCowQueriesIT {
 		String picPath = "$.data.apiPublicCowsPictures[0]";
 		Assert.assertEquals(vo.getId().floatValue() + "", response.get(picPath + ".id"));
 		Assert.assertEquals(vo.getCaption(), response.get(picPath + ".caption"));
-		Assert.assertEquals(vo.getTaken().format(DateTimeFormatter.ofPattern(DATETIME_FORMAT)),
+		Assert.assertEquals(vo.getTaken().format(DATETIME_FORMATTER),
 				response.get(picPath + ".taken"));
 		Assert.assertEquals(vo.getVisibility().toString(), response.get(picPath + ".visibility"));
 				
@@ -188,7 +150,7 @@ class GraphqlCowQueriesIT {
 	protected void validateCow(GraphQLResponse response, String cowPath, CowVO cow) {
 		Assert.assertEquals(cow.getEarTagId().toString(), response.get(cowPath + ".earTagId"));
 		Assert.assertEquals(cow.getName(), response.get(cowPath + ".name"));
-		Assert.assertEquals(cow.getBirthDate().format(DateTimeFormatter.ofPattern(DATETIME_FORMAT)),
+		Assert.assertEquals(cow.getBirthDate().format(DATETIME_FORMATTER),
 				response.get(cowPath + ".birthDate"));
 		Assert.assertEquals(cow.getGender().name(), response.get(cowPath + ".gender"));
 		Assert.assertEquals(cow.getHornStatus().name(), response.get(cowPath + ".hornStatus"));

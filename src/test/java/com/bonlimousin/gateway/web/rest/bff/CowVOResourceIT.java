@@ -23,7 +23,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.util.Base64Utils;
 
 import com.bonlimousin.gateway.BonGatewayApp;
 import com.bonlimousin.gateway.bff.BFFUtil;
@@ -121,56 +120,6 @@ class CowVOResourceIT {
 				.perform(get("/api/public/cows/{earTagId}", 1).accept(MediaType.APPLICATION_JSON));		
 		ra.andExpect(status().isNotFound());
 		ra.andExpect(jsonPath("$.title").exists());
-	}
-	
-	@Test
-	void findCowPhotos() throws Exception {
-		/*
-		CattleEntity ce = new CattleEntity();
-		ce.setId(1L);
-		ce.setEarTagId(100);
-		ce.setName("Muuu");
-		ce.setAlert(false);
-		ce.setUpForSale(false);
-		ce.setVisibility(CattleEntity.VisibilityEnum.ANONYMOUS);
-		ce.setStoryHandle("muuuhandle");
-		
-		PhotoEntity pe = new PhotoEntity();
-		pe.setHeight(100);
-		pe.setWidth(200);
-		pe.setImageContentType("image/png");
-		pe.setImage(TestUtil.createByteArray(1, "0"));
-		pe.setCaption("bbb");
-		pe.setTaken(OffsetDateTime.now());
-		pe.setVisibility(PhotoEntity.VisibilityEnum.ANONYMOUS);
-		
-		WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/api/cattles.*"))
-				.willReturn(WireMock.aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-						.withHeader(BFFUtil.HEADER_X_TOTAL_COUNT, "1")
-						.withBody(OM.writeValueAsString(Arrays.array(ce)))));
-		
-		WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/api/photos.*"))
-				.willReturn(WireMock.aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-						.withHeader(BFFUtil.HEADER_X_TOTAL_COUNT, "1")
-						.withBody(OM.writeValueAsString(Arrays.array(pe)))));
-		*/
-		CattleEntity ce = createCattleEntity();		
-		PhotoEntity pe = createPhotoEntity(ce);						
-		stubCattleEndpoint(Arrays.array(ce));
-		stubPhotoEndpoint(Arrays.array(pe));
-
-		ResultActions ra = restMockMvc.perform(get("/api/public/cows/{earTagId}/photographs", 1).accept(MediaType.APPLICATION_JSON));
-		ra.andExpect(status().isOk());
-		ra.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-		ra.andExpect(jsonPath("$", Matchers.hasSize(1)));
-		
-		ra.andExpect(jsonPath("$[0].caption").value(pe.getCaption()));
-		ra.andExpect(jsonPath("$[0].height").value(pe.getHeight()));
-		ra.andExpect(jsonPath("$[0].width").value(pe.getWidth()));
-		ra.andExpect(jsonPath("$[0].imageContentType").value(pe.getImageContentType()));
-		ra.andExpect(jsonPath("$[0].image").value(Matchers.is(new String(Base64Utils.encode(pe.getImage())))));		
-		ra.andExpect(jsonPath("$[0].taken").exists());
-		ra.andExpect(jsonPath("$[0].visibility").value(pe.getVisibility().getValue()));		
 	}
 	
 	@Test

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class BFFGraphQLUtil {
+	
+	public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 	private BFFGraphQLUtil() {
 

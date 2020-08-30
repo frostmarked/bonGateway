@@ -29,7 +29,6 @@ import org.zalando.problem.Status;
 
 import com.bonlimousin.gateway.bff.BFFUtil;
 import com.bonlimousin.gateway.bff.mapper.CowVOMapper;
-import com.bonlimousin.gateway.bff.mapper.PhotographVOMapper;
 import com.bonlimousin.gateway.bff.mapper.PictureVOMapper;
 import com.bonlimousin.gateway.bff.service.AbstractPictureSourceService.PictureSize;
 import com.bonlimousin.gateway.bff.service.CowPictureSourceService;
@@ -48,7 +47,6 @@ import com.bonlimousin.gateway.client.bonreplicaservice.apidocs.querymap.BovineC
 import com.bonlimousin.gateway.client.bonreplicaservice.apidocs.querymap.Gender;
 import com.bonlimousin.gateway.client.bonreplicaservice.apidocs.querymap.HornStatus;
 import com.bonlimousin.gateway.web.api.model.CowVO;
-import com.bonlimousin.gateway.web.api.model.PhotographVO;
 import com.bonlimousin.gateway.web.api.model.PictureVO;
 import com.bonlimousin.gateway.web.problem.AlertProblem;
 import com.bonlimousin.gateway.web.problem.AlertProblemSeverity;
@@ -57,11 +55,7 @@ import com.bonlimousin.gateway.web.rest.errors.WhileFetchingDataException;
 import io.github.jhipster.service.filter.InstantFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
-/* 
- * TODO 
- * fetch photo-entity without image-bytes
- * if a thumbnail etc is missing? then fetch the bytes
- */
+
 @Service
 public class CowVOResourceDelegateImpl {
 	
@@ -217,15 +211,6 @@ public class CowVOResourceDelegateImpl {
 
 		CowVO vo = CowVOMapper.INSTANCE.entitiesToCowVO(cattleEntity.getMatrilineality(), cattleEntity, bovineEntity);
 		return ResponseEntity.ok(vo);
-	}
-	
-	public ResponseEntity<List<PhotographVO>> getAllPhotographVOsByCow(Long earTagId, Integer page, Integer size, List<String> sort) {		
-		ResponseEntity<List<PhotoEntity>> response = fetchPhotosByEarTagId(earTagId, page, size, sort);				
-		List<PhotographVO> list = response.getBody().stream()
-				.map(PhotographVOMapper.INSTANCE::photoEntityToPhotographVO)
-				.collect(Collectors.toList());
-		long totalCount = BFFUtil.extractTotalCount(response);
-		return BFFUtil.createResponse(list, page, size, sort, totalCount);
 	}
 	
 	public ResponseEntity<List<PictureVO>> getAllPictureVOsByCow(Long earTagId, Integer page, Integer size, List<String> sort) {				

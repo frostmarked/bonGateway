@@ -97,18 +97,6 @@ type LinageVO {
   visibility: Visibility
 }
 
-type PhotographVO {
-  caption: String
-  earTagId: Int
-  height: Int
-  id: Float
-  image: String
-  imageContentType: String
-  taken: String
-  visibility: Visibility
-  width: Int
-}
-
 type PictureSourceVO {
   contentType: String
   height: Int
@@ -186,28 +174,6 @@ type Query {
     weight365LessThan: Int
     weight365Specified: Boolean
   ): [CowVO]
-
-  """
-  Get all PhotographVOs for a cow
-  
-  Equivalent to GET /api/public/cows/{earTagId}/photographs
-  """
-  apiPublicCowsPhotographs(
-    """Numeric identifier for cattle"""
-    earTagId: Float!
-
-    """Page number of the requested page"""
-    page: Int
-
-    """Size of a page"""
-    size: Int
-
-    """
-    Sorting criteria in the format: property(,asc|desc). Default sort order is
-    ascending. Multiple sort criteria are supported.
-    """
-    sort: [String]
-  ): [PhotographVO]
 
   """
   Get all PictureVOs for a cow
