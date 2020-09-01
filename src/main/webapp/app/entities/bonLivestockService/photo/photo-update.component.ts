@@ -53,7 +53,9 @@ export class PhotoUpdateComponent implements OnInit {
 
       this.updateForm(photo);
 
-      this.cattleService.query().subscribe((res: HttpResponse<ICattle[]>) => (this.cattles = res.body || []));
+      this.cattleService
+        .query({ size: 500, sort: ['earTagId,desc'] })
+        .subscribe((res: HttpResponse<ICattle[]>) => (this.cattles = res.body || []));
     });
   }
 
