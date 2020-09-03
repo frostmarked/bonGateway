@@ -13,6 +13,7 @@ import { PhotoService } from './photo.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { ICattle } from 'app/shared/model/bonLivestockService/cattle.model';
 import { CattleService } from 'app/entities/bonLivestockService/cattle/cattle.service';
+import { DropdownPaginationImpl, DropdownPagination } from 'app/shared/bon/dropdown-pagination-util';
 
 @Component({
   selector: 'jhi-photo-update',
@@ -20,7 +21,7 @@ import { CattleService } from 'app/entities/bonLivestockService/cattle/cattle.se
 })
 export class PhotoUpdateComponent implements OnInit {
   isSaving = false;
-  cattles: ICattle[] = [];
+  cattleDropdownPagination: DropdownPagination;
 
   editForm = this.fb.group({
     id: [],
@@ -42,7 +43,10 @@ export class PhotoUpdateComponent implements OnInit {
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.cattleDropdownPagination = new DropdownPaginationImpl(this.cattleService, 
+      0, 50, 0, 0, ['earTagId,desc'], 0, [], undefined);
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ photo }) => {
@@ -52,10 +56,9 @@ export class PhotoUpdateComponent implements OnInit {
       }
 
       this.updateForm(photo);
-
-      this.cattleService
-        .query({ size: 500, sort: ['earTagId,desc'] })
-        .subscribe((res: HttpResponse<ICattle[]>) => (this.cattles = res.body || []));
+         
+      this.cattleDropdownPagination.selectItem(photo?.cattle);
+      this.cattleDropdownPagination.load();
     });
   }
 
@@ -71,6 +74,7 @@ export class PhotoUpdateComponent implements OnInit {
       visibility: photo.visibility,
       cattle: photo.cattle,
     });
+    this.cattleDropdownPagination?.selectItem(photo.cattle);
   }
 
   byteSize(base64String: string): string {

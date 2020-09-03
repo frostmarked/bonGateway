@@ -107,8 +107,13 @@
                     <label class="form-control-label" jhiTranslate="bonGatewayApp.bonLivestockServicePhoto.cattle" for="field_cattle">Cattle</label>
                     <select class="form-control" id="field_cattle" name="cattle" formControlName="cattle">
                         <option *ngIf="!editForm.get('cattle')!.value" [ngValue]="null" selected></option>
-                        <option [ngValue]="cattleOption.id === editForm.get('cattle')!.value?.id ? editForm.get('cattle')!.value : cattleOption" *ngFor="let cattleOption of cattles; trackBy: trackById">{{ cattleOption.earTagId }}</option>
-                    </select>
+                        <option [ngValue]="cattleOption.id === editForm.get('cattle')!.value?.id ? editForm.get('cattle')!.value : cattleOption" *ngFor="let cattleOption of cattleDropdownPagination.items; trackBy: trackById">{{ cattleOption.earTagId }}</option>
+                    </select>                    
+                    <ngb-pagination [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+                        [collectionSize]="cattleDropdownPagination.totalItems" 
+                        [(page)]="cattleDropdownPagination.ngbPaginationPage" 
+                        [pageSize]="cattleDropdownPagination.itemsPerPage" 
+                        (pageChange)="cattleDropdownPagination.load($event)"></ngb-pagination>                                            
                 </div>
                 <div *ngIf="editForm.get('cattle')!.invalid && (editForm.get('cattle')!.dirty || editForm.get('cattle')!.touched)">
                     <small class="form-text text-danger"
