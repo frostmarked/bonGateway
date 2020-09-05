@@ -10,6 +10,12 @@
         },
         "dam-details": {
           "title": "Dam {{ earTagId }} {{ familyname }}"
+        },
+        "sire-list": {
+          "title": "Sires"
+        },
+        "sire-details": {
+          "title": "Sire {{ earTagId }} {{ name }}"
         }
       }
     }

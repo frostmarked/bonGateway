@@ -10,6 +10,12 @@
         },
         "dam-details": {
           "title": "Ko {{ earTagId }} {{ familyname }}"
+        },
+        "sire-list": {
+          "title": "Avelstjurar"
+        },
+        "sire-details": {
+          "title": "Avelstjur {{ earTagId }} {{ name }}"
         }
       }
     }
