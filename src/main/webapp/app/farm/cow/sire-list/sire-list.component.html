@@ -1,1 +1,30 @@
-<p>sire-list works!</p>
+<div>
+  <h2 id="page-heading">
+      <span jhiTranslate="bonGatewayApp.farm.cow.sire-list.title">Sires</span>
+  </h2>
+
+  <div class="clearfix" *ngIf="loading$ | async">
+    <div class="spinner-border spinner-border-sm float-right" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="sire-container d-flex align-content-start flex-wrap">
+    <div *ngFor="let sire of sires$ | async" class="sire-item p-2" [jhiBonVisibilityClass]="sire?.visibility">    
+        <a [title]="'Sire' + sire?.earTagId" [routerLink]="['/farm', 'cow', 'sire', sire?.earTagId]">
+          <figure class="sire-figure figure">
+            <img [jhiCowPicture]="sire.picture$ | async"
+              sizes="300px" 
+              alt="{{sire?.earTagId}}" 
+              class="sire-img figure-img img-fluid rounded">          
+            <figcaption class="sire-img-caption text-center">{{sire?.earTagId}} {{ sire?.name }}</figcaption>
+          </figure>
+        </a>
+    </div>
+  </div>
+
+</div>

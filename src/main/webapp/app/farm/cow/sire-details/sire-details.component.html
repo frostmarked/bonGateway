@@ -1,1 +1,63 @@
-<p>sire-details works!</p>
+<div>
+  <h2 id="page-heading">
+      <span jhiTranslate="bonGatewayApp.farm.cow.sire-details.title"
+          [translateValues]="{ earTagId: sire?.earTagId, name: sire?.name }">Dam X</span>
+  </h2>
+
+  <div class="clearfix" *ngIf="loading$ | async">
+      <div class="spinner-border spinner-border-sm float-right" role="status">
+          <span class="sr-only">Loading...</span>
+      </div>
+  </div>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div *ngIf="sire" class="cow-container" [jhiBonVisibilityClass]="sire?.visibility">      
+    <p>BORN: {{ sire!.birthDate | date:'yyyy-MM-dd' }}</p>    
+    <p>W0: {{ sire!.weight0 }} - W200: {{ sire!.weight200 }} - W365: {{ sire!.weight365 }}</p>
+
+    <p *ngIf="matri$ | async as matri">
+      <span>MATRI: </span>
+      <a *ngIf="matri; else noMatri" 
+        [title]="'Matri' + matri?.earTagId" 
+        [routerLink]="['/farm', 'cow', 'sire', matri?.earTagId]">{{ matri?.earTagId }} {{ matri?.name }}</a>        
+      <ng-template #noMatri>{{ sire?.matriId }}</ng-template>
+    </p>
+    
+    <p *ngIf="patri$ | async as patri">
+      <span>PATRI: </span>
+      <a *ngIf="patri; else noPatri" 
+        [title]="'Patri' + patri?.earTagId" 
+        [routerLink]="['/farm', 'cow', 'sire', patri?.earTagId]">{{ patri?.earTagId }} {{ patri?.name }}</a>        
+      <ng-template #noPatri>{{ sire?.patriId }}</ng-template>
+    </p>
+  </div>    
+
+
+  <article *ngIf="article$ | async as article" class="sire-article-container">
+      <section *ngFor="let section of article.sections" class="sire-section">
+          <h4 *ngIf="section?.title">{{ section?.title }}</h4>
+          <p *ngIf="section?.ingress">{{ section?.ingress }}</p>
+          <p *ngIf="section?.body">{{ section?.body }}</p>
+
+          <figure *ngIf="section?.imageContentType" class="figure sire-section-figure">
+              <img [src]="'data:' + section?.imageContentType + ';base64,' + section?.image" alt="" class="figure-img img-fluid">
+              <figcaption *ngIf="section?.caption" class="figure-caption">{{section?.caption}}</figcaption>
+          </figure>
+      </section>
+  </article>  
+
+  <h3>Pictures</h3>
+
+  <div *ngFor="let pic of pictures$ | async" class="sire-item p-2">    
+    <figure class="sire-figure figure" [jhiBonVisibilityClass]="pic?.visibility">
+      <img [jhiCowPicture]="pic"
+        sizes="(min-width: 768px) 50vw, 100vw"
+        alt="{{ pic?.caption }}" 
+        class="img-fluid" />
+    </figure>
+  </div>
+
+</div>

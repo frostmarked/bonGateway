@@ -83,6 +83,9 @@ const routes: Routes = [
   {
     path: 'sire/:earTagId',
     component: SireDetailsComponent,
+    resolve: {
+      cowVo: CowVoResolve,
+    },
   },
 ];
 
