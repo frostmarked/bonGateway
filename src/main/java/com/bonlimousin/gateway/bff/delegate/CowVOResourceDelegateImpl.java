@@ -154,7 +154,7 @@ public class CowVOResourceDelegateImpl {
 		bovineCriteria.setGender(genderFilter);
 				
 		HornStatusFilter hornStatusFilter = new HornStatusFilter();
-		if(genderEquals != null) {
+		if(hornStatusIn != null && !hornStatusIn.isEmpty()) {
 			try {
 				List<HornStatus> hornStatusList = new ArrayList<>();
 				for(String hornStatus : hornStatusIn) {
