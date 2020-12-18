@@ -35,12 +35,12 @@ public class LinageVOTOQueryResolver implements ApiPublicLinagesQueryResolver, L
 		List<LinageVO> list = this.linageVOResourceDelegateImpl.findAllLinageVOs(p.getPage(), p.getSize(), p.getSort()).getBody();
 		return list.stream().map(LinageVOTOMapper.INSTANCE::voToTO).collect(Collectors.toList());
 	}
-	
+
 	@Override
 	@Cacheable(value = CacheConfiguration.CACHE_LINEAGES,
 		condition = "T(com.bonlimousin.gateway.security.SecurityUtils).isAuthenticated() == false")
-	public LinageVOTO linageVO(Double earTagId) throws Exception {
-		LinageVO vo = this.linageVOResourceDelegateImpl.getLinageVO(earTagId.longValue()).getBody();
+	public LinageVOTO linageVO(double earTagId) throws Exception {
+		LinageVO vo = this.linageVOResourceDelegateImpl.getLinageVO((long)earTagId).getBody();
 		return LinageVOTOMapper.INSTANCE.voToTO(vo);
 	}
 }

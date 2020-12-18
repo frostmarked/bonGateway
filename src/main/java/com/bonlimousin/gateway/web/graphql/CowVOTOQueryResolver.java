@@ -30,8 +30,8 @@ import graphql.kickstart.tools.GraphQLQueryResolver;
 
 @Component
 public class CowVOTOQueryResolver
-		implements ApiPublicCowsQueryResolver, 
-		ApiPublicCowsPicturesQueryResolver, ApiPublicCowsPictures2QueryResolver, 
+		implements ApiPublicCowsQueryResolver,
+		ApiPublicCowsPicturesQueryResolver, ApiPublicCowsPictures2QueryResolver,
 		BlupVOQueryResolver, CowVOQueryResolver, GraphQLQueryResolver {
 
 	private CowVOResourceDelegateImpl cowVOResourceDelegateImpl;
@@ -41,7 +41,7 @@ public class CowVOTOQueryResolver
 	}
 
 	@Override
-	@Cacheable(value = CacheConfiguration.CACHE_COWS, 
+	@Cacheable(value = CacheConfiguration.CACHE_COWS,
 		condition = "T(com.bonlimousin.gateway.security.SecurityUtils).isAuthenticated() == false")
 	public List<CowVOTO> apiPublicCows(String birthDateGreaterThan, String birthDateLessThan,
 			GenderEqualsTO genderEquals, List<HornStatusInListItemTO> hornStatusIn, Integer linageIdEquals,
@@ -63,34 +63,33 @@ public class CowVOTOQueryResolver
 	}
 
 	@Override
-	public BlupVOTO blupVO(Double earTagId) throws Exception {
+	public BlupVOTO blupVO(double earTagId) throws Exception {
 		// TODO Auto-generated method stub
 		// remove blup? or keep?
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	@Cacheable(value = CacheConfiguration.CACHE_COWS, 
+	@Cacheable(value = CacheConfiguration.CACHE_COWS,
 		condition = "T(com.bonlimousin.gateway.security.SecurityUtils).isAuthenticated() == false")
-	public CowVOTO cowVO(Double earTagId) throws Exception {
-		CowVO vo = this.cowVOResourceDelegateImpl.getCowVO(earTagId.longValue()).getBody();
+	public CowVOTO cowVO(double earTagId) throws Exception {
+		CowVO vo = this.cowVOResourceDelegateImpl.getCowVO((long)earTagId).getBody();
 		return CowVOTOMapper.INSTANCE.voToTO(vo);
 	}
 
 	@Override
-	public List<PictureVOTO> apiPublicCowsPictures(Double earTagId, Integer page, Integer size, List<String> sort)
+	public List<PictureVOTO> apiPublicCowsPictures(double earTagId, Integer page, Integer size, List<String> sort)
 			throws Exception {
 		GraphQLPageable p = GraphQLPageable.of(page, size, sort);
 		List<PictureVO> list = this.cowVOResourceDelegateImpl
-				.getAllPictureVOsByCow(earTagId.longValue(), p.getPage(), p.getSize(), p.getSort()).getBody();
+				.getAllPictureVOsByCow((long)earTagId, p.getPage(), p.getSize(), p.getSort()).getBody();
 		return list.stream().map(PictureVOTOMapper.INSTANCE::voToTO).collect(Collectors.toList());
 	}
 
-	@Override
-	public String apiPublicCowsPictures2(Double earTagId, String name, Double pictureId) throws Exception {
+    @Override
+	public String apiPublicCowsPictures2(double earTagId, String name, double pictureId) throws Exception {
 		// TODO Auto-generated method stub
 		// base64 encode or nothing?
 		throw new UnsupportedOperationException();
 	}
-
 }

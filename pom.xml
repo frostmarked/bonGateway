@@ -92,7 +92,7 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
-        
+
         <!-- Bon -->
         <com.graphql-java-kickstart.version>7.1.0</com.graphql-java-kickstart.version>
         <spring-cloud-contract.version>2.2.2.RELEASE</spring-cloud-contract.version>
@@ -110,7 +110,7 @@
                 <scope>import</scope>
             </dependency>
             <!-- jhipster-needle-maven-add-dependency-management -->
-            
+
             <!-- Bon -->
             <dependency>
 			  <groupId>com.graphql-java-kickstart</groupId>
@@ -430,11 +430,11 @@
             <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
-        
+
         <!-- Bon -->
         <dependency>
 		  <groupId>com.graphql-java-kickstart</groupId>
-		  <artifactId>graphql-spring-boot-starter</artifactId>		  
+		  <artifactId>graphql-spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
 		  <groupId>com.graphql-java-kickstart</groupId>
@@ -451,11 +451,11 @@
 		</dependency>
 		<dependency>
 		    <groupId>net.coobird</groupId>
-		    <artifactId>thumbnailator</artifactId>		    
+		    <artifactId>thumbnailator</artifactId>
 		</dependency>
 		<dependency>
 		    <groupId>org.apache.tika</groupId>
-		    <artifactId>tika-core</artifactId>		
+		    <artifactId>tika-core</artifactId>
 		</dependency>
     </dependencies>
 
@@ -1026,7 +1026,7 @@
                 <plugin>
 		            <groupId>io.github.kobylynskyi</groupId>
             		<artifactId>graphql-codegen-maven-plugin</artifactId>
-		            <version>2.1.0</version>
+		            <version>4.0.1</version>
 		            <executions>
 		                <execution>
 		                    <goals>
