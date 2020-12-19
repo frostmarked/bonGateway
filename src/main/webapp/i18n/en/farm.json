@@ -6,10 +6,21 @@
           "title": "Linages"
         },
         "linage-details": {
-          "title": "Linage {{ earTagId }} {{ familyname }}"
+          "title": "Kolinje {{ earTagId }} {{ familyname }}",
+          "descendants": "Descendants"
         },
         "dam-details": {
-          "title": "Dam {{ earTagId }} {{ familyname }}"
+          "title": "Dam {{ earTagId }} {{ familyname }}",
+          "dam-card": {
+            "header": "Data",
+            "lineage": "Lineage",
+            "born": "born",
+            "w0": "Birth weight",
+            "w200": "200-days weight",
+            "w365": "1-year weight",
+            "matri": "Mother",
+            "patri": "Father"
+          }
         },
         "sire-list": {
           "title": "Sires"

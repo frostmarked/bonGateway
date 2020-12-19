@@ -1,68 +1,101 @@
 <div>
-  <h2 id="page-heading">
+    <h1 id="page-heading">
       <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.title"
-          [translateValues]="{ earTagId: dam?.earTagId, familyname: dam?.name }">Dam X</span>
-  </h2>
+            [translateValues]="{ earTagId: dam?.earTagId, familyname: dam?.name! | titlecase }">Dam X</span>
+    </h1>
 
-  <div class="clearfix" *ngIf="loading$ | async">
-      <div class="spinner-border spinner-border-sm float-right" role="status">
-          <span class="sr-only">Loading...</span>
-      </div>
-  </div>
+    <div>
+        <div class="clearfix" *ngIf="loading$ | async">
+            <div class="spinner-border spinner-border-sm float-right" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
+    </div>
 
-  <jhi-alert-error></jhi-alert-error>
+    <article *ngIf="article$ | async as article" class="dam-article-container">
+        <section *ngFor="let section of article.sections" class="dam-section">
+            <h4 *ngIf="section?.title">{{ section?.title }}</h4>
+            <p *ngIf="section?.ingress">{{ section?.ingress }}</p>
+            <p *ngIf="section?.body">{{ section?.body }}</p>
 
-  <jhi-alert></jhi-alert>
+            <figure *ngIf="section?.imageContentType" class="figure dam-section-figure">
+                <img [src]="'data:' + section?.imageContentType + ';base64,' + section?.image" alt=""
+                     class="figure-img img-fluid">
+                <figcaption *ngIf="section?.caption" class="figure-caption">{{section?.caption}}</figcaption>
+            </figure>
+        </section>
+    </article>
 
-  <div *ngIf="dam" class="cow-container" 
-  [ngClass]="{
-    'is-role-anonymous': dam?.visibility == 'ROLE_ANONYMOUS',
-    'is-role-user': dam?.visibility == 'ROLE_USER',
-    'is-role-admin': dam?.visibility == 'ROLE_ADMIN'
-  }">      
-    <p>BORN: {{ dam!.birthDate | date:'yyyy-MM-dd' }}</p>    
-    <p>W0: {{ dam!.weight0 }} - W200: {{ dam!.weight200 }} - W365: {{ dam!.weight365 }}</p>
+    <div class="row">
+        <div class="col-lg-3">
+            <div *ngIf="dam" class="dam-container" [jhiBonVisibilityClass]="dam?.visibility">
+                <div class="dam-card card">
+                    <div class="card-header">
+                        <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.header">Data</span>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.lineage">Lineage</span>
+                            <span>:</span>
+                            <a [routerLink]="['/farm', 'cow', 'linage', dam?.linageId]">{{ dam?.linageId }} {{ dam?.linageName! | titlecase }}</a>
+                        </p>
+                        <p>
+                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.born">BORN</span>
+                            <span>:</span>
+                            <span>{{ dam!.birthDate | date:'yyyy-MM-dd' }}</span>
+                        </p>
+                        <p>
+                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.w0">WO</span>
+                            <span>:</span>
+                            <span>{{ dam!.weight0 }}</span>
+                            <span>kg</span>
+                        </p>
+                        <p>
+                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.w200">W200</span>
+                            <span>:</span>
+                            <span>{{ dam!.weight200 }}</span>
+                            <span>kg</span>
+                        </p>
+                        <p>
+                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.w365">W365</span>
+                            <span>:</span>
+                            <span>{{ dam!.weight365 }}</span>
+                            <span>kg</span>
+                        </p>
 
-    <p *ngIf="matri$ | async as matri">
-      <span>MATRI: </span>
-      <a *ngIf="matri; else noMatri" 
-        [title]="'Matri' + matri?.earTagId" 
-        [routerLink]="['/farm', 'cow', 'dam', matri?.earTagId]">{{ matri?.earTagId }} {{ matri?.name }}</a>        
-      <ng-template #noMatri>{{ dam?.matriId }}</ng-template>
-    </p>
-    
-    <p *ngIf="patri$ | async as patri">
-      <span>PATRI: </span>
-      <a *ngIf="patri; else noPatri" 
-        [title]="'Patri' + patri?.earTagId" 
-        [routerLink]="['/farm', 'cow', 'sire', patri?.earTagId]">{{ patri?.earTagId }} {{ patri?.name }}</a>        
-      <ng-template #noPatri>{{ dam?.patriId }}</ng-template>
-    </p>
-  </div>    
+                        <p *ngIf="matri$ | async as matri">
+                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.matri">MATRI</span>
+                            <span>:</span>
+                            <a *ngIf="matri; else noMatri"
+                               [title]="'Matri ' + matri?.earTagId"
+                               [routerLink]="['/farm', 'cow', 'dam', matri?.earTagId]">{{ matri?.earTagId }} {{ matri?.name! | titlecase }}</a>
+                            <ng-template #noMatri>{{ dam?.matriId }}</ng-template>
+                        </p>
 
-
-  <article *ngIf="article$ | async as article" class="dam-article-container">
-      <section *ngFor="let section of article.sections" class="dam-section">
-          <h4 *ngIf="section?.title">{{ section?.title }}</h4>
-          <p *ngIf="section?.ingress">{{ section?.ingress }}</p>
-          <p *ngIf="section?.body">{{ section?.body }}</p>
-
-          <figure *ngIf="section?.imageContentType" class="figure dam-section-figure">
-              <img [src]="'data:' + section?.imageContentType + ';base64,' + section?.image" alt="" class="figure-img img-fluid">
-              <figcaption *ngIf="section?.caption" class="figure-caption">{{section?.caption}}</figcaption>
-          </figure>
-      </section>
-  </article>  
-
-  <h3>Pictures</h3>
-
-  <div *ngFor="let pic of pictures$ | async" class="dam-item p-2">    
-    <figure class="dam-figure figure" [jhiBonVisibilityClass]="pic?.visibility">
-      <img [jhiCowPicture]="pic"
-        sizes="(min-width: 768px) 50vw, 100vw"
-        alt="{{ pic?.caption }}" 
-        class="img-fluid" />
-    </figure>
-  </div>
-
+                        <p *ngIf="patri$ | async as patri">
+                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.patri">PATRI</span>
+                            <span>:</span>
+                            <a *ngIf="patri; else noPatri"
+                               [title]="'Patri ' + patri?.earTagId"
+                               [routerLink]="['/farm', 'cow', 'sire', patri?.earTagId]">{{ patri?.earTagId }} {{ patri?.name! | titlecase }}</a>
+                            <ng-template #noPatri>{{ dam?.patriId }}</ng-template>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div *ngFor="let pic of pictures$ | async" class="dam-item" [jhiBonVisibilityClass]="pic?.visibility">
+                <figure class="dam-figure figure">
+                    <img [jhiCowPicture]="pic"
+                         src="http://populated.by.directive"
+                         sizes="(min-width: 992px) 75vw, 100vw"
+                         alt="{{ pic?.caption }}"
+                         class="img-fluid dam-img"/>
+                </figure>
+            </div>
+        </div>
+    </div>
 </div>

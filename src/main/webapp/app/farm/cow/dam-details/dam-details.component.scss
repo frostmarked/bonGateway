@@ -1,3 +1,9 @@
+@import 'src/main/webapp/content/scss/bon';
+
+.dam-card {
+  font-size: 1.4rem;
+}
+
 .dam-item {
   &.is-role-user,
   &.is-role-admin {
@@ -6,15 +12,7 @@
 }
 
 .dam-img {
-  min-width: 200px;
-  max-width: 400px;
-  min-height: 200px;
-}
-
-a > .dam-figure {
-  font-size: 1.5rem;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  border: 2px solid $primary-color;
+  padding: 3px;
+  border-radius: 5px 5px 5px 5px/25px 25px 25px 5px;
 }

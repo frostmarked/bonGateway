@@ -4,6 +4,12 @@
     "browsehappy": "Du använder en <strong>gammal webbläsare</strong>. <a href=\"http://browsehappy.com/?locale=en\">Uppgradera din webbläsare</a> för bästa upplevelse.",
     "menu": {
       "home": "Hem",
+      "farm": {
+        "linage": "Kolinjer",
+        "sire": "Avelstjurar",
+        "company": "Om oss",
+        "contact": "Kontakt"
+      },
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entiter",
@@ -147,5 +153,5 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "Detta är din footer"
+  "footer": "Copyright © 2002 - {{currentYear}} limousin.se. All rights reserved"
 }

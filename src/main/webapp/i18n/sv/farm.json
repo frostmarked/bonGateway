@@ -6,10 +6,21 @@
           "title": "Kolinjer"
         },
         "linage-details": {
-          "title": "Kolinje {{ earTagId }} {{ familyname }}"
+          "title": "Kolinje {{ earTagId }} {{ familyname }}",
+          "descendants": "Ättlingar"
         },
         "dam-details": {
-          "title": "Ko {{ earTagId }} {{ familyname }}"
+          "title": "Ko {{ earTagId }} {{ familyname }}",
+          "dam-card": {
+            "header": "Data",
+            "lineage": "Kolinje",
+            "born": "Född",
+            "w0": "Födelsevikt",
+            "w200": "200-dagarsvikt",
+            "w365": "1-årsvikt",
+            "matri": "Moder",
+            "patri": "Fader"
+          }
         },
         "sire-list": {
           "title": "Avelstjurar"

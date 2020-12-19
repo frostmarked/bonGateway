@@ -19,28 +19,28 @@
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/farm/cow/linage" (click)="collapseNavbar()">
                     <span>
-                        <span>Linage</span>
+                        <span jhiTranslate="global.menu.farm.linage">Lineage</span>
                     </span>
                 </a>
             </li>
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/farm/cow/sire" (click)="collapseNavbar()">
                     <span>
-                        <span>Sires</span>
+                       <span jhiTranslate="global.menu.farm.sire">Sires</span>
                     </span>
                 </a>
             </li>
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/farm/aboutus/company" (click)="collapseNavbar()">
                     <span>
-                        <span>Company</span>
+                        <span jhiTranslate="global.menu.farm.company">Company</span>
                     </span>
                 </a>
             </li>
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/farm/aboutus/contact" (click)="collapseNavbar()">
                     <span>
-                        <span>Contact</span>
+                        <span jhiTranslate="global.menu.farm.contact">Contact</span>
                     </span>
                 </a>
             </li>
@@ -205,7 +205,7 @@
                             <span jhiTranslate="global.menu.admin.database">Database</span>
                         </a>
                     </li>
-                    <li>                        
+                    <li>
                         <a class="dropdown-item" routerLink="account/register" routerLinkActive="active" (click)="collapseNavbar()">
                             <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
                             <span jhiTranslate="global.menu.account.register">Register</span>
@@ -263,12 +263,12 @@
                             <span jhiTranslate="global.menu.account.login">Sign in</span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="false" >                        
+                    <li *ngSwitchCase="false" >
                         <a *ngIf="publicAccountRegistration" class="dropdown-item" routerLink="account/register" routerLinkActive="active" (click)="collapseNavbar()">
                             <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
                             <span jhiTranslate="global.menu.account.register">Register</span>
                         </a>
-                    </li>                    
+                    </li>
                 </ul>
             </li>
         </ul>

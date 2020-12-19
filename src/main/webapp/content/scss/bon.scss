@@ -1,0 +1,29 @@
+@import 'bootstrap-variables';
+@import '~bootstrap/scss/functions';
+@import '~bootswatch/dist/sketchy/variables';
+@import '~bootstrap/scss/variables';
+
+$primary-color: theme-color('primary');
+
+body {
+  color: $primary-color;
+}
+
+.navbar.bg-primary {
+  color: $primary-color;
+  border-color: $primary-color;
+
+  a.dropdown-item {
+    &.active {
+      background-color: $primary-color !important;
+    }
+  }
+}
+
+.img-thumbnail {
+  border-color: $primary-color;
+}
+
+.card {
+  border-color: $primary-color;
+}
