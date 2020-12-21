@@ -1,18 +1,17 @@
 version: '2'
 services:
-
   bonreplicaservice-app:
     image: bonreplicaservice
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/eureka
-      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/config
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/bonReplicaService # use shared postgres
-      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
-      - SPRING_LIQUIBASE_CONTEXTS=prod,faker #test data from faker
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://bonfamily-rdb-postgresql:5432/bonReplicaService # use shared postgres
+      - JHIPSTER_SLEEP=60 # gives time for other services to boot before the application
+      - KAFKA_BOOTSTRAPSERVERS=kafka:29092
+      - SPRING_LIQUIBASE_CONTEXTS=core,prod
     ports:
       - 9002:9002
 
@@ -22,12 +21,12 @@ services:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/eureka
-      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/config
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/bonLivestockService # use shared postgres
-      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
-      - SPRING_LIQUIBASE_CONTEXTS=prod,faker #test data from faker
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://bonfamily-rdb-postgresql:5432/bonLivestockService # use shared postgres
+      - JHIPSTER_SLEEP=60 # gives time for other services to boot before the application
+      - KAFKA_BOOTSTRAPSERVERS=kafka:29092
+      - SPRING_LIQUIBASE_CONTEXTS=core,prod
     ports:
       - 9001:9001
 
@@ -37,14 +36,14 @@ services:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/eureka
-      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@host.docker.internal:8761/config
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/bonContentService # use shared postgres
-      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-      - SPRING_DATA_JEST_URI=http://host.docker.internal:9200 # use shared elasticsearch
-      - SPRING_ELASTICSEARCH_REST_URIS=http://host.docker.internal:9200 # use shared elasticsearch
-      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
-      - SPRING_LIQUIBASE_CONTEXTS=prod,faker #test data from faker
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://bonfamily-rdb-postgresql:5432/bonContentService # use shared postgres
+      - JHIPSTER_SLEEP=60 # gives time for other services to boot before the application
+      - SPRING_DATA_JEST_URI=http://bonfamily-elasticsearch:9200 # use shared elasticsearch
+      - SPRING_ELASTICSEARCH_REST_URIS=http://bonfamily-elasticsearch:9200 # use shared elasticsearch
+      - KAFKA_BOOTSTRAPSERVERS=kafka:29092
+      - SPRING_LIQUIBASE_CONTEXTS=core,prod
     ports:
       - 9003:9003
 
