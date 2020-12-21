@@ -22,20 +22,25 @@ public class CowPictureSourceService extends AbstractPictureSourceService<PhotoE
 	@Override
 	public Optional<PictureSourceVO> createPictureSourceVO(PhotoEntity entity, PictureSize pictureSize)
 			throws IOException, MimeTypeException {
-		if(pictureSize.pixelWidth() != null && pictureSize.pixelWidth() > entity.getWidth()) {
-			return Optional.empty();
-		}
-		Integer earTagId = entity.getCattle().getEarTagId();
-		String imageExt = getImageExtension(entity.getImageContentType());
-		String imageName = getImageName(earTagId, entity.getId(), pictureSize, imageExt);		
-		Path imagePath = storeImageOnDisk(imageName, entity.getImage(), pictureSize);		
-		ImmutablePair<Integer, Integer> widthHeighPair = getImageWidthAndHeight(imagePath);
+        if(pictureSize.pixelWidth() == null) {
+            return Optional.empty();
+        }
+        ImmutablePair<Integer, Integer> orgWidthHeightPair = getImageWidthAndHeight(entity.getImage());
+        if(pictureSize.pixelWidth() > orgWidthHeightPair.getLeft()) {
+            return Optional.empty();
+        }
+
+        Integer earTagId = entity.getCattle().getEarTagId();
+        String imageExt = getImageExtension(entity.getImageContentType());
+        String imageName = getImageName(earTagId, entity.getId(), pictureSize, imageExt);
+        Path imagePath = storeImageOnDisk(imageName, entity.getImage(), pictureSize);
+        ImmutablePair<Integer, Integer> widthHeightPair = getImageWidthAndHeight(imagePath);
 
 		PictureSourceVO ps = new PictureSourceVO();
 		ps.setContentType(entity.getImageContentType());
 		ps.setName(imageName);
-		ps.setWidth(widthHeighPair.getLeft());
-		ps.setHeight(widthHeighPair.getRight());		
+		ps.setWidth(widthHeightPair.getLeft());
+		ps.setHeight(widthHeightPair.getRight());
 
 		return Optional.of(ps);
 	}

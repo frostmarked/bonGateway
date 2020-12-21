@@ -3,6 +3,7 @@ package com.bonlimousin.gateway.bff.service;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +28,7 @@ public abstract class AbstractPictureSourceService<T> {
 	private final String imagePrefix;
 	private final String imageBaseDir;
 
-	public AbstractPictureSourceService(String imageBaseDir, String imagePrefix) {
+	protected AbstractPictureSourceService(String imageBaseDir, String imagePrefix) {
 		super();
 		this.imageBaseDir = imageBaseDir;
 		this.imagePrefix = imagePrefix;
@@ -39,7 +40,7 @@ public abstract class AbstractPictureSourceService<T> {
 
 		private final Integer pixelWidth;
 
-		private PictureSize(Integer pixelWidth) {
+		PictureSize(Integer pixelWidth) {
 			this.pixelWidth = pixelWidth;
 		}
 
@@ -51,7 +52,7 @@ public abstract class AbstractPictureSourceService<T> {
 	public List<PictureSourceVO> createPictureSourceVOs(T entity) throws MimeTypeException, IOException {
 		List<PictureSourceVO> list = new ArrayList<>();
 		for (PictureSize picSize : PictureSize.values()) {
-			createPictureSourceVO(entity, picSize).ifPresent(list::add);			
+			createPictureSourceVO(entity, picSize).ifPresent(list::add);
 		}
 		return list;
 	}
@@ -61,7 +62,7 @@ public abstract class AbstractPictureSourceService<T> {
 
 	public String getImageExtension(String contentType) throws MimeTypeException {
 		String imageExt = MimeTypes.getDefaultMimeTypes().forName(contentType).getExtension();
-		if (StringUtils.trimToEmpty(imageExt).isBlank()) {
+		if (StringUtils.trimToEmpty(imageExt).isEmpty()) {
 			throw new MimeTypeException("Unknow file-extension for content-type " + contentType);
 		}
 		return imageExt;
@@ -84,7 +85,7 @@ public abstract class AbstractPictureSourceService<T> {
 		}
 		return list;
 	}
-	
+
 	public Path getImagePath(String imageName) {
 		return Paths.get(imageBaseDir, imageName);
 	}
@@ -102,6 +103,13 @@ public abstract class AbstractPictureSourceService<T> {
 		BufferedImage bimg = ImageIO.read(imagePath.toFile());
 		return new ImmutablePair<>(bimg.getWidth(), bimg.getHeight());
 	}
+
+    public ImmutablePair<Integer, Integer> getImageWidthAndHeight(byte[] image) throws IOException {
+	    try(InputStream is = new ByteArrayInputStream(image)) {
+            BufferedImage bimg = ImageIO.read(is);
+            return new ImmutablePair<>(bimg.getWidth(), bimg.getHeight());
+        }
+    }
 
 	public Path storeImageOnDisk(String imageName, byte[] image, PictureSize pictureSize) throws IOException {
 		Path imageBasePath = Paths.get(imageBaseDir);
