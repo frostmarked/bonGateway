@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FindLinagesGQL, FindCowPicturesGQL, PictureVo } from 'app/bonpublicgraphql/bonpublicgraphql';
 import { map, startWith, finalize } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { DEFAULT_PICTURE } from 'app/shared/bon/picturevo-util';
+import { DEFAULT_PICTURE, randomPictureVoFromPicsum } from 'app/shared/bon/picturevo-util';
 
 interface LinageItemVM {
   id: number;
@@ -55,7 +55,7 @@ export class LinageListComponent implements OnInit {
   private getLinagePicture(earTagId: number): Observable<PictureVo> {
     return this.findCowPicturesGQL.fetch({ earTagId, size: 1 }).pipe(
       map(result => result.data.apiPublicCowsPictures),
-      map(pics => (pics && pics[0] ? pics[0] : DEFAULT_PICTURE)),
+      map(pics => (pics && pics[0] ? pics[0] : randomPictureVoFromPicsum('seed' + earTagId))),
       startWith(DEFAULT_PICTURE)
     );
   }

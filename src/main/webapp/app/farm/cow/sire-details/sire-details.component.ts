@@ -5,7 +5,7 @@ import { map, finalize, startWith } from 'rxjs/operators';
 import { Observable, BehaviorSubject, EMPTY } from 'rxjs';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { DEFAULT_PICTURE } from 'app/shared/bon/picturevo-util';
+import { DEFAULT_PICTURE, randomPictureVosFromPicsum } from 'app/shared/bon/picturevo-util';
 
 @Component({
   selector: 'jhi-sire-details',
@@ -60,7 +60,7 @@ export class SireDetailsComponent implements OnInit {
         if (pics && pics.length) {
           return pics;
         } else {
-          return [DEFAULT_PICTURE];
+          return randomPictureVosFromPicsum(1, 3, 'seed' + earTagId, 1200, 900);
         }
       }),
       startWith([DEFAULT_PICTURE])

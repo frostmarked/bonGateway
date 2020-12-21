@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col-lg-3">
             <div *ngIf="dam" class="dam-container" [jhiBonVisibilityClass]="dam?.visibility">
-                <div class="dam-card card">
+                <div class="dam-card card mb-4">
                     <div class="card-header">
                         <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.header">Data</span>
                     </div>
@@ -50,19 +50,19 @@
                             <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.w0">WO</span>
                             <span>:</span>
                             <span>{{ dam!.weight0 }}</span>
-                            <span>kg</span>
+                            <span *ngIf="dam.weight0">kg</span>
                         </p>
                         <p>
                             <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.w200">W200</span>
                             <span>:</span>
                             <span>{{ dam!.weight200 }}</span>
-                            <span>kg</span>
+                            <span *ngIf="dam.weight200">kg</span>
                         </p>
                         <p>
                             <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.w365">W365</span>
                             <span>:</span>
                             <span>{{ dam!.weight365 }}</span>
-                            <span>kg</span>
+                            <span *ngIf="dam.weight365">kg</span>
                         </p>
 
                         <p *ngIf="matri$ | async as matri">

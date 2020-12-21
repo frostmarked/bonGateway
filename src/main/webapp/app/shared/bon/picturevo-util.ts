@@ -53,3 +53,31 @@ export const pickFirstPictureSourceUrl = (
     return fallbackImage;
   }
 };
+
+export const randomPictureVoFromPicsum = (picsumSeed = 'bonlim', width = 400, height = 300): PictureVo => {
+  const url = `https://picsum.photos/seed/${picsumSeed}/${width}/${height}.jpg?grayscale`;
+  return {
+    id: 1,
+    caption: picsumSeed,
+    visibility: Visibility.RoleAnonymous,
+    taken: new Date().toISOString(),
+    sources: [
+      {
+        name: picsumSeed,
+        url,
+        width,
+        height,
+        contentType: 'image/jpeg',
+      } as PictureSourceVo,
+    ],
+  } as PictureVo;
+};
+
+export const randomPictureVosFromPicsum = (minimum = 1, maximum = 3, picsumSeed = 'bonlim', width = 400, height = 300): PictureVo[] => {
+  const randomnumber = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+  const pics = [];
+  for (let i = 0; i < randomnumber; i++) {
+    pics.push(randomPictureVoFromPicsum(picsumSeed + '-' + i, width, height));
+  }
+  return pics;
+};
