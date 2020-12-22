@@ -3,15 +3,8 @@
         <span jhiTranslate="bonGatewayApp.farm.cow.sire-list.title">Sires</span>
     </h1>
 
-    <div>
-        <div class="clearfix" *ngIf="loading$ | async">
-            <div class="spinner-border spinner-border-sm float-right" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <jhi-alert-error></jhi-alert-error>
-        <jhi-alert></jhi-alert>
-    </div>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
 
     <div class="sire-container d-flex align-content-start flex-wrap">
         <div *ngFor="let sire of sires$ | async" class="sire-item p-2" [jhiBonVisibilityClass]="sire?.visibility">

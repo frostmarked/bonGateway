@@ -8,6 +8,8 @@ import { DamDetailsComponent } from './dam-details/dam-details.component';
 import { LinageListComponent } from './linage-list/linage-list.component';
 import { LinageDetailsComponent } from './linage-details/linage-details.component';
 import { BonGatewaySharedModule } from 'app/shared/shared.module';
+import { CowCardComponent } from './shared/cow-card/cow-card.component';
+import { CowArticleComponent } from './shared/cow-article/cow-article.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { BonGatewaySharedModule } from 'app/shared/shared.module';
     DamDetailsComponent,
     LinageListComponent,
     LinageDetailsComponent,
+    CowCardComponent,
+    CowArticleComponent,
   ],
   imports: [BonGatewaySharedModule, CowRoutingModule],
 })

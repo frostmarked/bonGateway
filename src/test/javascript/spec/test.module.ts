@@ -15,6 +15,18 @@ import { MockActivatedRoute, MockRouter } from './helpers/mock-route.service';
 import { MockActiveModal } from './helpers/mock-active-modal.service';
 import { MockAlertService } from './helpers/mock-alert.service';
 import { MockEventManager } from './helpers/mock-event-manager.service';
+import { TranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
+
+export class MockTranslateService {
+  public get(key: any): any {
+    of(key);
+  }
+
+  public onLangChange(event: any): any {
+    of(event);
+  }
+}
 
 @NgModule({
   providers: [
@@ -25,6 +37,10 @@ import { MockEventManager } from './helpers/mock-event-manager.service';
     {
       provide: JhiLanguageService,
       useClass: MockLanguageService,
+    },
+    {
+      provide: TranslateService,
+      useClass: MockTranslateService,
     },
     {
       provide: JhiEventManager,

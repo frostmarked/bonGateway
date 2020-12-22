@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FindCowPicturesGQL, FindCowsGQL, PictureVo, GenderEquals } from 'app/bonpublicgraphql/bonpublicgraphql';
-import { DEFAULT_PICTURE } from 'app/shared/bon/picturevo-util';
-import { map, startWith, finalize } from 'rxjs/operators';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { CowService } from 'app/farm/cow/cow.service';
 
 interface SireItemVM {
   id: number;
@@ -19,18 +19,15 @@ interface SireItemVM {
   styleUrls: ['./sire-list.component.scss'],
 })
 export class SireListComponent implements OnInit {
-  loadingSubject = new BehaviorSubject<boolean>(false);
-  loading$ = this.loadingSubject.asObservable();
   sires$?: Observable<Array<SireItemVM>>;
 
-  constructor(private findCowsGQL: FindCowsGQL, private findCowPicturesGQL: FindCowPicturesGQL) {}
+  constructor(private findCowsGQL: FindCowsGQL, private findCowPicturesGQL: FindCowPicturesGQL, private cowService: CowService) {}
 
   ngOnInit(): void {
     this.sires$ = this.getSires();
   }
 
   private getSires(): Observable<Array<SireItemVM>> {
-    setTimeout(() => this.loadingSubject.next(true));
     return this.findCowsGQL.fetch({ genderEquals: GenderEquals.Bull, size: 100, sort: ['earTagId,desc'] }).pipe(
       map(result => result.data.apiPublicCows),
       map(cows =>
@@ -40,19 +37,10 @@ export class SireListComponent implements OnInit {
               earTagId: cow!.earTagId,
               name: cow!.name,
               visibility: cow!.visibility,
-              picture$: this.getCowPicture(cow!.earTagId!),
+              picture$: this.cowService.getFirstCowPicture(cow!.earTagId!),
             } as SireItemVM)
         )
-      ),
-      finalize(() => this.loadingSubject.next(false))
-    );
-  }
-
-  private getCowPicture(earTagId: number): Observable<PictureVo> {
-    return this.findCowPicturesGQL.fetch({ earTagId, size: 1 }).pipe(
-      map(result => result.data.apiPublicCowsPictures),
-      map(pics => (pics && pics[0] ? pics[0] : DEFAULT_PICTURE)),
-      startWith(DEFAULT_PICTURE)
+      )
     );
   }
 }

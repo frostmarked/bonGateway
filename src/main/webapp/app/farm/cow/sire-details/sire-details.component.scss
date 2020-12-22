@@ -1,0 +1,14 @@
+@import 'src/main/webapp/content/scss/bon';
+
+.sire-item {
+  &.is-role-user,
+  &.is-role-admin {
+    opacity: 0.5;
+  }
+}
+
+.sire-img {
+  border: 2px solid $primary-color;
+  padding: 3px;
+  border-radius: 5px 5px 5px 5px/25px 25px 25px 5px;
+}

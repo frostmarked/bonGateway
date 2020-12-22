@@ -1,0 +1,54 @@
+<div *ngIf="cow" class="cow-card card mb-4">
+    <div class="card-header">
+        <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.header">Data</span>
+    </div>
+    <div class="card-body">
+        <p *ngIf="cow.linageId">
+            <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.lineage">Lineage</span>
+            <span>:</span>
+            <a [routerLink]="['/farm', 'cow', 'linage', cow?.linageId]">{{ cow?.linageId }} {{ cow?.linageName! | titlecase }}</a>
+        </p>
+        <p>
+            <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.born">BORN</span>
+            <span>:</span>
+            <span>{{ cow!.birthDate | date:'yyyy-MM-dd' }}</span>
+        </p>
+        <p>
+            <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.w0">WO</span>
+            <span>:</span>
+            <span>{{ cow!.weight0 }}</span>
+            <span *ngIf="cow.weight0">kg</span>
+        </p>
+        <p>
+            <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.w200">W200</span>
+            <span>:</span>
+            <span>{{ cow!.weight200 }}</span>
+            <span *ngIf="cow.weight200">kg</span>
+        </p>
+        <p>
+            <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.w365">W365</span>
+            <span>:</span>
+            <span>{{ cow!.weight365 }}</span>
+            <span *ngIf="cow.weight365">kg</span>
+        </p>
+
+        <p *ngIf="matri">
+            <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.matri">MATRI</span>
+            <span>:</span>
+            <a *ngIf="matri; else noMatri"
+               [title]="'Matri ' + matri?.earTagId"
+               [routerLink]="['/farm', 'cow', 'dam', matri?.earTagId]">{{ matri?.earTagId }} {{ matri?.name! | titlecase }}</a>
+            <ng-template #noMatri>{{ cow?.matriId }}</ng-template>
+        </p>
+
+        <p *ngIf="patri">
+            <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.patri">PATRI</span>
+            <span>:</span>
+            <a *ngIf="patri; else noPatri"
+               [title]="'Patri ' + patri?.earTagId"
+               [routerLink]="['/farm', 'cow', 'sire', patri?.earTagId]">{{ patri?.earTagId }} {{ patri?.name! | titlecase }}</a>
+            <ng-template #noPatri>{{ cow?.patriId }}</ng-template>
+        </p>
+    </div>
+</div>
+

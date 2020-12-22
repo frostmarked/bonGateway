@@ -2,16 +2,8 @@
   "bonGatewayApp": {
     "farm": {
       "cow": {
-        "linage-list": {
-          "title": "Kolinjer"
-        },
-        "linage-details": {
-          "title": "Kolinje {{ earTagId }} {{ familyname }}",
-          "descendants": "Ättlingar"
-        },
-        "dam-details": {
-          "title": "Ko {{ earTagId }} {{ familyname }}",
-          "dam-card": {
+        "shared": {
+          "cow-card": {
             "header": "Data",
             "lineage": "Kolinje",
             "born": "Född",
@@ -21,6 +13,16 @@
             "matri": "Moder",
             "patri": "Fader"
           }
+        },
+        "linage-list": {
+          "title": "Kolinjer"
+        },
+        "linage-details": {
+          "title": "Kolinje {{ earTagId }} {{ familyname }}",
+          "descendants": "Ättlingar"
+        },
+        "dam-details": {
+          "title": "Ko {{ earTagId }} {{ familyname }}"
         },
         "sire-list": {
           "title": "Avelstjurar"
