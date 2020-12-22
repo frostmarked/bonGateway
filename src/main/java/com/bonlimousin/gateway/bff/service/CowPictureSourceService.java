@@ -22,11 +22,8 @@ public class CowPictureSourceService extends AbstractPictureSourceService<PhotoE
 	@Override
 	public Optional<PictureSourceVO> createPictureSourceVO(PhotoEntity entity, PictureSize pictureSize)
 			throws IOException, MimeTypeException {
-        if(pictureSize.pixelWidth() == null) {
-            return Optional.empty();
-        }
         ImmutablePair<Integer, Integer> orgWidthHeightPair = getImageWidthAndHeight(entity.getImage());
-        if(pictureSize.pixelWidth() > orgWidthHeightPair.getLeft()) {
+        if(pictureSize != PictureSize.ORIGINAL && pictureSize.pixelWidth() > orgWidthHeightPair.getLeft()) {
             return Optional.empty();
         }
 
