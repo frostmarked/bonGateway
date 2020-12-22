@@ -19,6 +19,7 @@ import { ErrorHandlerInterceptor } from 'app/blocks/interceptor/errorhandler.int
 import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
 
 import { fontAwesomeIcons } from './icons/font-awesome-icons';
+import { SpinnerInterceptor } from 'app/shared/bon/spinner/spinner.interceptor';
 
 @NgModule({
   imports: [
@@ -71,6 +72,11 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: NotificationInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
       multi: true,
     },
   ],
