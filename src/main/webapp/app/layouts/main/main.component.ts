@@ -5,6 +5,10 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 import { AccountService } from 'app/core/auth/account.service';
 
+import { delay } from 'rxjs/operators';
+import { SpinnerService } from 'app/shared/bon/spinner/spinner.service';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'jhi-main',
   templateUrl: './main.component.html',
@@ -12,14 +16,18 @@ import { AccountService } from 'app/core/auth/account.service';
 export class MainComponent implements OnInit {
   private renderer: Renderer2;
 
+  spinner$: Observable<boolean>;
+
   constructor(
     private accountService: AccountService,
     private titleService: Title,
     private router: Router,
     private translateService: TranslateService,
-    rootRenderer: RendererFactory2
+    rootRenderer: RendererFactory2,
+    private spinnerService: SpinnerService
   ) {
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
+    this.spinner$ = this.spinnerService.spinnerSubject.pipe(delay(0)); // This prevents a ExpressionChangedAfterItHasBeenCheckedError for subsequent requests
   }
 
   ngOnInit(): void {

@@ -4,6 +4,12 @@
     <router-outlet name="navbar"></router-outlet>
 </div>
 
+<div class="clearfix" *ngIf="spinner$ | async">
+    <div class="spinner-border spinner-border-sm float-right" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
 <div class="container-fluid">
     <div class="card jh-card">
         <router-outlet></router-outlet>
