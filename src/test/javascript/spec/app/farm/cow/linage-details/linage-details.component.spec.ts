@@ -130,15 +130,15 @@ describe('Component Tests', () => {
         contentType: 'image/png',
         width: 192,
         height: 192,
-        url: '/api/public/cows/200/pictures/1/cow1_1.png'
+        url: '/api/public/cows/200/pictures/1/cow1_1.png',
       } as PictureSourceVo;
-  
+
       const TEST_PICTURE = {
         id: 1,
         taken: Date.now().toLocaleString(),
         visibility: Visibility.RoleAnonymous,
         caption: 'cap',
-        sources: [TEST_PICTURE_SOURCE]
+        sources: [TEST_PICTURE_SOURCE],
       } as PictureVo;
       const API_PICTURES_RESPONSE$ = of(
         {
@@ -173,7 +173,7 @@ describe('Component Tests', () => {
         dams[0].picture$.subscribe(picture => {
           const ps = picture?.sources ? picture?.sources[0] : null;
           if (imageCount === 0) {
-            // startwith default            
+            // startwith default
             expect(ps?.url).toContain('/content/images/');
             imageCount++;
           } else if (imageCount === 1) {
@@ -182,7 +182,7 @@ describe('Component Tests', () => {
             imageCount++;
           } else {
             // didnt find any image
-            expect(ps?.url).toContain('/content/images/');
+            expect(ps?.url).toContain('https://picsum.photos');
             done();
           }
         });

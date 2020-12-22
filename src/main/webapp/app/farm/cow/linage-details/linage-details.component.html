@@ -4,15 +4,8 @@
               [translateValues]="{ earTagId: linage?.earTagId, familyname: linage?.familyname }">Linage X</span>
     </h1>
 
-    <div>
-        <div class="clearfix" *ngIf="loading$ | async">
-            <div class="spinner-border spinner-border-sm float-right" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <jhi-alert-error></jhi-alert-error>
-        <jhi-alert></jhi-alert>
-    </div>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
 
     <article *ngIf="article$ | async as article" class="linage-article-container">
         <section *ngFor="let section of article.sections" class="linage-section">

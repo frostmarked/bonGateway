@@ -5,85 +5,16 @@
     </h1>
 
     <div>
-        <div class="clearfix" *ngIf="loading$ | async">
-            <div class="spinner-border spinner-border-sm float-right" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
         <jhi-alert-error></jhi-alert-error>
         <jhi-alert></jhi-alert>
     </div>
 
-    <article *ngIf="article$ | async as article" class="dam-article-container">
-        <section *ngFor="let section of article.sections" class="dam-section">
-            <h4 *ngIf="section?.title">{{ section?.title }}</h4>
-            <p *ngIf="section?.ingress">{{ section?.ingress }}</p>
-            <p *ngIf="section?.body">{{ section?.body }}</p>
-
-            <figure *ngIf="section?.imageContentType" class="figure dam-section-figure">
-                <img [src]="'data:' + section?.imageContentType + ';base64,' + section?.image" alt=""
-                     class="figure-img img-fluid">
-                <figcaption *ngIf="section?.caption" class="figure-caption">{{section?.caption}}</figcaption>
-            </figure>
-        </section>
-    </article>
+    <jhi-cow-article [article]="article$ | async"></jhi-cow-article>
 
     <div class="row">
         <div class="col-lg-3">
             <div *ngIf="dam" class="dam-container" [jhiBonVisibilityClass]="dam?.visibility">
-                <div class="dam-card card mb-4">
-                    <div class="card-header">
-                        <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.header">Data</span>
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.lineage">Lineage</span>
-                            <span>:</span>
-                            <a [routerLink]="['/farm', 'cow', 'linage', dam?.linageId]">{{ dam?.linageId }} {{ dam?.linageName! | titlecase }}</a>
-                        </p>
-                        <p>
-                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.born">BORN</span>
-                            <span>:</span>
-                            <span>{{ dam!.birthDate | date:'yyyy-MM-dd' }}</span>
-                        </p>
-                        <p>
-                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.w0">WO</span>
-                            <span>:</span>
-                            <span>{{ dam!.weight0 }}</span>
-                            <span *ngIf="dam.weight0">kg</span>
-                        </p>
-                        <p>
-                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.w200">W200</span>
-                            <span>:</span>
-                            <span>{{ dam!.weight200 }}</span>
-                            <span *ngIf="dam.weight200">kg</span>
-                        </p>
-                        <p>
-                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.w365">W365</span>
-                            <span>:</span>
-                            <span>{{ dam!.weight365 }}</span>
-                            <span *ngIf="dam.weight365">kg</span>
-                        </p>
-
-                        <p *ngIf="matri$ | async as matri">
-                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.matri">MATRI</span>
-                            <span>:</span>
-                            <a *ngIf="matri; else noMatri"
-                               [title]="'Matri ' + matri?.earTagId"
-                               [routerLink]="['/farm', 'cow', 'dam', matri?.earTagId]">{{ matri?.earTagId }} {{ matri?.name! | titlecase }}</a>
-                            <ng-template #noMatri>{{ dam?.matriId }}</ng-template>
-                        </p>
-
-                        <p *ngIf="patri$ | async as patri">
-                            <span jhiTranslate="bonGatewayApp.farm.cow.dam-details.dam-card.patri">PATRI</span>
-                            <span>:</span>
-                            <a *ngIf="patri; else noPatri"
-                               [title]="'Patri ' + patri?.earTagId"
-                               [routerLink]="['/farm', 'cow', 'sire', patri?.earTagId]">{{ patri?.earTagId }} {{ patri?.name! | titlecase }}</a>
-                            <ng-template #noPatri>{{ dam?.patriId }}</ng-template>
-                        </p>
-                    </div>
-                </div>
+                <jhi-cow-card [cow]="dam" [matri]="matri$ | async" [patri]="patri$ | async"></jhi-cow-card>
             </div>
         </div>
         <div class="col-lg-9">

@@ -103,7 +103,7 @@ describe('Component Tests', () => {
             imageCount++;
           } else {
             // didnt find any image
-            expect(ps?.url).toContain('/content/images/');
+            expect(ps?.url).toContain('https://picsum.photos');
             done();
           }
         });

@@ -7,13 +7,13 @@ import { of } from 'rxjs';
 
 import { BonGatewayTestModule } from 'src/test/javascript/spec/test.module';
 import { LinageListComponent } from 'app/farm/cow/linage-list/linage-list.component';
-import { 
-  FindLinagesGQL, 
-  FindCowPicturesGQL, 
-  LinageVo, 
+import {
+  FindLinagesGQL,
+  FindCowPicturesGQL,
+  LinageVo,
   PictureVo,
-  PictureSourceVo, 
-  Visibility
+  PictureSourceVo,
+  Visibility,
 } from 'app/bonpublicgraphql/bonpublicgraphql';
 import { ApolloModule } from 'apollo-angular';
 import { BonVisibilityClassDirective } from 'app/shared/bon/bon-visibility-class.directive';
@@ -58,15 +58,15 @@ describe('Component Tests', () => {
         contentType: 'image/png',
         width: 192,
         height: 192,
-        url: '/api/public/cows/200/pictures/1/cow1_1.png'
+        url: '/api/public/cows/200/pictures/1/cow1_1.png',
       } as PictureSourceVo;
-  
+
       const TEST_PICTURE = {
         id: 1,
         taken: Date.now().toLocaleString(),
         visibility: Visibility.RoleAnonymous,
         caption: 'cap',
-        sources: [TEST_PICTURE_SOURCE]
+        sources: [TEST_PICTURE_SOURCE],
       } as PictureVo;
       const API_PICTURES_RESPONSE$ = of(
         {
@@ -109,7 +109,7 @@ describe('Component Tests', () => {
             imageCount++;
           } else {
             // didnt find any image
-            expect(ps?.url).toContain('/content/images/');
+            expect(ps?.url).toContain('https://picsum.photos');
             done();
           }
         });
