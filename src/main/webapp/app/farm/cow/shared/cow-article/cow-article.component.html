@@ -1,10 +1,10 @@
-<article *ngIf="article" class="cow-article-container">
+<article *ngIf="article" class="bon-article cow-article-container">
     <section *ngFor="let section of article.sections" [ngSwitch]="section?.template" [className]="'cow-article-section is-template-' + section?.template">
         <ng-template [ngSwitchCase]="'V1'">
             <h3 *ngIf="section?.title">{{ section?.title }}</h3>
             <p *ngIf="section?.ingress">{{ section?.ingress }}</p>
             <div>
-                <p *ngIf="section?.body">{{ section?.body }}</p>
+                <p *ngIf="section?.body"><markdown [data]="section!.body!"></markdown></p>
                 <figure *ngIf="section?.imageContentType" class="figure cow-section-figure">
                     <img [src]="'data:' + section?.imageContentType + ';base64,' + section?.image" alt=""
                          class="figure-img img-fluid" [width]="section?.width" [height]="section?.height">
@@ -19,7 +19,7 @@
                 <p *ngIf="section?.body" class="clearfix">
                     <img [src]="'data:' + section?.imageContentType + ';base64,' + section?.image" alt=""
                                               class="cow-article-section-img img-fluid" [width]="section?.width" [height]="section?.height">
-                    {{ section?.body }}
+                    <markdown [data]="section!.body!"></markdown>
                 </p>
             </div>
         </ng-template>
@@ -30,7 +30,7 @@
                 <p *ngIf="section?.body" class="clearfix">
                     <img [src]="'data:' + section?.imageContentType + ';base64,' + section?.image" alt=""
                          class="cow-article-section-img img-fluid" [width]="section?.width" [height]="section?.height">
-                    {{ section?.body }}
+                    <markdown [data]="section!.body!"></markdown>
                 </p>
             </div>
         </ng-template>
