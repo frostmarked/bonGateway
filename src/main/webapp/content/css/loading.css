@@ -117,7 +117,7 @@
   width: 120px;
   height: 60px;
   border-radius: 120px 120px 0 0;
-  background: #bbcedd;
+  background: yellow;
   -webkit-animation: lds-pacman-1 1s linear infinite;
   animation: lds-pacman-1 1s linear infinite;
   -webkit-transform-origin: 60px 60px;
@@ -129,11 +129,11 @@
 }
 .app-loading .lds-pacman > div:nth-child(1) div {
   position: absolute;
-  top: 97px;
+  top: 90px;
   left: -8px;
   width: 24px;
-  height: 10px;
-  background-image: url('../images/logo-jhipster.png');
+  height: 24px;
+  background-image: url('../images/bon/simple-cow-logo-limousin.png');
   background-size: contain;
   -webkit-animation: lds-pacman-3 1s linear infinite;
   animation: lds-pacman-3 1.5s linear infinite;
