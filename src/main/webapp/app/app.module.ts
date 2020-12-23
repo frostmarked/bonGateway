@@ -16,6 +16,7 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 
 import { BonPublicGraphQLModule } from 'app/bonpublicgraphql/bonpublicgraphql.module';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { BonPublicGraphQLModule } from 'app/bonpublicgraphql/bonpublicgraphql.mo
     BonGatewayEntityModule,
     BonGatewayAppRoutingModule,
     BonPublicGraphQLModule,
+    MarkdownModule.forRoot(),
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   bootstrap: [MainComponent],

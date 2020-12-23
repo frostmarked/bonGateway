@@ -9,15 +9,19 @@ body {
   color: $primary-color;
 }
 
-.loading-container {
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 5;
+.bon-article {
+  .is-template-V2 {
+    img {
+      float: left;
+      padding-right: 1rem;
+    }
+  }
+  .is-template-V3 {
+    img {
+      float: right;
+      padding-left: 1rem;
+    }
+  }
 }
 
 .navbar.bg-primary {

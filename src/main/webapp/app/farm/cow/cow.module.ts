@@ -10,6 +10,7 @@ import { LinageDetailsComponent } from './linage-details/linage-details.componen
 import { BonGatewaySharedModule } from 'app/shared/shared.module';
 import { CowCardComponent } from './shared/cow-card/cow-card.component';
 import { CowArticleComponent } from './shared/cow-article/cow-article.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,6 @@ import { CowArticleComponent } from './shared/cow-article/cow-article.component'
     CowCardComponent,
     CowArticleComponent,
   ],
-  imports: [BonGatewaySharedModule, CowRoutingModule],
+  imports: [BonGatewaySharedModule, CowRoutingModule, MarkdownModule.forChild()],
 })
 export class CowModule {}
