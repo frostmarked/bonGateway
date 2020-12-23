@@ -102,7 +102,9 @@
       "id": "ID"
     },
     "ribbon": {
-      "dev": "Development"
+      "dev": "Development",
+      "mixed": "Mixed",
+      "prod": "Beta"
     },
     "item-count": "Visar {{first}} - {{second}} av {{total}} träffar."
   },
