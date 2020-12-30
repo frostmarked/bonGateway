@@ -66,7 +66,7 @@ export class SourceFileUpdateComponent implements OnInit {
     this.dataUtils.openFile(contentType, base64String);
   }
 
-  setFileData(event: Event, field: string, isImage: boolean): void {
+  setFileData(event: any, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
       this.eventManager.broadcast(
         new JhiEventWithContent<AlertError>('bonGatewayApp.error', { ...err, key: 'error.file.' + err.key })
