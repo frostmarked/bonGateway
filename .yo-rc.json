@@ -29,7 +29,7 @@
     "dtoSuffix": "DTO",
     "clientTheme": "sketchy",
     "clientPackageManager": "npm",
-    "jhipsterVersion": "6.10.1",
+    "jhipsterVersion": "6.10.5",
     "creationTimestamp": 1593712140033,
     "skipServer": false,
     "clientThemeVariant": "primary",
