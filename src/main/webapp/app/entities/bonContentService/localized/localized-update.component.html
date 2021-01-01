@@ -96,8 +96,13 @@
                     <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceLocalized.fragment" for="field_fragment">Fragment</label>
                     <select class="form-control" id="field_fragment" name="fragment" formControlName="fragment">
                         <option *ngIf="!editForm.get('fragment')!.value" [ngValue]="null" selected></option>
-                        <option [ngValue]="fragmentOption.id === editForm.get('fragment')!.value?.id ? editForm.get('fragment')!.value : fragmentOption" *ngFor="let fragmentOption of fragments; trackBy: trackById">{{ fragmentOption.orderNo }}</option>
+                        <option [ngValue]="fragmentOption.id === editForm.get('fragment')!.value?.id ? editForm.get('fragment')!.value : fragmentOption" *ngFor="let fragmentOption of fragmentDropdownPagination.items; trackBy: trackById">{{fragmentOption.story?.name}} - {{fragmentOption.name}} : {{ fragmentOption.orderNo }}</option>
                     </select>
+                    <ngb-pagination [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+                                    [collectionSize]="fragmentDropdownPagination.totalItems"
+                                    [(page)]="fragmentDropdownPagination.ngbPaginationPage"
+                                    [pageSize]="fragmentDropdownPagination.itemsPerPage"
+                                    (pageChange)="fragmentDropdownPagination.load($event)"></ngb-pagination>
                 </div>
                 <div *ngIf="editForm.get('fragment')!.invalid && (editForm.get('fragment')!.dirty || editForm.get('fragment')!.touched)">
                     <small class="form-text text-danger"

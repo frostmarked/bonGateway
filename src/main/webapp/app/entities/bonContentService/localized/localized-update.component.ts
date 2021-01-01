@@ -11,6 +11,7 @@ import { LocalizedService } from './localized.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { IFragment } from 'app/shared/model/bonContentService/fragment.model';
 import { FragmentService } from 'app/entities/bonContentService/fragment/fragment.service';
+import { DropdownPagination, DropdownPaginationImpl } from 'app/shared/bon/dropdown-pagination-util';
 
 @Component({
   selector: 'jhi-localized-update',
@@ -18,7 +19,7 @@ import { FragmentService } from 'app/entities/bonContentService/fragment/fragmen
 })
 export class LocalizedUpdateComponent implements OnInit {
   isSaving = false;
-  fragments: IFragment[] = [];
+  fragmentDropdownPagination: DropdownPagination;
 
   editForm = this.fb.group({
     id: [],
@@ -38,13 +39,16 @@ export class LocalizedUpdateComponent implements OnInit {
     protected fragmentService: FragmentService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.fragmentDropdownPagination = new DropdownPaginationImpl(this.fragmentService, 0, 50, 0, 0, ['name,desc'], 0, [], undefined);
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ localized }) => {
       this.updateForm(localized);
 
-      this.fragmentService.query().subscribe((res: HttpResponse<IFragment[]>) => (this.fragments = res.body || []));
+      this.fragmentDropdownPagination.selectItem(localized?.fragment);
+      this.fragmentDropdownPagination.load();
     });
   }
 
