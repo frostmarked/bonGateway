@@ -74,6 +74,10 @@
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
+
+                <button type="button" id="process-entity" class="btn btn-secondary" (click)="process()">
+                    <fa-icon icon="wrench"></fa-icon>&nbsp;<span>Process</span>
+                </button>
             </div>
         </form>
     </div>
