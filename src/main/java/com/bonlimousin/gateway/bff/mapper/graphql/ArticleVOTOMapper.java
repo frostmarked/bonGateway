@@ -16,16 +16,19 @@ public interface ArticleVOTOMapper {
 	ArticleVOTOMapper INSTANCE = Mappers.getMapper(ArticleVOTOMapper.class);
 
 	ArticleVOTO voToTO(ArticleVO vo);
-	
+
 	default VisibilityTO visibilityToVisibilityTO(ArticleVO.VisibilityEnum visibilityEnum) {
 		return VisibilityTO.valueOf(visibilityEnum.getValue());
     }
-	
+
 	default VisibilityTO visibilityToVisibilityTO(SectionVO.VisibilityEnum visibilityEnum) {
 		return VisibilityTO.valueOf(visibilityEnum.getValue());
     }
-	
+
 	default String bytesToString(byte[] bytes) {
+	    if(bytes == null) {
+	        return null;
+        }
 		return Base64.getEncoder().encodeToString(bytes);
     }
 }
