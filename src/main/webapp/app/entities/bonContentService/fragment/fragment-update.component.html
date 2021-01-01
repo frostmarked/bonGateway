@@ -150,8 +150,13 @@
                     <label class="form-control-label" jhiTranslate="bonGatewayApp.bonContentServiceFragment.story" for="field_story">Story</label>
                     <select class="form-control" id="field_story" name="story" formControlName="story">
                         <option *ngIf="!editForm.get('story')!.value" [ngValue]="null" selected></option>
-                        <option [ngValue]="storyOption.id === editForm.get('story')!.value?.id ? editForm.get('story')!.value : storyOption" *ngFor="let storyOption of stories; trackBy: trackById">{{ storyOption.name }}</option>
+                        <option [ngValue]="storyOption.id === editForm.get('story')!.value?.id ? editForm.get('story')!.value : storyOption" *ngFor="let storyOption of storiesDropdownPagination.items; trackBy: trackById">{{ storyOption.name }}</option>
                     </select>
+                    <ngb-pagination [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+                                    [collectionSize]="storiesDropdownPagination.totalItems"
+                                    [(page)]="storiesDropdownPagination.ngbPaginationPage"
+                                    [pageSize]="storiesDropdownPagination.itemsPerPage"
+                                    (pageChange)="storiesDropdownPagination.load($event)"></ngb-pagination>
                 </div>
                 <div *ngIf="editForm.get('story')!.invalid && (editForm.get('story')!.dirty || editForm.get('story')!.touched)">
                     <small class="form-text text-danger"

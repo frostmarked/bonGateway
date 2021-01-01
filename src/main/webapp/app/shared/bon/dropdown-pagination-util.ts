@@ -5,20 +5,24 @@ import { ICattle } from '../model/bonLivestockService/cattle.model';
 import { CattleService } from 'app/entities/bonLivestockService/cattle/cattle.service';
 import { IBovine } from '../model/bonReplicaService/bovine.model';
 import { BovineService } from 'app/entities/bonReplicaService/bovine/bovine.service';
+import { FragmentService } from 'app/entities/bonContentService/fragment/fragment.service';
+import { StoryService } from 'app/entities/bonContentService/story/story.service';
+import { IFragment } from 'app/shared/model/bonContentService/fragment.model';
+import { IStory } from 'app/shared/model/bonContentService/story.model';
 
-// bummer... would like to use generics and interfaces 
+// bummer... would like to use generics and interfaces
 // but jhipster services dont have any and I dont want to change the generated code
 // , or atleast as little as possible
-type BonService = CattleService | BovineService;
-type BonEntity = ICattle | IBovine;
+type BonService = CattleService | BovineService | FragmentService | StoryService;
+type BonEntity = ICattle | IBovine | IFragment | IStory;
 
 export interface DropdownPagination {
-  service: BonService,
+  service: BonService;
   totalItems: number;
   itemsPerPage: number;
   page: number;
-  pageToLoad: number,
-  orderBy: string[],
+  pageToLoad: number;
+  orderBy: string[];
   ngbPaginationPage: number;
   items: Array<BonEntity>;
   selectedItem?: BonEntity | undefined;
@@ -31,7 +35,7 @@ export interface DropdownPagination {
 
   onSuccess(res: HttpResponse<Array<BonEntity>>): void;
 
-  onError(): void
+  onError(): void;
 }
 
 export class DropdownPaginationImpl implements DropdownPagination {
@@ -61,9 +65,9 @@ export class DropdownPaginationImpl implements DropdownPagination {
 
   public createQueryParams(page?: number, sort?: string[]): any {
     this.pageToLoad = page || this.page || 1;
-    if(sort && sort.length) {
+    if (sort && sort.length) {
       this.orderBy = sort;
-    }    
+    }
     return { page: this.pageToLoad - 1, size: this.itemsPerPage, sort: this.orderBy };
   }
 
@@ -73,11 +77,11 @@ export class DropdownPaginationImpl implements DropdownPagination {
     this.items = res.body || [];
     this.ngbPaginationPage = this.pageToLoad;
 
-    if(this.selectedItem) {
-      this.items.unshift(this.selectedItem);  
+    if (this.selectedItem) {
+      this.items.unshift(this.selectedItem);
     }
   }
-  
+
   public onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
   }

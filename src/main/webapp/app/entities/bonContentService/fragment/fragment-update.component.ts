@@ -13,6 +13,7 @@ import { ITag } from 'app/shared/model/bonContentService/tag.model';
 import { TagService } from 'app/entities/bonContentService/tag/tag.service';
 import { IStory } from 'app/shared/model/bonContentService/story.model';
 import { StoryService } from 'app/entities/bonContentService/story/story.service';
+import { DropdownPagination, DropdownPaginationImpl } from 'app/shared/bon/dropdown-pagination-util';
 
 type SelectableEntity = ITag | IStory;
 
@@ -24,6 +25,7 @@ export class FragmentUpdateComponent implements OnInit {
   isSaving = false;
   tags: ITag[] = [];
   stories: IStory[] = [];
+  storiesDropdownPagination: DropdownPagination;
 
   editForm = this.fb.group({
     id: [],
@@ -52,7 +54,9 @@ export class FragmentUpdateComponent implements OnInit {
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.storiesDropdownPagination = new DropdownPaginationImpl(this.storyService, 0, 50, 0, 0, ['name,desc'], 0, [], undefined);
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ fragment }) => {
@@ -60,7 +64,9 @@ export class FragmentUpdateComponent implements OnInit {
 
       this.tagService.query().subscribe((res: HttpResponse<ITag[]>) => (this.tags = res.body || []));
 
-      this.storyService.query().subscribe((res: HttpResponse<IStory[]>) => (this.stories = res.body || []));
+      //      this.storyService.query().subscribe((res: HttpResponse<IStory[]>) => (this.stories = res.body || []));
+      this.storiesDropdownPagination.selectItem(fragment?.story);
+      this.storiesDropdownPagination.load();
     });
   }
 
