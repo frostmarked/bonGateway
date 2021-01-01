@@ -48,6 +48,10 @@ export class SourceFileService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  process(id: number): Observable<HttpResponse<{}>> {
+    return this.http.post(`${this.resourceUrl}/${id}/process`, {}, { observe: 'response' });
+  }
+
   protected convertDateFromClient(sourceFile: ISourceFile): ISourceFile {
     const copy: ISourceFile = Object.assign({}, sourceFile, {
       processed: sourceFile.processed && sourceFile.processed.isValid() ? sourceFile.processed.toJSON() : undefined,

@@ -88,6 +88,14 @@ export class SourceFileUpdateComponent implements OnInit {
     }
   }
 
+  process(): void {
+    this.isSaving = true;
+    const sourceFile = this.createFromForm();
+    if (sourceFile.id !== undefined) {
+      this.subscribeToSaveResponse(this.sourceFileService.process(sourceFile.id));
+    }
+  }
+
   private createFromForm(): ISourceFile {
     return {
       ...new SourceFile(),
