@@ -13,8 +13,11 @@ public interface LinageVOTOMapper {
 	LinageVOTOMapper INSTANCE = Mappers.getMapper(LinageVOTOMapper.class);
 
 	LinageVOTO voToTO(LinageVO vo);
-	
+
 	default VisibilityTO visibilityToVisibilityTO(LinageVO.VisibilityEnum visibilityEnum) {
+        if(visibilityEnum == null) {
+            return null;
+        }
 		return VisibilityTO.valueOf(visibilityEnum.getValue());
     }
 }

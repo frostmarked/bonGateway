@@ -22,4 +22,5 @@ public interface CowVOMapper {
 	@Mapping(source = "bovineEntity.patriId", target = "patriId")
 	@Mapping(source = "cattleEntity.visibility", target = "visibility")
 	CowVO entitiesToCowVO(MatrilinealityEntity matrilinealityEntity, CattleEntity cattleEntity, BovineEntity bovineEntity);
+
 }

@@ -18,10 +18,16 @@ public interface ArticleVOTOMapper {
 	ArticleVOTO voToTO(ArticleVO vo);
 
 	default VisibilityTO visibilityToVisibilityTO(ArticleVO.VisibilityEnum visibilityEnum) {
+        if(visibilityEnum == null) {
+            return null;
+        }
 		return VisibilityTO.valueOf(visibilityEnum.getValue());
     }
 
 	default VisibilityTO visibilityToVisibilityTO(SectionVO.VisibilityEnum visibilityEnum) {
+        if(visibilityEnum == null) {
+            return null;
+        }
 		return VisibilityTO.valueOf(visibilityEnum.getValue());
     }
 
