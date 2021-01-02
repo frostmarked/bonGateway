@@ -33,7 +33,7 @@ public class ApiApiDelegateImpl implements ApiApiDelegate {
 	}
 
 	@Override
-	public ResponseEntity<LinageVO> getLinageVO(Long earTagId) {		
+	public ResponseEntity<LinageVO> getLinageVO(Long earTagId) {
 		return this.linageVODelegate.getLinageVO(earTagId);
 	}
 
@@ -43,21 +43,21 @@ public class ApiApiDelegateImpl implements ApiApiDelegate {
 	}
 
 	@Override
-	public ResponseEntity<List<CowVO>> findCowVOs(Integer page, Integer size, List<String> sort, Integer linageIdEquals,
-			OffsetDateTime birthDateGreaterThan, OffsetDateTime birthDateLessThan, String genderEquals,
+	public ResponseEntity<List<CowVO>> findCowVOs(Integer page, Integer size, List<String> sort, String context,
+            Integer linageIdEquals, OffsetDateTime birthDateGreaterThan, OffsetDateTime birthDateLessThan, String genderEquals,
 			List<String> hornStatusIn, Integer matriIdEquals, Integer patriIdEquals, Integer weight0GreaterThan,
 			Integer weight0LessThan, Boolean weight0Specified, Integer weight200GreaterThan, Integer weight200LessThan,
 			Boolean weight200Specified, Integer weight365GreaterThan, Integer weight365LessThan,
 			Boolean weight365Specified) {
-		return this.cowVOResourceDelegate.findCowVOs(page, size, sort, linageIdEquals, birthDateGreaterThan,
+		return this.cowVOResourceDelegate.findCowVOs(page, size, sort, context, linageIdEquals, birthDateGreaterThan,
 				birthDateLessThan, genderEquals, hornStatusIn, matriIdEquals, patriIdEquals, weight0GreaterThan,
 				weight0LessThan, weight0Specified, weight200GreaterThan, weight200LessThan, weight200Specified,
 				weight365GreaterThan, weight365LessThan, weight365Specified);
 	}
 
 	@Override
-	public ResponseEntity<CowVO> getCowVO(Long earTagId) {
-		return this.cowVOResourceDelegate.getCowVO(earTagId);
+	public ResponseEntity<CowVO> getCowVO(Long earTagId, String context) {
+		return this.cowVOResourceDelegate.getCowVO(earTagId, context);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class ApiApiDelegateImpl implements ApiApiDelegate {
 	        List<String> sort) {
 		return this.cowVOResourceDelegate.getAllPictureVOsByCow(earTagId, page, size, sort);
 	}
-	
+
 	@Override
 	public ResponseEntity<Resource> getImageForCow(Long earTagId,
 	        Long pictureId,

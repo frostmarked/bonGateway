@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.ValidationException;
 
+import com.bonlimousin.gateway.bff.mapper.CowVOContextParentMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.mime.MimeTypeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,9 +60,9 @@ import io.github.jhipster.service.filter.LongFilter;
 
 @Service
 public class CowVOResourceDelegateImpl {
-	
+
 	private final Logger log = LoggerFactory.getLogger(CowVOResourceDelegateImpl.class);
-	
+
 	private final CowPictureSourceService cowPictureSourceService;
 	private final CattleResourceApiClient cattleResourceApiClient;
 	private final BovineResourceApiClient bovineResourceApiClient;
@@ -77,12 +79,11 @@ public class CowVOResourceDelegateImpl {
 		this.photoResourceApiClient = photoResourceApiClient;
 	}
 
-	public ResponseEntity<List<CowVO>> findCowVOs(Integer page, Integer size, List<String> sort, Integer linageIdEquals,
-			OffsetDateTime birthDateGreaterThan, OffsetDateTime birthDateLessThan, 
-			String genderEquals, 
-			List<String> hornStatusIn, Integer matriIdEquals, Integer patriIdEquals, 
-			Integer weight0GreaterThan, Integer weight0LessThan, Boolean weight0Specified, 
-			Integer weight200GreaterThan, Integer weight200LessThan, Boolean weight200Specified, 
+	public ResponseEntity<List<CowVO>> findCowVOs(Integer page, Integer size, List<String> sort, String context,
+            Integer linageIdEquals, OffsetDateTime birthDateGreaterThan, OffsetDateTime birthDateLessThan, String genderEquals,
+			List<String> hornStatusIn, Integer matriIdEquals, Integer patriIdEquals,
+			Integer weight0GreaterThan, Integer weight0LessThan, Boolean weight0Specified,
+			Integer weight200GreaterThan, Integer weight200LessThan, Boolean weight200Specified,
 			Integer weight365GreaterThan, Integer weight365LessThan, Boolean weight365Specified) {
 
 		CattleCriteria cattleCriteria = new CattleCriteria();
@@ -97,15 +98,15 @@ public class CowVOResourceDelegateImpl {
 		List<Integer> cattleIds = cattleIdMap.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
 		if(cattleIds.isEmpty()) {
 			return BFFUtil.createResponse(Collections.emptyList(), page, size, sort, 0);
-		}		
-		
+		}
+
 		BovineCriteria bovineCriteria = createBovineCriteria(
-				cattleIds, birthDateGreaterThan, birthDateLessThan, 
-				genderEquals, hornStatusIn, 
-				matriIdEquals, patriIdEquals, 
+				cattleIds, birthDateGreaterThan, birthDateLessThan,
+				genderEquals, hornStatusIn,
+				matriIdEquals, patriIdEquals,
 				weight0GreaterThan, weight0LessThan,
 				weight0Specified, weight200GreaterThan, weight200LessThan, weight200Specified, weight365GreaterThan,
-				weight365LessThan, weight365Specified);		
+				weight365LessThan, weight365Specified);
 		ResponseEntity<List<BovineEntity>> bovineResponse = this.bovineResourceApiClient
 				.getAllBovinesUsingGET(bovineCriteria, page, size, sort);
 		long totalCount = BFFUtil.extractTotalCount(bovineResponse);
@@ -117,21 +118,21 @@ public class CowVOResourceDelegateImpl {
 			CowVO vo = CowVOMapper.INSTANCE.entitiesToCowVO(matrilinealityEntity, cattleEntity, bovineEntity);
 			vos.add(vo);
 		}
-		
+
 		return BFFUtil.createResponse(vos, page, size, sort, totalCount);
 	}
 
 	private BovineCriteria createBovineCriteria(List<Integer> cattleIdIn,
 			OffsetDateTime birthDateGreaterThan, OffsetDateTime birthDateLessThan,
-			String genderEquals, List<String> hornStatusIn, 
-			Integer matriIdEquals, Integer patriIdEquals, 
+			String genderEquals, List<String> hornStatusIn,
+			Integer matriIdEquals, Integer patriIdEquals,
 			Integer weight0GreaterThan, Integer weight0LessThan, Boolean weight0Specified,
 			Integer weight200GreaterThan, Integer weight200LessThan, Boolean weight200Specified,
 			Integer weight365GreaterThan, Integer weight365LessThan, Boolean weight365Specified) {
 		BovineCriteria bovineCriteria = new BovineCriteria();
-		
+
 		bovineCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setIn(cattleIdIn));
-		
+
 		InstantFilter birthDateFilter = new InstantFilter();
 		if(birthDateGreaterThan != null) {
 			birthDateFilter.setGreaterThan(birthDateGreaterThan.toInstant());
@@ -140,7 +141,7 @@ public class CowVOResourceDelegateImpl {
 			birthDateFilter.setLessThan(birthDateLessThan.toInstant());
 		}
 		bovineCriteria.setBirthDate(birthDateFilter);
-		
+
 		GenderFilter genderFilter = new GenderFilter();
 		if(genderEquals != null) {
 			try {
@@ -152,14 +153,14 @@ public class CowVOResourceDelegateImpl {
 			}
 		}
 		bovineCriteria.setGender(genderFilter);
-				
+
 		HornStatusFilter hornStatusFilter = new HornStatusFilter();
 		if(hornStatusIn != null && !hornStatusIn.isEmpty()) {
 			try {
 				List<HornStatus> hornStatusList = new ArrayList<>();
 				for(String hornStatus : hornStatusIn) {
-					hornStatusList.add(HornStatus.valueOf(hornStatus));	
-				}				
+					hornStatusList.add(HornStatus.valueOf(hornStatus));
+				}
 				hornStatusFilter.setIn(hornStatusList);
 			} catch (IllegalArgumentException e) {
 				// its a validation error and should be treated that way. throw something
@@ -167,38 +168,42 @@ public class CowVOResourceDelegateImpl {
 			}
 		}
 		bovineCriteria.setHornStatus(hornStatusFilter);
-		
+
 		bovineCriteria.setMatriId((IntegerFilter) new IntegerFilter().setEquals(matriIdEquals));
-		
+
 		bovineCriteria.setPatriId((IntegerFilter) new IntegerFilter().setEquals(patriIdEquals));
-		
+
 		IntegerFilter weight0Filter = (IntegerFilter) new IntegerFilter()
 				.setGreaterThan(weight0GreaterThan)
 				.setLessThan(weight0LessThan)
 				.setSpecified(weight0Specified);
 		bovineCriteria.setWeight0(weight0Filter);
-		
+
 		IntegerFilter weight200Filter = (IntegerFilter) new IntegerFilter()
 				.setGreaterThan(weight200GreaterThan)
 				.setLessThan(weight200LessThan)
 				.setSpecified(weight200Specified);
 		bovineCriteria.setWeight200(weight200Filter);
-		
+
 		IntegerFilter weight365Filter = (IntegerFilter) new IntegerFilter()
 				.setGreaterThan(weight365GreaterThan)
 				.setLessThan(weight365LessThan)
 				.setSpecified(weight365Specified);
 		bovineCriteria.setWeight365(weight365Filter);
-		
+
 		return bovineCriteria;
 	}
 
-	public ResponseEntity<CowVO> getCowVO(Long earTagId) {
-		ResponseEntity<List<CattleEntity>> cattleResponse = fetchCattleByEarTagIdAndRole(earTagId);
+	public ResponseEntity<CowVO> getCowVO(Long earTagId, String context) {
+		ResponseEntity<List<CattleEntity>> cattleResponse = fetchCattleByEarTagIdAndRole(earTagId, context);
 		if (cattleResponse.getBody().isEmpty()) {
 			throw new WhileFetchingDataException(new AlertProblem("CowVO does not exist", Status.NOT_FOUND, AlertProblemSeverity.WARNING, "entitynotfound", String.valueOf(earTagId)));
 		}
 		CattleEntity cattleEntity = cattleResponse.getBody().get(0);
+        if(StringUtils.trimToEmpty(context).equals("PARENT")) {
+            CowVO vo = CowVOContextParentMapper.INSTANCE.entitiesToCowVO(cattleEntity);
+            return ResponseEntity.ok(vo);
+        }
 
 		BovineCriteria bovineCriteria = new BovineCriteria();
 		bovineCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(earTagId.intValue()));
@@ -212,43 +217,43 @@ public class CowVOResourceDelegateImpl {
 		CowVO vo = CowVOMapper.INSTANCE.entitiesToCowVO(cattleEntity.getMatrilineality(), cattleEntity, bovineEntity);
 		return ResponseEntity.ok(vo);
 	}
-	
-	public ResponseEntity<List<PictureVO>> getAllPictureVOsByCow(Long earTagId, Integer page, Integer size, List<String> sort) {				
-		ResponseEntity<List<PhotoEntity>> response = fetchPhotosByEarTagId(earTagId, page, size, sort);					
-		List<PictureVO> list = new ArrayList<>();		
+
+	public ResponseEntity<List<PictureVO>> getAllPictureVOsByCow(Long earTagId, Integer page, Integer size, List<String> sort) {
+		ResponseEntity<List<PhotoEntity>> response = fetchPhotosByEarTagId(earTagId, page, size, sort);
+		List<PictureVO> list = new ArrayList<>();
 		for(PhotoEntity entity : response.getBody()) {
 			PictureVO vo = PictureVOMapper.INSTANCE.photoEntityToPictureVO(entity);
 			for(PictureSize picSize : PictureSize.values()) {
-				try {					
+				try {
 					cowPictureSourceService.createPictureSourceVO(entity, picSize)
-						.ifPresent(psvo -> {							
+						.ifPresent(psvo -> {
 							psvo.setUrl(getCowImageUrl(earTagId, entity.getId(), psvo.getName()));
 							vo.addSourcesItem(psvo);
-						});									
+						});
 				} catch (MimeTypeException e) {
 					log.warn("Extract file-extension failed", e);
 				} catch (IOException e) {
 					log.warn("Read image failed", e);
-				}			
+				}
 			}
 			list.add(vo);
 		}
 		long totalCount = BFFUtil.extractTotalCount(response);
 		return BFFUtil.createResponse(list, page, size, sort, totalCount);
 	}
-	
+
 	private String getCowImageUrl(long earTagId, long pictureId, String imageName) {
 		return MessageFormat.format("/api/public/cows/{0}/pictures/{1}/{2}", String.valueOf(earTagId),
 				String.valueOf(pictureId), imageName);
 	}
-		
+
 	public ResponseEntity<Resource> getImageForCow(Long earTagId, Long pictureId, String name) {
-		ResponseEntity<List<CattleEntity>> cattleResponse = this.fetchCattleByEarTagIdAndRole(earTagId);
+		ResponseEntity<List<CattleEntity>> cattleResponse = this.fetchCattleByEarTagIdAndRole(earTagId, null);
 		if(cattleResponse.getBody().isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 		CattleEntity cattleEntity = cattleResponse.getBody().get(0);
-		
+
 		PhotoCriteria criteria = new PhotoCriteria();
 		criteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
 		criteria.setCattleId((LongFilter) new LongFilter().setEquals(cattleEntity.getId()));
@@ -258,7 +263,7 @@ public class CowVOResourceDelegateImpl {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 		PhotoEntity photoEntity = photoResponse.getBody().get(0);
-						
+
 		try {
 			List<String> availableImageNames = cowPictureSourceService.getImageNames(earTagId, pictureId, photoEntity.getImageContentType());
 			if(!availableImageNames.contains(name)) {
@@ -277,28 +282,30 @@ public class CowVOResourceDelegateImpl {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	private ResponseEntity<List<PhotoEntity>> fetchPhotosByEarTagId(Long earTagId, Integer page, Integer size, List<String> sort) {
-		ResponseEntity<List<CattleEntity>> cattleResponse = this.fetchCattleByEarTagIdAndRole(earTagId);
+		ResponseEntity<List<CattleEntity>> cattleResponse = this.fetchCattleByEarTagIdAndRole(earTagId, null);
 		if(cattleResponse.getBody().isEmpty()) {
 			return BFFUtil.createResponse(Collections.emptyList(), page, size, sort, 0);
 		}
-		Long cId = cattleResponse.getBody().get(0).getId();		
-		return this.fetchPhotosByCattleId(cId, page, size, sort);		
+		Long cId = cattleResponse.getBody().get(0).getId();
+		return this.fetchPhotosByCattleId(cId, page, size, sort);
 	}
-	
-	private ResponseEntity<List<CattleEntity>> fetchCattleByEarTagIdAndRole(Long earTagId) {
+
+	private ResponseEntity<List<CattleEntity>> fetchCattleByEarTagIdAndRole(Long earTagId, String context) {
 		CattleCriteria cattleCriteria = new CattleCriteria();
-		cattleCriteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
+		if(!StringUtils.trimToEmpty(context).equals("PARENT")) {
+            cattleCriteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
+        }
 		cattleCriteria.setEarTagId((IntegerFilter) new IntegerFilter().setEquals(earTagId.intValue()));
 		return this.cattleResourceApiClient
 				.getAllCattlesUsingGET(cattleCriteria, 0, 1, null);
 	}
-	
+
 	private ResponseEntity<List<PhotoEntity>> fetchPhotosByCattleId(Long cattleId, Integer page, Integer size, List<String> sort) {
 		PhotoCriteria criteria = new PhotoCriteria();
 		criteria.setVisibility(BFFUtil.createUserRoleFilterForCurrentUser());
 		criteria.setCattleId((LongFilter) new LongFilter().setEquals(cattleId));
-		return this.photoResourceApiClient.getAllPhotosUsingGET(criteria, page, size, sort);		
+		return this.photoResourceApiClient.getAllPhotosUsingGET(criteria, page, size, sort);
 	}
 }

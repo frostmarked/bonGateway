@@ -20,10 +20,16 @@ public interface CowVOTOMapper {
 	CowVOTO voToTO(CowVO vo);
 
 	default VisibilityTO visibilityToVisibilityTO(CowVO.VisibilityEnum visibilityEnum) {
+        if(visibilityEnum == null) {
+            return null;
+        }
 		return VisibilityTO.valueOf(visibilityEnum.getValue());
 	}
 
 	default String offsetDateTimeToString(OffsetDateTime odt) {
+	    if(odt == null) {
+	        return null;
+        }
 		return odt.format(DateTimeFormatter.ofPattern(dateFormat));
 	}
 }

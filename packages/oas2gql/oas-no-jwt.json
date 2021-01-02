@@ -83,6 +83,20 @@
             }
           },
           {
+            "name": "context",
+            "in": "query",
+            "description": "Context the data will be used e.g. display as parent",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DETAIL",
+                "LIST",
+                "PARENT"
+              ]
+            }
+          },
+          {
             "name": "linageId.equals",
             "in": "query",
             "schema": {
@@ -266,6 +280,20 @@
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "context",
+            "in": "query",
+            "description": "Context the data will be used e.g. display as parent",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DETAIL",
+                "LIST",
+                "PARENT"
+              ]
             }
           }
         ],

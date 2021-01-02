@@ -1,18 +1,18 @@
 query FindArticles(
-    $i18n: I18n!, 
-    $categoryIn: [CategoryInListItem], 
-    $page: Int, 
-    $size: Int, 
+    $i18n: I18n!,
+    $categoryIn: [CategoryInListItem],
+    $page: Int,
+    $size: Int,
     $sort: [String],
     $isSummary: Boolean = true
   ) {
   apiPublicArticles(
-      categoryIn:$categoryIn, 
-      i18n:$i18n, 
-      page:$page, 
-      size:$size, 
+      categoryIn:$categoryIn,
+      i18n:$i18n,
+      page:$page,
+      size:$size,
       sort:$sort
-    ) {    
+    ) {
     id
     category
     name
@@ -38,7 +38,8 @@ query FindArticles(
 }
 
 query FindCows(
-    $page: Int    
+    $context: Context
+    $page: Int
     $size: Int
     $sort: [String]
     $birthDateGreaterThan: String
@@ -59,6 +60,7 @@ query FindCows(
     $weight365Specified: Boolean
   ) {
   apiPublicCows(
+    context: $context
     birthDateGreaterThan: $birthDateGreaterThan
     birthDateLessThan: $birthDateLessThan
     genderEquals: $genderEquals

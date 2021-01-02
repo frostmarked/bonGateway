@@ -42,7 +42,7 @@ class GraphqlCowQueriesIT {
 	private GraphQLTestTemplate graphQLTestTemplate;
 
 	private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern(BFFGraphQLUtil.DATETIME_FORMAT);
-	
+
 	@Test
 	void findCowPictures() throws IOException {
 		PictureVO vo = new PictureVO();
@@ -50,16 +50,16 @@ class GraphqlCowQueriesIT {
 		vo.setCaption(RandomStringUtils.random(10));
 		vo.setTaken(OffsetDateTime.now().minusHours(6));
 		vo.setVisibility(PictureVO.VisibilityEnum.ANONYMOUS);
-		
-		PictureSourceVO ps = new PictureSourceVO(); 		
+
+		PictureSourceVO ps = new PictureSourceVO();
 		ps.setName(RandomStringUtils.random(10));
 		ps.setWidth(RandomUtils.nextInt(1000));
-		ps.setHeight(RandomUtils.nextInt(1000));		
+		ps.setHeight(RandomUtils.nextInt(1000));
 		ps.setUrl("/"+ps.getName());
 		ps.setContentType("ict");
-		
+
 		vo.addSourcesItem(ps);
-				
+
 		Mockito.when(
 				mockCowResource.getAllPictureVOsByCow(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
 				.thenReturn(ResponseEntity.ok(Arrays.asList(vo)));
@@ -80,19 +80,19 @@ class GraphqlCowQueriesIT {
 		Assert.assertEquals(vo.getTaken().format(DATETIME_FORMATTER),
 				response.get(picPath + ".taken"));
 		Assert.assertEquals(vo.getVisibility().toString(), response.get(picPath + ".visibility"));
-				
+
 		String psPath = "$.data.apiPublicCowsPictures[0].sources[0]";
 		Assert.assertEquals(ps.getName(), response.get(psPath + ".name"));
 		Assert.assertEquals(ps.getHeight().toString(), response.get(psPath + ".height"));
 		Assert.assertEquals(ps.getWidth().toString(), response.get(psPath + ".width"));
 		Assert.assertEquals(ps.getUrl(), response.get(psPath + ".url"));
-		Assert.assertEquals(ps.getContentType(), response.get(psPath + ".contentType"));		
+		Assert.assertEquals(ps.getContentType(), response.get(psPath + ".contentType"));
 	}
 
 	@Test
 	void getCow() throws IOException {
 		CowVO cow1 = this.createRandomCowVO();
-		Mockito.when(mockCowResource.getCowVO(Mockito.any())).thenReturn(ResponseEntity.ok(cow1));
+		Mockito.when(mockCowResource.getCowVO(Mockito.any(), Mockito.any())).thenReturn(ResponseEntity.ok(cow1));
 
 		ObjectNode variables = new ObjectMapper().createObjectNode();
 		variables.put("earTagId", "1");
@@ -110,7 +110,7 @@ class GraphqlCowQueriesIT {
 	@Test
 	void findCows() throws IOException {
 		CowVO cow1 = this.createRandomCowVO();
-		Mockito.when(mockCowResource.findCowVOs(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
+		Mockito.when(mockCowResource.findCowVOs(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
 				Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
 				Mockito.any())).thenReturn(ResponseEntity.ok(Arrays.asList(cow1)));

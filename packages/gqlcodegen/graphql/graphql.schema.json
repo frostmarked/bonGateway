@@ -314,6 +314,35 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "Context",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "DETAIL",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "LIST",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PARENT",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "CowVO",
         "description": null,
@@ -1063,6 +1092,16 @@
                 "defaultValue": null
               },
               {
+                "name": "context",
+                "description": "Context the data will be used e.g. display as parent",
+                "type": {
+                  "kind": "ENUM",
+                  "name": "Context",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
                 "name": "genderEquals",
                 "description": null,
                 "type": {
@@ -1650,6 +1689,16 @@
             "name": "cowVO",
             "description": "getCowVO\n\nEquivalent to GET /api/public/cows/{earTagId}",
             "args": [
+              {
+                "name": "context",
+                "description": "Context the data will be used e.g. display as parent",
+                "type": {
+                  "kind": "ENUM",
+                  "name": "Context",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
               {
                 "name": "earTagId",
                 "description": "Numeric identifier for cattle",

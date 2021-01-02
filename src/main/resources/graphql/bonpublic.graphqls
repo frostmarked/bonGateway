@@ -33,6 +33,12 @@ enum CategoryInListItem {
   CATTLE
 }
 
+enum Context {
+  DETAIL
+  LIST
+  PARENT
+}
+
 type CowVO {
   birthDate: String
   earTagId: Int
@@ -117,7 +123,7 @@ type PictureVO {
 type Query {
   """
   Get all ArticleVOs
-  
+
   Equivalent to GET /api/public/articles
   """
   apiPublicArticles(
@@ -141,12 +147,15 @@ type Query {
 
   """
   Find all cows matching criteria
-  
+
   Equivalent to GET /api/public/cows
   """
   apiPublicCows(
     birthDateGreaterThan: String
     birthDateLessThan: String
+
+    """Context the data will be used e.g. display as parent"""
+    context: Context
     genderEquals: GenderEquals
     hornStatusIn: [HornStatusInListItem]
     linageIdEquals: Int
@@ -177,7 +186,7 @@ type Query {
 
   """
   Get all PictureVOs for a cow
-  
+
   Equivalent to GET /api/public/cows/{earTagId}/pictures
   """
   apiPublicCowsPictures(
@@ -199,7 +208,7 @@ type Query {
 
   """
   Get image for a cow
-  
+
   Equivalent to GET /api/public/cows/{earTagId}/pictures/{pictureId}/{name}
   """
   apiPublicCowsPictures2(
@@ -215,7 +224,7 @@ type Query {
 
   """
   Find all LinageVOs
-  
+
   Equivalent to GET /api/public/linages
   """
   apiPublicLinages(
@@ -234,7 +243,7 @@ type Query {
 
   """
   Search ArticleVOs
-  
+
   Equivalent to GET /api/public/_search/articles
   """
   apiPublicSearchArticles(
@@ -261,7 +270,7 @@ type Query {
 
   """
   Get all TagVOs
-  
+
   Equivalent to GET /api/public/tags
   """
   apiPublicTags(
@@ -280,7 +289,7 @@ type Query {
 
   """
   Get ArticleVO by Id or handle
-  
+
   Equivalent to GET /api/public/articles/{id}
   """
   articleVO(
@@ -296,7 +305,7 @@ type Query {
 
   """
   Get BLUP for a cow
-  
+
   Equivalent to GET /api/public/cows/{earTagId}/blup
   """
   blupVO(
@@ -306,17 +315,20 @@ type Query {
 
   """
   getCowVO
-  
+
   Equivalent to GET /api/public/cows/{earTagId}
   """
   cowVO(
+    """Context the data will be used e.g. display as parent"""
+    context: Context
+
     """Numeric identifier for cattle"""
     earTagId: Float!
   ): CowVO
 
   """
   Get LinageVO
-  
+
   Equivalent to GET /api/public/linages/{earTagId}
   """
   linageVO(

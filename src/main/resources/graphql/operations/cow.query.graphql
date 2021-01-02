@@ -1,8 +1,10 @@
 query GetCow(
     $earTagId: Float!
+    $context: Context
   ) {
   cowVO(
     earTagId: $earTagId
+    context: $context
   ) {
     birthDate
     earTagId

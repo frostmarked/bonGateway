@@ -14,20 +14,29 @@ import com.bonlimousin.gateway.web.graphql.model.VisibilityTO;
 
 @Mapper
 public interface PictureVOTOMapper {
-	
+
 	PictureVOTOMapper INSTANCE = Mappers.getMapper(PictureVOTOMapper.class);
 
 	PictureVOTO voToTO(PictureVO vo);
-	
+
 	default VisibilityTO visibilityToVisibilityTO(PictureVO.VisibilityEnum visibilityEnum) {
+        if(visibilityEnum == null) {
+            return null;
+        }
 		return VisibilityTO.valueOf(visibilityEnum.getValue());
 	}
-	
+
 	default String offsetDateTimeToString(OffsetDateTime odt) {
+        if(odt == null) {
+            return null;
+        }
 		return odt.format(DateTimeFormatter.ofPattern(BFFGraphQLUtil.DATETIME_FORMAT));
 	}
-	
+
 	default String bytesToString(byte[] bytes) {
+        if(bytes == null) {
+            return null;
+        }
 		return Base64.getEncoder().encodeToString(bytes);
     }
 }
