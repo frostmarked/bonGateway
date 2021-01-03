@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { ArticleVo, CowVo, FindCowPicturesGQL, GetArticleGQL, GetCowGQL, I18n, PictureVo } from 'app/bonpublicgraphql/bonpublicgraphql';
+import {
+  ArticleVo,
+  Context,
+  CowVo,
+  FindCowPicturesGQL,
+  GetArticleGQL,
+  GetCowGQL,
+  I18n,
+  PictureVo,
+} from 'app/bonpublicgraphql/bonpublicgraphql';
 import { map, startWith } from 'rxjs/operators';
 import { DEFAULT_PICTURE, randomPictureVoFromPicsum, randomPictureVosFromPicsum } from 'app/shared/bon/picturevo-util';
 
@@ -18,12 +27,12 @@ export class CowService {
       .pipe(map(result => result.data.articleVO));
   }
 
-  getCow(earTagId: Maybe<number>): Observable<Maybe<CowVo>> {
+  getCow(earTagId: Maybe<number>, context: Maybe<Context> = undefined): Observable<Maybe<CowVo>> {
     if (!earTagId) {
       return EMPTY;
     }
 
-    return this.getCowGQL.fetch({ earTagId }).pipe(map(result => result.data.cowVO));
+    return this.getCowGQL.fetch({ earTagId, context }).pipe(map(result => result.data.cowVO));
   }
 
   getFirstCowPicture(earTagId: number): Observable<PictureVo> {

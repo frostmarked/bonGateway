@@ -32,22 +32,22 @@
             <span *ngIf="cow.weight365">kg</span>
         </p>
 
-        <p *ngIf="matri">
+        <p>
             <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.matri">MATRI</span>
             <span>:</span>
-            <a *ngIf="matri; else noMatri"
+            <a *ngIf="enableMatriLink(); else noMatri"
                [title]="'Matri ' + matri?.earTagId"
                [routerLink]="['/farm', 'cow', 'dam', matri?.earTagId]">{{ matri?.earTagId }} {{ matri?.name! | titlecase }}</a>
-            <ng-template #noMatri>{{ cow?.matriId }}</ng-template>
+            <ng-template #noMatri><span>{{ cow?.matriId }} {{ matri?.name! | titlecase }}</span></ng-template>
         </p>
 
-        <p *ngIf="patri">
+        <p>
             <span jhiTranslate="bonGatewayApp.farm.cow.shared.cow-card.patri">PATRI</span>
             <span>:</span>
-            <a *ngIf="patri; else noPatri"
+            <a *ngIf="enablePatriLink(); else noPatri"
                [title]="'Patri ' + patri?.earTagId"
                [routerLink]="['/farm', 'cow', 'sire', patri?.earTagId]">{{ patri?.earTagId }} {{ patri?.name! | titlecase }}</a>
-            <ng-template #noPatri>{{ cow?.patriId }}</ng-template>
+            <ng-template #noPatri><span>{{ cow?.patriId }} {{ patri?.name! | titlecase }}</span></ng-template>
         </p>
     </div>
 </div>
