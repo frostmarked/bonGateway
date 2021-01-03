@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FindCowPicturesGQL, GetArticleGQL, ArticleVo, CowVo, GetCowGQL, PictureVo } from 'app/bonpublicgraphql/bonpublicgraphql';
-import { Observable, EMPTY } from 'rxjs';
+import { ArticleVo, Context, CowVo, FindCowPicturesGQL, GetArticleGQL, GetCowGQL, PictureVo } from 'app/bonpublicgraphql/bonpublicgraphql';
+import { EMPTY, Observable } from 'rxjs';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
@@ -34,8 +34,8 @@ export class DamDetailsComponent implements OnInit {
       this.dam = data.cowVo;
 
       this.pictures$ = this.cowService.getCowPictures(this.dam!.earTagId!);
-      this.matri$ = this.cowService.getCow(this.dam!.matriId);
-      this.patri$ = this.cowService.getCow(this.dam!.patriId);
+      this.matri$ = this.cowService.getCow(this.dam!.matriId, Context.Parent);
+      this.patri$ = this.cowService.getCow(this.dam!.patriId, Context.Parent);
 
       if (this.dam!.storyHandle) {
         this.article$ = this.cowService.getArticle(this.dam!.storyHandle, this.languageService.getCurrentLanguage());
