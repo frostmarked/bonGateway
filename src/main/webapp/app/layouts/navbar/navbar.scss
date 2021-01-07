@@ -41,14 +41,19 @@ Navbar
   }
 }
 
+.navbar-brand {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 /* ==========================================================================
 Logo styles
 ========================================================================== */
 .logo-img {
-  height: 45px;
-  width: 45px;
+  height: 55px;
+  width: 105px;
   display: inline-block;
   vertical-align: middle;
-  background: url('../../../content/images/bon/simple-cow-logo-white.png') no-repeat center center;
+  background: url('../../../content/images/bon/v3/bon-text-logo-text-invert-v3.svg') no-repeat center center;
   background-size: contain;
 }

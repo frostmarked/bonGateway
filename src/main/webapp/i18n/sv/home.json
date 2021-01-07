@@ -1,6 +1,12 @@
 {
   "home": {
-    "title": "Hello world!",
-    "subtitle": "Detta är en over-engineered hemsida"
+    "title": "Välkommen :)",
+    "ingress": "Äntligen! är korna åter ute i cyberhagen",
+    "body": "Här finner ni bilder och information om alla våra kor. Korna sortade under sin respektive kolinje och tjurarna i någon oklar ordning. Sidan blir lite tråkig utan bilder... I väntan på våra foton får ni slumpvisa professionella foton."
+  },
+  "homeTech": {
+    "title": "Hallå världen!",
+    "ingress": "Detta är en over-engineered hemsida",
+    "body": "Läs mer på GitHub (den är i foten)"
   }
 }

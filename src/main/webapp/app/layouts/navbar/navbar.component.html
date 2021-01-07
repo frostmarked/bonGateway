@@ -19,6 +19,7 @@
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/farm/cow/linage" (click)="collapseNavbar()">
                     <span>
+                        <fa-icon [icon]="faDragon"></fa-icon>
                         <span jhiTranslate="global.menu.farm.linage">Lineage</span>
                     </span>
                 </a>
@@ -26,18 +27,19 @@
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/farm/cow/sire" (click)="collapseNavbar()">
                     <span>
+                       <fa-icon [icon]="faHippo"></fa-icon>
                        <span jhiTranslate="global.menu.farm.sire">Sires</span>
                     </span>
                 </a>
             </li>
-            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/farm/aboutus/company" (click)="collapseNavbar()">
                     <span>
                         <span jhiTranslate="global.menu.farm.company">Company</span>
                     </span>
                 </a>
             </li>
-            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/farm/aboutus/contact" (click)="collapseNavbar()">
                     <span>
                         <span jhiTranslate="global.menu.farm.contact">Contact</span>

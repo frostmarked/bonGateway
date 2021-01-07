@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { VERSION } from 'app/app.constants';
 
 @Component({
   selector: 'jhi-footer',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent {
   today: number = Date.now();
+  version: string;
+
+  constructor() {
+    this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
+  }
 }
