@@ -10,6 +10,8 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { LoginService } from 'app/core/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 
+import { faDragon, faHippo } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
@@ -22,6 +24,9 @@ export class NavbarComponent implements OnInit {
   swaggerEnabled?: boolean;
   version: string;
   publicAccountRegistration: boolean;
+
+  faDragon = faDragon;
+  faHippo = faHippo;
 
   constructor(
     private loginService: LoginService,

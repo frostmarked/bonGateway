@@ -1,6 +1,6 @@
 import { Maybe, PictureVo, PictureSourceVo, Visibility } from '../../bonpublicgraphql/bonpublicgraphql';
 
-export const DEFAULT_IMG = '/content/images/bon/simple-cow-logo-limousin.png';
+export const DEFAULT_IMG = '/content/images/bon/v3/bon-text-logo-text-invert-db-v3.svg';
 
 export const DEFAULT_PICTURE = {
   id: 1,
@@ -10,7 +10,7 @@ export const DEFAULT_PICTURE = {
   sources: [
     {
       name: 'default-img',
-      url: '/content/images/bon/simple-cow-logo-limousin.png',
+      url: DEFAULT_IMG,
       width: 100,
       height: 100,
       contentType: 'image/png',

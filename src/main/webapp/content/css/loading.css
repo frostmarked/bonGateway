@@ -129,12 +129,13 @@
 }
 .app-loading .lds-pacman > div:nth-child(1) div {
   position: absolute;
-  top: 90px;
+  top: 95px;
   left: -8px;
   width: 24px;
   height: 24px;
-  background-image: url('../images/bon/simple-cow-logo-limousin.png');
+  background-image: url('../images/bon/v3/bon-text-logo-text-invert-db-v3.svg');
   background-size: contain;
+  background-repeat: repeat-x;
   -webkit-animation: lds-pacman-3 1s linear infinite;
   animation: lds-pacman-3 1.5s linear infinite;
 }

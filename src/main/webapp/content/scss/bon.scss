@@ -28,11 +28,29 @@ body {
   color: $primary-color;
   border-color: $primary-color;
 
-  a.dropdown-item {
-    &.active {
-      background-color: $primary-color !important;
+  .nav-link {
+    &:hover {
+      text-decoration: underline;
     }
   }
+
+  .dropdown-item {
+    color: $primary-color;
+    border-color: $primary-color;
+    &.active {
+      background-color: $primary-color !important;
+      color: #ffffff;
+    }
+    &:hover {
+      text-decoration: underline;
+      background-color: #ffffff;
+    }
+  }
+}
+
+.navbar-version,
+.navbar-title {
+  display: none;
 }
 
 .img-thumbnail {
