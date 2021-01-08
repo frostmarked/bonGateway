@@ -19,16 +19,21 @@ interface SireItemVM {
   styleUrls: ['./sire-list.component.scss'],
 })
 export class SireListComponent implements OnInit {
-  sires$?: Observable<Array<SireItemVM>>;
+  sires: Array<SireItemVM> = [];
+  page = -1;
 
   constructor(private findCowsGQL: FindCowsGQL, private findCowPicturesGQL: FindCowPicturesGQL, private cowService: CowService) {}
 
   ngOnInit(): void {
-    this.sires$ = this.getSires();
+    this.onScroll();
   }
 
-  private getSires(): Observable<Array<SireItemVM>> {
-    return this.findCowsGQL.fetch({ genderEquals: GenderEquals.Bull, size: 100, sort: ['earTagId,desc'] }).pipe(
+  onScroll(): void {
+    this.getSires(++this.page).subscribe(arr => this.sires.push(...arr));
+  }
+
+  private getSires(pageNumber: number): Observable<Array<SireItemVM>> {
+    return this.findCowsGQL.fetch({ genderEquals: GenderEquals.Bull, page: pageNumber, sort: ['earTagId,desc'] }).pipe(
       map(result => result.data.apiPublicCows),
       map(cows =>
         cows!.map(

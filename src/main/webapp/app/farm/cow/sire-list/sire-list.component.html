@@ -7,7 +7,7 @@
     <jhi-alert></jhi-alert>
 
     <div class="sire-container d-flex align-content-start flex-wrap">
-        <div *ngFor="let sire of sires$ | async" class="sire-item p-2" [jhiBonVisibilityClass]="sire?.visibility">
+        <div *ngFor="let sire of sires" class="sire-item p-2" [jhiBonVisibilityClass]="sire?.visibility">
             <a [title]="'Sire' + sire?.earTagId" [routerLink]="['/farm', 'cow', 'sire', sire?.earTagId]">
                 <figure class="sire-figure figure">
                     <img [jhiCowPicture]="sire.picture$ | async"
@@ -20,5 +20,8 @@
             </a>
         </div>
     </div>
+
+    <div class="search-results"
+         infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()"></div>
 
 </div>

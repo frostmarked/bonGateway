@@ -6,9 +6,10 @@ import { AlertErrorComponent } from './alert/alert-error.component';
 import { LoginModalComponent } from './login/login.component';
 import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
 import { BonVisibilityClassDirective } from './bon/bon-visibility-class.directive';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
-  imports: [BonGatewaySharedLibsModule],
+  imports: [BonGatewaySharedLibsModule, InfiniteScrollModule],
   declarations: [
     FindLanguageFromKeyPipe,
     AlertComponent,

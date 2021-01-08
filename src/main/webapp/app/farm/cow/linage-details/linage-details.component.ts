@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FindCowPicturesGQL, LinageVo, FindCowsGQL, GetArticleGQL, ArticleVo, PictureVo } from 'app/bonpublicgraphql/bonpublicgraphql';
+import {
+  FindCowPicturesGQL,
+  LinageVo,
+  FindCowsGQL,
+  GetArticleGQL,
+  ArticleVo,
+  PictureVo,
+  GenderEquals,
+} from 'app/bonpublicgraphql/bonpublicgraphql';
 import { map } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -25,7 +33,8 @@ interface DamItemVM {
 export class LinageDetailsComponent implements OnInit {
   linage?: LinageVo;
   article$?: Observable<Maybe<ArticleVo>>;
-  dams$?: Observable<Array<DamItemVM>>;
+  dams: Array<DamItemVM> = [];
+  page = -1;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -40,7 +49,7 @@ export class LinageDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(data => {
       this.linage = data.linageVo;
-      this.dams$ = this.getDams(this.linage!.id!);
+      this.onScroll();
       if (this.linage!.storyHandle) {
         this.article$ = this.cowService.getArticle(this.linage!.storyHandle, this.languageService.getCurrentLanguage());
         this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -52,9 +61,13 @@ export class LinageDetailsComponent implements OnInit {
     });
   }
 
-  private getDams(linageId: number): Observable<Array<DamItemVM>> {
+  onScroll(): void {
+    this.getDams(this.linage!.id!, ++this.page).subscribe(arr => this.dams.push(...arr));
+  }
+
+  private getDams(linageId: number, pageNumber: number): Observable<Array<DamItemVM>> {
     return this.findCowsGQL
-      .fetch({ linageIdEquals: linageId, size: 100 }) // unlikly that there will be more then 30
+      .fetch({ linageIdEquals: linageId, genderEquals: GenderEquals.Heifer, page: pageNumber, sort: ['earTagId,desc'] })
       .pipe(
         map(result => result.data.apiPublicCows),
         map(cows =>

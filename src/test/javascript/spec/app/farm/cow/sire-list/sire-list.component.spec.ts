@@ -1,8 +1,6 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
 import { of } from 'rxjs';
 
 import { BonGatewayTestModule } from 'src/test/javascript/spec/test.module';
@@ -11,6 +9,7 @@ import { FindCowsGQL, FindCowPicturesGQL, CowVo, PictureVo, PictureSourceVo, Vis
 import { ApolloModule } from 'apollo-angular';
 import { BonVisibilityClassDirective } from 'app/shared/bon/bon-visibility-class.directive';
 import { CowPictureDirective } from 'app/farm/cow/cow-pictures.directive';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 describe('Component Tests', () => {
   describe('SireListComponent', () => {
@@ -21,7 +20,7 @@ describe('Component Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [BonGatewayTestModule, RouterTestingModule, ApolloModule],
+        imports: [BonGatewayTestModule, RouterTestingModule, ApolloModule, InfiniteScrollModule],
         declarations: [SireListComponent, BonVisibilityClassDirective, CowPictureDirective],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
@@ -82,31 +81,26 @@ describe('Component Tests', () => {
 
       // THEN
       expect(findCowsGQL.fetch).toHaveBeenCalled();
-      comp.sires$?.subscribe(sires => {
-        expect(sires.length).toEqual(1);
-        expect(sires[0].earTagId).toEqual(TEST_COW.earTagId);
-        expect(sires[0].visibility).toEqual(TEST_COW.visibility);
+      const sires = comp.sires;
+      expect(sires[0].earTagId).toEqual(TEST_COW.earTagId);
+      expect(sires[0].visibility).toEqual(TEST_COW.visibility);
 
-        const liElements = fixture.debugElement.queryAll(By.css('.sire-item'));
-        expect(liElements.length).toBe(1);
-
-        expect(findCowPicturesGQL.fetch).toHaveBeenCalled();
-        sires[0].picture$.subscribe(picture => {
-          const ps = picture?.sources ? picture?.sources[0] : null;
-          if (imageCount === 0) {
-            // startwith default
-            expect(ps?.url).toContain('/content/images/');
-            imageCount++;
-          } else if (imageCount === 1) {
-            // found image
-            expect(ps?.url).toContain('/api/public/cows/');
-            imageCount++;
-          } else {
-            // didnt find any image
-            expect(ps?.url).toContain('https://picsum.photos');
-            done();
-          }
-        });
+      expect(findCowPicturesGQL.fetch).toHaveBeenCalled();
+      sires[0].picture$.subscribe(picture => {
+        const ps = picture?.sources ? picture?.sources[0] : null;
+        if (imageCount === 0) {
+          // startwith default
+          expect(ps?.url).toContain('/content/images/');
+          imageCount++;
+        } else if (imageCount === 1) {
+          // found image
+          expect(ps?.url).toContain('/api/public/cows/');
+          imageCount++;
+        } else {
+          // didnt find any image
+          expect(ps?.url).toContain('https://picsum.photos');
+          done();
+        }
       });
     });
   });

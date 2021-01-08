@@ -24,6 +24,7 @@ import { JhiTranslateDirective } from 'ng-jhipster';
 import { ApolloModule } from 'apollo-angular';
 import { BonVisibilityClassDirective } from 'app/shared/bon/bon-visibility-class.directive';
 import { CowPictureDirective } from 'app/farm/cow/cow-pictures.directive';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 describe('Component Tests', () => {
   describe('LinageDetailsComponent', () => {
@@ -35,7 +36,7 @@ describe('Component Tests', () => {
 
     const beforeLinageTest = (route: ActivatedRoute) => {
       TestBed.configureTestingModule({
-        imports: [BonGatewayTestModule, RouterTestingModule, ApolloModule],
+        imports: [BonGatewayTestModule, RouterTestingModule, ApolloModule, InfiniteScrollModule],
         declarations: [LinageDetailsComponent, JhiTranslateDirective, BonVisibilityClassDirective, CowPictureDirective],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: [
@@ -161,31 +162,26 @@ describe('Component Tests', () => {
 
       // THEN
       expect(findCowsGQL.fetch).toHaveBeenCalled();
-      comp.dams$?.subscribe(dams => {
-        expect(dams.length).toEqual(1);
-        expect(dams[0].earTagId).toEqual(TEST_COW.earTagId);
-        expect(dams[0].visibility).toEqual(TEST_COW.visibility);
+      const dams = comp.dams;
+      expect(dams[0].earTagId).toEqual(TEST_COW.earTagId);
+      expect(dams[0].visibility).toEqual(TEST_COW.visibility);
 
-        const liElements = fixture.debugElement.queryAll(By.css('.dam-item'));
-        expect(liElements.length).toBe(1);
-
-        expect(findCowPicturesGQL.fetch).toHaveBeenCalled();
-        dams[0].picture$.subscribe(picture => {
-          const ps = picture?.sources ? picture?.sources[0] : null;
-          if (imageCount === 0) {
-            // startwith default
-            expect(ps?.url).toContain('/content/images/');
-            imageCount++;
-          } else if (imageCount === 1) {
-            // found image
-            expect(ps?.url).toContain('/api/public/cows/');
-            imageCount++;
-          } else {
-            // didnt find any image
-            expect(ps?.url).toContain('https://picsum.photos');
-            done();
-          }
-        });
+      expect(findCowPicturesGQL.fetch).toHaveBeenCalled();
+      dams[0].picture$.subscribe(picture => {
+        const ps = picture?.sources ? picture?.sources[0] : null;
+        if (imageCount === 0) {
+          // startwith default
+          expect(ps?.url).toContain('/content/images/');
+          imageCount++;
+        } else if (imageCount === 1) {
+          // found image
+          expect(ps?.url).toContain('/api/public/cows/');
+          imageCount++;
+        } else {
+          // didnt find any image
+          expect(ps?.url).toContain('https://picsum.photos');
+          done();
+        }
       });
     });
   });

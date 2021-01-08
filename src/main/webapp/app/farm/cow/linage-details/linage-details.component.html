@@ -25,7 +25,7 @@
               [translateValues]="{ earTagId: linage?.earTagId, familyname: linage?.familyname }">Descendants</span></h3>
 
     <div class="dam-container d-flex align-content-start flex-wrap">
-        <div *ngFor="let dam of dams$ | async" class="dam-item p-2" [jhiBonVisibilityClass]="dam?.visibility">
+        <div *ngFor="let dam of dams" class="dam-item p-2" [jhiBonVisibilityClass]="dam?.visibility">
             <a [title]="'Dam ' + dam?.earTagId" [routerLink]="['/farm', 'cow', 'dam', dam?.earTagId]">
                 <figure class="dam-figure figure">
                     <img [jhiCowPicture]="dam.picture$ | async"
@@ -38,5 +38,8 @@
             </a>
         </div>
     </div>
+
+    <div class="search-results"
+         infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()"></div>
 
 </div>
