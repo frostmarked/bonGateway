@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,12 +17,15 @@ import java.util.stream.Collectors;
 import javax.validation.ValidationException;
 
 import com.bonlimousin.gateway.bff.mapper.CowVOContextParentMapper;
+import com.bonlimousin.gateway.security.AuthoritiesConstants;
+import com.bonlimousin.gateway.security.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.mime.MimeTypeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -273,9 +277,11 @@ public class CowVOResourceDelegateImpl {
 			if (!Files.exists(imagePath)) {
 				imagePath = cowPictureSourceService.getImagePath(name, photoEntity);
 			}
-			return ResponseEntity
+            Duration cacheDuration = getImageCacheDuration(cattleEntity, photoEntity);
+            return ResponseEntity
 	                .ok()
 	                .contentType(MediaType.parseMediaType(photoEntity.getImageContentType()))
+                    .cacheControl(CacheControl.maxAge(cacheDuration))
 	                .body(new InputStreamResource(new FileInputStream(imagePath.toFile())));
 		} catch (IOException | MimeTypeException e) {
 			log.warn("Image with name {} for cow {} and id {} not found", name, earTagId, pictureId, e);
@@ -283,7 +289,18 @@ public class CowVOResourceDelegateImpl {
 		}
 	}
 
-	private ResponseEntity<List<PhotoEntity>> fetchPhotosByEarTagId(Long earTagId, Integer page, Integer size, List<String> sort) {
+    private Duration getImageCacheDuration(CattleEntity cattleEntity, PhotoEntity photoEntity) {
+        boolean isAnonAccessCattle = cattleEntity.getVisibility() == CattleEntity.VisibilityEnum.ANONYMOUS;
+        boolean isAnonAccessPhoto = photoEntity.getVisibility() == PhotoEntity.VisibilityEnum.ANONYMOUS;
+        if(isAnonAccessCattle && isAnonAccessPhoto) {
+            return Duration.ofDays(7);
+        } else if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            return Duration.ofHours(1);
+        }
+        return Duration.ofDays(1);
+    }
+
+    private ResponseEntity<List<PhotoEntity>> fetchPhotosByEarTagId(Long earTagId, Integer page, Integer size, List<String> sort) {
 		ResponseEntity<List<CattleEntity>> cattleResponse = this.fetchCattleByEarTagIdAndRole(earTagId, null);
 		if(cattleResponse.getBody().isEmpty()) {
 			return BFFUtil.createResponse(Collections.emptyList(), page, size, sort, 0);
