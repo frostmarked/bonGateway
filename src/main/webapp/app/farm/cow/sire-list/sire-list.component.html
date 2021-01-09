@@ -12,10 +12,10 @@
                 <figure class="sire-figure figure">
                     <img [jhiCowPicture]="sire.picture$ | async"
                          src="http://populated.by.directive"
-                         sizes="300px"
+                         sizes="400px"
                          alt="{{sire?.earTagId}}"
                          class="sire-img figure-img img-fluid img-thumbnail">
-                    <figcaption class="sire-img-caption text-center">{{sire?.earTagId}} {{ sire?.name }}</figcaption>
+                    <figcaption class="sire-img-caption text-center">{{sire?.earTagId}} {{ sire!.name | titlecase }}</figcaption>
                 </figure>
             </a>
         </div>

@@ -1,6 +1,6 @@
 import { Maybe, PictureVo, PictureSourceVo, Visibility } from '../../bonpublicgraphql/bonpublicgraphql';
 
-export const DEFAULT_IMG = '/content/images/bon/v3/bon-text-logo-text-invert-db-v3.svg';
+export const DEFAULT_IMG = '/content/images/bon/v4/bon-logo-primary-v4mod-400x300.png';
 
 export const DEFAULT_PICTURE = {
   id: 1,
@@ -11,8 +11,8 @@ export const DEFAULT_PICTURE = {
     {
       name: 'default-img',
       url: DEFAULT_IMG,
-      width: 100,
-      height: 100,
+      width: 400,
+      height: 300,
       contentType: 'image/png',
     } as PictureSourceVo,
   ],
@@ -20,7 +20,7 @@ export const DEFAULT_PICTURE = {
 
 export const pickPictureSourceUrl = (
   pictureSources: Array<Maybe<PictureSourceVo>>,
-  targetWidth = 300,
+  targetWidth = 400,
   fallbackImage: string = DEFAULT_IMG
 ): string => {
   let selectedUrl = fallbackImage;
@@ -44,7 +44,7 @@ export const pickPictureSourceUrl = (
 
 export const pickFirstPictureSourceUrl = (
   pictures: Array<Maybe<PictureVo>>,
-  targetWidth = 300,
+  targetWidth = 400,
   fallbackImage: string = DEFAULT_IMG
 ): string => {
   if (pictures && pictures[0] && pictures[0].sources) {
