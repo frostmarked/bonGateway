@@ -70,6 +70,8 @@ public class CowVOTOQueryResolver
 	}
 
 	@Override
+    @Cacheable(value = CacheConfiguration.CACHE_COW_PICTURES,
+        condition = "T(com.bonlimousin.gateway.security.SecurityUtils).isAuthenticated() == false")
 	public List<PictureVOTO> apiPublicCowsPictures(double earTagId, Integer page, Integer size, List<String> sort)
 			throws Exception {
 		GraphQLPageable p = GraphQLPageable.of(page, size, sort);

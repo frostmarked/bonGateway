@@ -32,10 +32,11 @@ import javax.annotation.PreDestroy;
 @Configuration
 @EnableCaching
 public class CacheConfiguration {
-	
+
 	public static final String CACHE_COWS = "cows";
+    public static final String CACHE_COW_PICTURES = "cowpictures";
 	public static final String CACHE_LINEAGES = "lineages";
-	
+
     private GitProperties gitProperties;
     private BuildProperties buildProperties;
 
@@ -114,11 +115,14 @@ public class CacheConfiguration {
             }
         }
         config.getMapConfigs().put("default", initializeDefaultMapConfig(jHipsterProperties));
-        
+
         MapConfig cowMapConfig = initializeDefaultMapConfig(jHipsterProperties);
         config.getMapConfigs().put(CACHE_COWS, cowMapConfig);
-        
-        MapConfig lineagesMapConfig = initializeDefaultMapConfig(jHipsterProperties);        
+
+        MapConfig cowPicturesMapConfig = initializeDefaultMapConfig(jHipsterProperties);
+        config.getMapConfigs().put(CACHE_COW_PICTURES, cowPicturesMapConfig);
+
+        MapConfig lineagesMapConfig = initializeDefaultMapConfig(jHipsterProperties);
         config.getMapConfigs().put(CACHE_LINEAGES, lineagesMapConfig);
 
         // Full reference is available at: https://docs.hazelcast.org/docs/management-center/3.9/manual/html/Deploying_and_Starting.html
