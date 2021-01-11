@@ -1,5 +1,6 @@
 package com.bonlimousin.gateway.bff;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -24,11 +25,13 @@ public final class BFFUtil {
 	private BFFUtil() {
 
 	}
-	
+
 	public static UserRoleFilter createUserRoleFilterForCurrentUser() {
 		if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
 			return null;
-		}
+		} else if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER)) {
+            return (UserRoleFilter) new UserRoleFilter().setIn(Arrays.asList(UserRole.ROLE_USER, UserRole.ROLE_ANONYMOUS));
+        }
 		return (UserRoleFilter) new UserRoleFilter().setEquals(UserRole.ROLE_ANONYMOUS);
 	}
 

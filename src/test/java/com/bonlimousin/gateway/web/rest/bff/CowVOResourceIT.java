@@ -1,29 +1,5 @@
 package com.bonlimousin.gateway.web.rest.bff;
 
-import static com.bonlimousin.gateway.web.rest.bff.LineageVOResourceIT.TEST_USER_LOGIN;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.io.IOException;
-import java.time.OffsetDateTime;
-
-import org.apache.commons.io.IOUtils;
-import org.assertj.core.util.Arrays;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-
 import com.bonlimousin.gateway.BonGatewayApp;
 import com.bonlimousin.gateway.bff.BFFUtil;
 import com.bonlimousin.gateway.bff.service.AbstractPictureSourceService.PictureSize;
@@ -32,11 +8,38 @@ import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.model.CattleEn
 import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.model.PhotoEntity;
 import com.bonlimousin.gateway.client.bonreplicaservice.apidocs.model.BovineEntity;
 import com.bonlimousin.gateway.config.RibbonTestConfiguration;
+import com.bonlimousin.gateway.security.AuthoritiesConstants;
 import com.bonlimousin.gateway.web.rest.TestUtil;
+import com.bonlimousin.gateway.web.rest.WithUnauthenticatedMockUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+import org.apache.commons.io.IOUtils;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.util.Arrays;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.List;
+
+import static com.bonlimousin.gateway.web.rest.bff.LineageVOResourceIT.TEST_USER_LOGIN;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureWireMock(port = RibbonTestConfiguration.PORT)
@@ -213,6 +216,51 @@ class CowVOResourceIT {
 		ResultActions ra = restMockMvc.perform(get("/api/public/cows/{earTagId}/pictures/{pictureId}/{imageName}", 1, 1, "dummy.png"));
 		ra.andExpect(status().isNotFound());
 	}
+
+    @Test
+    void shouldFindCowImageCacheControl1() throws Exception {
+        List<String> ccList = getCowImageResultActions(CattleEntity.VisibilityEnum.USER, PhotoEntity.VisibilityEnum.USER);
+        assertThat(ccList.get(0)).isNotEmpty().contains("private", "max-age");
+    }
+
+    @Test
+    void shouldFindCowImageCacheControl2() throws Exception {
+        List<String> ccList = getCowImageResultActions(CattleEntity.VisibilityEnum.USER, PhotoEntity.VisibilityEnum.ANONYMOUS);
+        assertThat(ccList.get(0)).isNotEmpty().contains("public", "max-age");
+    }
+
+    @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+    @Test
+    void shouldFindCowImageCacheControl3() throws Exception {
+        List<String> ccList = getCowImageResultActions(CattleEntity.VisibilityEnum.ADMIN, PhotoEntity.VisibilityEnum.USER);
+        assertThat(ccList.get(0)).isNotEmpty().contains("private", "max-age");
+    }
+
+    @WithUnauthenticatedMockUser
+    @Test
+    void shouldFindCowImageCacheControl4() throws Exception {
+        List<String> ccList = getCowImageResultActions(CattleEntity.VisibilityEnum.USER, PhotoEntity.VisibilityEnum.USER);
+        assertThat(ccList.get(0)).isNotEmpty().contains("no-cache", "no-store", "max-age=0", "must-revalidate");
+    }
+
+    @WithUnauthenticatedMockUser
+    @Test
+    void shouldFindCowImageCacheControl5() throws Exception {
+        List<String> ccList = getCowImageResultActions(CattleEntity.VisibilityEnum.ANONYMOUS, PhotoEntity.VisibilityEnum.ANONYMOUS);
+        assertThat(ccList.get(0)).isNotEmpty().contains("public", "max-age");
+    }
+
+    private List<String> getCowImageResultActions(CattleEntity.VisibilityEnum cattleVisibility, PhotoEntity.VisibilityEnum photoVisibility) throws Exception {
+        CattleEntity ce = createCattleEntity().visibility(cattleVisibility);
+        PhotoEntity pe = createPhotoEntity(ce).visibility(photoVisibility);
+        stubCattleEndpoint(Arrays.array(ce));
+        stubPhotoEndpoint(Arrays.array(pe));
+        String imgName = cowPictureSourceService.getImageName(ce.getEarTagId(), pe.getId(), PictureSize.ORIGINAL, ".png");
+        ResultActions ra = restMockMvc.perform(get("/api/public/cows/{earTagId}/pictures/{pictureId}/{imageName}", ce.getEarTagId(), pe.getId(), imgName));
+        ra.andExpect(status().isOk());
+        ra.andExpect(content().contentType(MediaType.IMAGE_PNG_VALUE));
+        return ra.andReturn().getResponse().getHeaders(HttpHeaders.CACHE_CONTROL);
+    }
 
 	private static void verifyCow(ResultActions ra, String basePath, CattleEntity ce, BovineEntity be) throws Exception {
 		ra.andExpect(jsonPath(basePath + ".earTagId").value(ce.getEarTagId()));

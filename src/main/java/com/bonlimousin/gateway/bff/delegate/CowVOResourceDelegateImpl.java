@@ -277,11 +277,11 @@ public class CowVOResourceDelegateImpl {
 			if (!Files.exists(imagePath)) {
 				imagePath = cowPictureSourceService.getImagePath(name, photoEntity);
 			}
-            Duration cacheDuration = getImageCacheDuration(cattleEntity, photoEntity);
+            CacheControl cacheControl = getImageCacheControl(cattleEntity, photoEntity);
             return ResponseEntity
 	                .ok()
 	                .contentType(MediaType.parseMediaType(photoEntity.getImageContentType()))
-                    .cacheControl(CacheControl.maxAge(cacheDuration))
+                    .cacheControl(cacheControl)
 	                .body(new InputStreamResource(new FileInputStream(imagePath.toFile())));
 		} catch (IOException | MimeTypeException e) {
 			log.warn("Image with name {} for cow {} and id {} not found", name, earTagId, pictureId, e);
@@ -289,15 +289,19 @@ public class CowVOResourceDelegateImpl {
 		}
 	}
 
-    private Duration getImageCacheDuration(CattleEntity cattleEntity, PhotoEntity photoEntity) {
+    private CacheControl getImageCacheControl(CattleEntity cattleEntity, PhotoEntity photoEntity) {
         boolean isAnonAccessCattle = cattleEntity.getVisibility() == CattleEntity.VisibilityEnum.ANONYMOUS;
         boolean isAnonAccessPhoto = photoEntity.getVisibility() == PhotoEntity.VisibilityEnum.ANONYMOUS;
         if(isAnonAccessCattle && isAnonAccessPhoto) {
-            return Duration.ofDays(7);
+            return CacheControl.maxAge(Duration.ofDays(90)).cachePublic();
+        } else if(isAnonAccessPhoto) {
+            return CacheControl.maxAge(Duration.ofDays(30)).cachePublic().proxyRevalidate();
         } else if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            return Duration.ofHours(1);
+            return CacheControl.maxAge(Duration.ofHours(1)).cachePrivate().mustRevalidate();
+        } else if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER)) {
+            return CacheControl.maxAge(Duration.ofDays(7)).cachePrivate().mustRevalidate();
         }
-        return Duration.ofDays(1);
+        return CacheControl.empty();
     }
 
     private ResponseEntity<List<PhotoEntity>> fetchPhotosByEarTagId(Long earTagId, Integer page, Integer size, List<String> sort) {
