@@ -1,5 +1,12 @@
 package com.bonlimousin.gateway.bff.service;
 
+import com.bonlimousin.gateway.web.api.model.PictureSourceVO;
+import net.coobird.thumbnailator.Thumbnails;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.tika.mime.MimeTypeException;
+import org.apache.tika.mime.MimeTypes;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,19 +16,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.tika.mime.MimeTypeException;
-import org.apache.tika.mime.MimeTypes;
-
-import com.bonlimousin.gateway.web.api.model.PictureSourceVO;
-
-import net.coobird.thumbnailator.Thumbnails;
 
 public abstract class AbstractPictureSourceService<T> {
 
@@ -99,34 +96,40 @@ public abstract class AbstractPictureSourceService<T> {
 		return imagePath;
 	}
 
-	public ImmutablePair<Integer, Integer> getImageWidthAndHeight(Path imagePath) throws IOException {
-		BufferedImage bimg = ImageIO.read(imagePath.toFile());
-		return new ImmutablePair<>(bimg.getWidth(), bimg.getHeight());
-	}
-
-    public ImmutablePair<Integer, Integer> getImageWidthAndHeight(byte[] image) throws IOException {
+    public Optional<BufferedImage> extractImage(byte[] image) throws IOException {
 	    try(InputStream is = new ByteArrayInputStream(image)) {
-            BufferedImage bimg = ImageIO.read(is);
-            return new ImmutablePair<>(bimg.getWidth(), bimg.getHeight());
+            return Optional.ofNullable(ImageIO.read(is));
         }
     }
 
-	public Path storeImageOnDisk(String imageName, byte[] image, PictureSize pictureSize) throws IOException {
-		Path imageBasePath = Paths.get(imageBaseDir);
-		if (!Files.exists(imageBasePath)) {
-			Files.createDirectories(imageBasePath);
-		}
+    public BufferedImage createThumbnail(byte[] image, PictureSize pictureSize) throws IOException {
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(image)) {
+            if (pictureSize.pixelWidth() != null) {
+                return Thumbnails.of(bais).width(pictureSize.pixelWidth()).asBufferedImage();
+            } else {
+                return Thumbnails.of(bais).scale(1).asBufferedImage();
+            }
+        }
+    }
 
-		Path path = Paths.get(imageBaseDir, imageName);
-		if (!Files.exists(path)) {
-			try (ByteArrayInputStream bais = new ByteArrayInputStream(image)) {
-				if (pictureSize.pixelWidth() != null) {
-					Thumbnails.of(bais).width(pictureSize.pixelWidth()).toFile(path.toFile());
-				} else {
-					Thumbnails.of(bais).scale(1).toFile(path.toFile());
-				}
-			}
-		}
-		return path;
-	}
+    public BufferedImage createThumbnail(BufferedImage bufferedImage, PictureSize pictureSize) throws IOException {
+        if (pictureSize.pixelWidth() != null) {
+            return Thumbnails.of(bufferedImage).width(pictureSize.pixelWidth()).asBufferedImage();
+        } else {
+            return bufferedImage;
+        }
+    }
+
+    public Path storeImageOnDiskIfNotExists(String imageName, BufferedImage bufferedImage) throws IOException {
+        Path imageBasePath = Paths.get(imageBaseDir);
+        if (!Files.exists(imageBasePath)) {
+            Files.createDirectories(imageBasePath);
+        }
+
+        Path path = Paths.get(imageBaseDir, imageName);
+        if (!Files.exists(path)) {
+            Thumbnails.fromImages(Arrays.asList(bufferedImage)).scale(1).toFile(path.toFile());
+        }
+        return path;
+    }
 }

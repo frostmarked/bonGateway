@@ -25,12 +25,9 @@ class CowPictureSourceServiceIT {
 
 	@Autowired
 	private CowPictureSourceService cowPictureSourceService;
-	
+
 	private CattleEntity cattleEntity;
-	private PhotoEntity pePNG;
-	private PhotoEntity peJpeg34;
-	private PhotoEntity peJpeg43;
-	
+
 	@BeforeEach
     public void setup() throws IOException {
 		this.cattleEntity = new CattleEntity();
@@ -38,49 +35,61 @@ class CowPictureSourceServiceIT {
 		this.cattleEntity.alert(false).upForSale(false);
 		this.cattleEntity.visibility(CattleEntity.VisibilityEnum.ANONYMOUS);
 		this.cattleEntity.storyHandle("cattle1000story");
-		
-		this.pePNG = new PhotoEntity().cattle(this.cattleEntity).id(192L);
-		this.pePNG.width(192).height(192).imageContentType("image/png");		
-		this.pePNG.image(IOUtils.resourceToByteArray("/content/images/hipster.png"));
-		this.pePNG.taken(OffsetDateTime.now());			
-		this.pePNG.caption("hipster").visibility(PhotoEntity.VisibilityEnum.ANONYMOUS);
-		
-		this.peJpeg34 = new PhotoEntity().cattle(this.cattleEntity).id(34L);
-		this.peJpeg34.width(3000).height(4000).imageContentType("image/jpeg");		
-		this.peJpeg34.image(IOUtils.resourceToByteArray("/content/images/gone_fishing_34.jpg"));
-		this.peJpeg34.taken(OffsetDateTime.now().minusDays(1));			
-		this.peJpeg34.caption("gone fishing").visibility(PhotoEntity.VisibilityEnum.ANONYMOUS);
-		
-		this.peJpeg43 = new PhotoEntity().cattle(this.cattleEntity).id(43L);
-		this.peJpeg43.width(4000).height(3000).imageContentType("image/jpeg");		
-		this.peJpeg43.image(IOUtils.resourceToByteArray("/content/images/gone_fishing_43.jpg"));
-		this.peJpeg43.taken(OffsetDateTime.now().minusDays(1));			
-		this.peJpeg43.caption("gone fishing rot").visibility(PhotoEntity.VisibilityEnum.ANONYMOUS);
-	}
-	
-	@Test
-    void testPNG() throws IOException, MimeTypeException {		
-		List<PictureSourceVO> psList = cowPictureSourceService.createPictureSourceVOs(pePNG);
+
+        createPNG();
+    }
+
+    private PhotoEntity createPNG() throws IOException {
+        PhotoEntity pePNG = new PhotoEntity().cattle(this.cattleEntity).id(192L);
+        pePNG.width(192).height(192).imageContentType("image/png");
+        pePNG.image(IOUtils.resourceToByteArray("/content/images/hipster.png"));
+        pePNG.taken(OffsetDateTime.now());
+        pePNG.caption("hipster").visibility(PhotoEntity.VisibilityEnum.ANONYMOUS);
+        return pePNG;
+    }
+
+    private PhotoEntity createJpeg34() throws IOException {
+        PhotoEntity peJpeg34 = new PhotoEntity().cattle(this.cattleEntity).id(34L);
+        peJpeg34.width(3000).height(4000).imageContentType("image/jpeg");
+        peJpeg34.image(IOUtils.resourceToByteArray("/content/images/gone_fishing_34.jpg"));
+        peJpeg34.taken(OffsetDateTime.now().minusDays(1));
+        peJpeg34.caption("gone fishing").visibility(PhotoEntity.VisibilityEnum.ANONYMOUS);
+        return peJpeg34;
+    }
+
+    private PhotoEntity createJpeg43() throws IOException {
+        PhotoEntity peJpeg43 = new PhotoEntity().cattle(this.cattleEntity).id(43L);
+        peJpeg43.width(4000).height(3000).imageContentType("image/jpeg");
+        peJpeg43.image(IOUtils.resourceToByteArray("/content/images/gone_fishing_43.jpg"));
+        peJpeg43.taken(OffsetDateTime.now().minusDays(1));
+        peJpeg43.caption("gone fishing rot").visibility(PhotoEntity.VisibilityEnum.ANONYMOUS);
+        return peJpeg43;
+    }
+
+    @Test
+    void testPNG() throws IOException, MimeTypeException {
+		List<PictureSourceVO> psList = cowPictureSourceService.createPictureSourceVOs(createPNG());
 		assertThat(psList).isNotEmpty().hasSize(1);
 		PictureSourceVO ps = psList.get(0);
 		assertThat(ps.getWidth()).isEqualTo(192);
 		assertThat(ps.getHeight()).isEqualTo(192);
 	}
-	
+
 	@Test
-    void testJpegHigh() throws IOException, MimeTypeException {		
-		List<PictureSourceVO> psList = cowPictureSourceService.createPictureSourceVOs(peJpeg34);
+    void testJpegHigh() throws IOException, MimeTypeException {
+		List<PictureSourceVO> psList = cowPictureSourceService.createPictureSourceVOs(createJpeg34());
 		assertThat(psList).isNotEmpty().hasSize(PictureSize.values().length);
 	}
-	
+
 	@Test
-    void testJpegWide() throws IOException, MimeTypeException {		
-		List<PictureSourceVO> psList = cowPictureSourceService.createPictureSourceVOs(peJpeg43);
+    void testJpegWide() throws IOException, MimeTypeException {
+		List<PictureSourceVO> psList = cowPictureSourceService.createPictureSourceVOs(createJpeg43());
 		assertThat(psList).isNotEmpty().hasSize(PictureSize.values().length);
 	}
-	
+
 	@Test
-    void testJpegOriginal() throws IOException, MimeTypeException {		
+    void testJpegOriginal() throws IOException, MimeTypeException {
+	    PhotoEntity peJpeg43 = createJpeg43();
 		Optional<PictureSourceVO> opt = cowPictureSourceService.createPictureSourceVO(peJpeg43, PictureSize.ORIGINAL);
 		assertThat(opt).isPresent();
 		PictureSourceVO ps = opt.get();
@@ -89,11 +98,11 @@ class CowPictureSourceServiceIT {
 		assertThat(ps.getContentType()).isEqualTo("image/jpeg");
 		assertThat(ps.getName()).endsWith(".jpg");
 	}
-	
+
 	@Test
     void testJpegSmall() throws IOException, MimeTypeException {
 		PictureSize s = PictureSize.SMALL;
-		Optional<PictureSourceVO> opt = cowPictureSourceService.createPictureSourceVO(peJpeg43, s);
+		Optional<PictureSourceVO> opt = cowPictureSourceService.createPictureSourceVO(createJpeg43(), s);
 		assertThat(opt).isPresent();
 		PictureSourceVO ps = opt.get();
 		assertThat(ps.getWidth()).isEqualTo(s.pixelWidth());
