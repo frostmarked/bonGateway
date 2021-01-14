@@ -1,12 +1,10 @@
 package com.bonlimousin.gateway.bff.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
-
+import com.bonlimousin.gateway.BonGatewayApp;
+import com.bonlimousin.gateway.bff.service.AbstractPictureSourceService.PictureSize;
+import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.model.CattleEntity;
+import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.model.PhotoEntity;
+import com.bonlimousin.gateway.web.api.model.PictureSourceVO;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.mime.MimeTypeException;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,11 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.bonlimousin.gateway.BonGatewayApp;
-import com.bonlimousin.gateway.bff.service.AbstractPictureSourceService.PictureSize;
-import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.model.CattleEntity;
-import com.bonlimousin.gateway.client.bonlivestockservice.apidocs.model.PhotoEntity;
-import com.bonlimousin.gateway.web.api.model.PictureSourceVO;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = BonGatewayApp.class)
 class CowPictureSourceServiceIT {
@@ -68,46 +67,49 @@ class CowPictureSourceServiceIT {
 
     @Test
     void testPNG() throws IOException, MimeTypeException {
-		List<PictureSourceVO> psList = cowPictureSourceService.createPictureSourceVOs(createPNG());
-		assertThat(psList).isNotEmpty().hasSize(1);
-		PictureSourceVO ps = psList.get(0);
+        Map<PictureSize, PictureSourceVO> map = cowPictureSourceService.createPictureSourceVOs(createPNG(), "/test");
+		assertThat(map).isNotEmpty().hasSize(1);
+		PictureSourceVO ps = map.entrySet().iterator().next().getValue();
 		assertThat(ps.getWidth()).isEqualTo(192);
 		assertThat(ps.getHeight()).isEqualTo(192);
 	}
 
 	@Test
     void testJpegHigh() throws IOException, MimeTypeException {
-		List<PictureSourceVO> psList = cowPictureSourceService.createPictureSourceVOs(createJpeg34());
-		assertThat(psList).isNotEmpty().hasSize(PictureSize.values().length);
+        Map<PictureSize, PictureSourceVO> map = cowPictureSourceService.createPictureSourceVOs(createJpeg34(), "/test");
+		assertThat(map).isNotEmpty().hasSize(PictureSize.values().length);
 	}
 
 	@Test
     void testJpegWide() throws IOException, MimeTypeException {
-		List<PictureSourceVO> psList = cowPictureSourceService.createPictureSourceVOs(createJpeg43());
-		assertThat(psList).isNotEmpty().hasSize(PictureSize.values().length);
+		Map<PictureSize, PictureSourceVO> map = cowPictureSourceService.createPictureSourceVOs(createJpeg43(), "/test");
+		assertThat(map).isNotEmpty().hasSize(PictureSize.values().length);
 	}
 
 	@Test
     void testJpegOriginal() throws IOException, MimeTypeException {
 	    PhotoEntity peJpeg43 = createJpeg43();
-		Optional<PictureSourceVO> opt = cowPictureSourceService.createPictureSourceVO(peJpeg43, PictureSize.ORIGINAL);
+		Optional<PictureSourceVO> opt = cowPictureSourceService.createPictureSourceVO(peJpeg43, "/test", PictureSize.ORIGINAL);
 		assertThat(opt).isPresent();
 		PictureSourceVO ps = opt.get();
 		assertThat(ps.getWidth()).isEqualTo(peJpeg43.getWidth());
 		assertThat(ps.getHeight()).isEqualTo(peJpeg43.getHeight());
 		assertThat(ps.getContentType()).isEqualTo("image/jpeg");
 		assertThat(ps.getName()).endsWith(".jpg");
+        assertThat(ps.getUrl()).endsWith(".jpg");
 	}
 
 	@Test
     void testJpegSmall() throws IOException, MimeTypeException {
 		PictureSize s = PictureSize.SMALL;
-		Optional<PictureSourceVO> opt = cowPictureSourceService.createPictureSourceVO(createJpeg43(), s);
+        PhotoEntity peJpeg43 = createJpeg43();
+		Optional<PictureSourceVO> opt = cowPictureSourceService.createPictureSourceVO(peJpeg43, "/test", s);
 		assertThat(opt).isPresent();
 		PictureSourceVO ps = opt.get();
 		assertThat(ps.getWidth()).isEqualTo(s.pixelWidth());
 		assertThat(ps.getHeight()).isEqualTo(405);
 		assertThat(ps.getContentType()).isEqualTo("image/jpeg");
 		assertThat(ps.getName()).endsWith(s.pixelWidth() + "w.jpg");
+        assertThat(ps.getUrl()).endsWith(".jpg");
 	}
 }
