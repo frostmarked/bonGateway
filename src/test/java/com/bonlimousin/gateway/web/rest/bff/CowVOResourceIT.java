@@ -185,6 +185,7 @@ class CowVOResourceIT {
 		PhotoEntity pe = createPhotoEntity(ce);
 		stubCattleEndpoint(Arrays.array(ce));
 		stubPhotoEndpoint(Arrays.array(pe));
+        stubReadPhotoEndpoint(pe);
 		String imgName = cowPictureSourceService.getImageName(ce.getEarTagId(), pe.getId(), PictureSize.ORIGINAL, ".png");
 		ResultActions ra = restMockMvc.perform(get("/api/public/cows/{earTagId}/pictures/{pictureId}/{imageName}", ce.getEarTagId(), pe.getId(), imgName));
 		ra.andExpect(status().isOk());
@@ -255,6 +256,7 @@ class CowVOResourceIT {
         PhotoEntity pe = createPhotoEntity(ce).visibility(photoVisibility);
         stubCattleEndpoint(Arrays.array(ce));
         stubPhotoEndpoint(Arrays.array(pe));
+        stubReadPhotoEndpoint(pe);
         String imgName = cowPictureSourceService.getImageName(ce.getEarTagId(), pe.getId(), PictureSize.ORIGINAL, ".png");
         ResultActions ra = restMockMvc.perform(get("/api/public/cows/{earTagId}/pictures/{pictureId}/{imageName}", ce.getEarTagId(), pe.getId(), imgName));
         ra.andExpect(status().isOk());
@@ -339,5 +341,11 @@ class CowVOResourceIT {
 						.withHeader(BFFUtil.HEADER_X_TOTAL_COUNT, String.valueOf(entities.length))
 						.withBody(OM.writeValueAsString(entities))));
 	}
+
+    private static StubMapping stubReadPhotoEndpoint(PhotoEntity entity) throws JsonProcessingException {
+        return WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/api/photos/.*"))
+            .willReturn(WireMock.aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .withBody(OM.writeValueAsString(entity))));
+    }
 }
 
