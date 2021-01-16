@@ -60,6 +60,13 @@ hystrix:
           thread:
             timeoutInMilliseconds: 30000
 
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 30000
+
 management:
   endpoints:
     web:
