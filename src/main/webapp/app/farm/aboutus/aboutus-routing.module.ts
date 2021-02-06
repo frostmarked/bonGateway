@@ -9,10 +9,6 @@ const routes: Routes = [
   {
     path: 'company',
     component: CompanyComponent,
-    data: {
-      authorities: [Authority.USER],
-    },
-    canActivate: [UserRouteAccessService],
   },
   {
     path: 'contact',

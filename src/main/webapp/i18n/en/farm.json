@@ -30,6 +30,36 @@
         "sire-details": {
           "title": "Sire {{ earTagId }} {{ name }}"
         }
+      },
+      "aboutus": {
+        "company": {
+          "title": "About us",
+          "ingress": "We are many that invest a lot of love in these cows. Below is a list of some of us.",
+          "jonas": {
+            "name": "Jonas Frostmark",
+            "email": "jonas.frostmark@bonlimousin.com",
+            "mobile": "070-5130109",
+            "intro": "Feel free to call Jonas regardless of what the question is about, preferably many signals ;)"
+          },
+          "birgitta": {
+            "name": "Birgitta Frostmark",
+            "email": "birgitta.frostmark@bonlimousin.com",
+            "mobile": "070-3813388",
+            "intro": "You can both call and send an email to Birgitta. Please ask questions about health and care"
+          },
+          "richard": {
+            "name": "Richard Frostmark",
+            "email": "richard.frostmark@gmail.com",
+            "mobile": "070-2780411",
+            "intro": "Tractors, tractors, tractors..."
+          },
+          "johan": {
+            "name": "Johan Frostmark",
+            "email": "johan@frostmark.com",
+            "mobile": "070-2176140",
+            "intro": "Have the cows escaped!? Call me"
+          }
+        }
       }
     }
   }

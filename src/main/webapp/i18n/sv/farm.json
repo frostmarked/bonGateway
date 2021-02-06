@@ -30,6 +30,36 @@
         "sire-details": {
           "title": "Avelstjur {{ earTagId }} {{ name }}"
         }
+      },
+      "aboutus": {
+        "company": {
+          "title": "Om Oss",
+          "ingress": "Vi är många som investerar mycket kärlek i dessa kor. Nedan är en lista med några av oss.",
+          "jonas": {
+            "name": "Jonas Frostmark",
+            "email": "jonas.frostmark@bonlimousin.com",
+            "mobile": "070-5130109",
+            "intro": "Ring gärna Jonas oavsett vad frågan gäller, helst många signaler ;)"
+          },
+          "birgitta": {
+            "name": "Birgitta Frostmark",
+            "email": "birgitta.frostmark@bonlimousin.com",
+            "mobile": "070-3813388",
+            "intro": "Birgitta kan man både ringa och skicka email till. Gärna frågor om hälsa och skötsel"
+          },
+          "richard": {
+            "name": "Richard Frostmark",
+            "email": "richard.frostmark@gmail.com",
+            "mobile": "070-2780411",
+            "intro": "Traktorer, traktorer, traktorer..."
+          },
+          "johan": {
+            "name": "Johan Frostmark",
+            "email": "johan@frostmark.com",
+            "mobile": "070-2176140",
+            "intro": "Har korna rymt!? Ring mig"
+          }
+        }
       }
     }
   }

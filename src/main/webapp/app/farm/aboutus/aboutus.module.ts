@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { BonGatewaySharedModule } from 'app/shared/shared.module';
 
 import { AboutusRoutingModule } from './aboutus-routing.module';
 import { CompanyComponent } from './company/company.component';
@@ -7,6 +7,6 @@ import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [CompanyComponent, ContactComponent],
-  imports: [CommonModule, AboutusRoutingModule],
+  imports: [BonGatewaySharedModule, AboutusRoutingModule],
 })
 export class AboutusModule {}
