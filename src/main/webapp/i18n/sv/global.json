@@ -155,5 +155,5 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "Copyright © 2002 - {{currentYear}} limousin.se. All rights reserved"
+  "footer": "Copyright © 2002 - {{currentYear}} limousin.se"
 }

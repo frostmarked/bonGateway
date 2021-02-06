@@ -1,9 +1,17 @@
 <div class="footer">
-    <p jhiTranslate="footer" [translateValues]="{ currentYear: today | date:'yyyy' }">2002</p>
+    <p class="mt-3">
+        <span jhiTranslate="footer" [translateValues]="{ currentYear: today | date:'yyyy' }">2002</span>
+        <span> | </span>
+        <span class="footer-version">{{ version }}</span>
+    </p>
     <div class="d-flex justify-content-center">
-        <div class="align-self-center pr-2"><span class="footer-version">{{ version }}</span></div>
-        <div class="align-self-center"><span class="footer-github">
-            <a class="github-button" href="https://github.com/frostmarked/bonParent" data-size="large" aria-label="Star frostmarked/bonParent on GitHub">Star</a>
-        </span></div>
+        <div class="align-self-center pr-2">
+            <a href="https://www.jhipster.tech" aria-label="JHipster"><img height="16" style="vertical-align: top;" alt="JHipster" src="/content/images/logo-jhipster.png" /></a>
+        </div>
+        <div class="align-self-center">
+            <span class="footer-github">
+                <a class="github-button" href="https://github.com/frostmarked/bonParent" data-size="large" aria-label="Star frostmarked/bonParent on GitHub">Star</a>
+            </span>
+        </div>
     </div>
 </div>
