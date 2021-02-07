@@ -1,8 +1,10 @@
 {
   "home": {
-    "title": "Välkommen :)",
+    "title": "Välkommen",
     "ingress": "Äntligen! är korna åter ute i cyberhagen",
-    "body": "Här finner ni bilder och information om alla våra kor. Korna sortade under sin respektive kolinje och tjurarna i någon oklar ordning. Sidan blir lite tråkig utan bilder... I väntan på våra foton får ni slumpvisa professionella foton."
+    "body": "Här finner ni bilder och information om alla våra kor. Korna sortade under sin respektive kolinje och tjurarna i någon oklar ordning. Sidan blir lite tråkig utan bilder... I väntan på våra foton får ni slumpvisa professionella foton.",
+    "body2": "Gården drivs av familjen Frostmark. Den är belägen i Värmland, strax norr om Karlstad. Huvudsaklig målsättning är att föda upp avelsdjur av den franska nötkreatursrasen limousin.",
+    "body3": "Och vad kännetecknar god avel? Starka ben? Fina fötter? Hög tillväxt? Oavsett så börjar allt med glada, snälla och trygga djur :)"
   },
   "homeTech": {
     "title": "Hallå världen!",

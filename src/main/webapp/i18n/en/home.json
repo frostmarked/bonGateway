@@ -1,8 +1,10 @@
 {
   "home": {
-    "title": "Welcome :)",
+    "title": "Welcome",
     "ingress": "Finally! the cows are out grazing in the cyber pasture, once again",
-    "body": "Here you will find pictures and information about all our cows. The cows sorted under their respective lineage and the bulls in some obscure order. The page gets a little boring without pictures ... While waiting for our photos, you get random professional photos."
+    "body": "Here you will find pictures and information about all our cows. The cows sorted under their respective lineage and the bulls in some obscure order. The page gets a little boring without pictures ... While waiting for our photos, you get random professional photos.",
+    "body2": "The farm is run by the Frostmark family. It is located in Värmland, just north of Karlstad. The main goal is to breed animals of the French cattle breed limousine.",
+    "body3": "And what characterizes good breeding? Strong legs? Nice feet? High growth? Regardless, it all starts with happy, kind and safe animals :)"
   },
   "homeTech": {
     "title": "Hello world!",
