@@ -157,7 +157,14 @@ jhipster:
 # ===================================================================
 
 application:
-  image-base-dir: ${java.io.tmpdir}
+  thumbnails:
+    image-storage: AWS
+    image-base-dir: ${java.io.tmpdir}
+  aws:
+    region-name: eu-north-1
+    # access-key: defined somewhere else...
+    # secret-key: defined somewhere else...
+    image-bucket-name: bonlimousin
   bff:
     client:
       username: gatewayclient

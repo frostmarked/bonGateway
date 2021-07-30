@@ -46,9 +46,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.zalando.problem.Status;
 
 import javax.validation.ValidationException;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -223,19 +222,23 @@ public class CowVOResourceDelegateImpl {
         ResponseEntity<List<PhotoEntity>> response = fetchPhotosByEarTagId(earTagId, page, size, sort);
         List<PictureVO> list = new ArrayList<>();
         for (PhotoEntity entity : response.getBody()) {
-            PictureVO vo = PictureVOMapper.INSTANCE.photoEntityToPictureVO(entity);
-            String baseUrl = getCowImageBaseUrl(earTagId, entity.getId());
-            try {
-                Map<PictureSize, PictureSourceVO> map = cowPictureSourceService.createPictureSourceVOs(entity, baseUrl);
-                vo.setSources(new ArrayList<>(map.values()));
-                cowPictureSourceService.asyncCreateThumbnailsOnDiskIfNotExists(entity.getId(), map);
-            } catch (MimeTypeException e) {
-                log.warn("Failed to extract image extension", e);
-            }
+            PictureVO vo = getPictureVO(earTagId, entity);
             list.add(vo);
         }
         long totalCount = BFFUtil.extractTotalCount(response);
         return BFFUtil.createResponse(list, page, size, sort, totalCount);
+    }
+
+    private PictureVO getPictureVO(Long earTagId, PhotoEntity entity) {
+        PictureVO vo = PictureVOMapper.INSTANCE.photoEntityToPictureVO(entity);
+        String baseUrl = getCowImageBaseUrl(earTagId, entity.getId());
+        try {
+            Map<PictureSize, PictureSourceVO> map = cowPictureSourceService.createPictureSourceVOs(entity, baseUrl);
+            vo.setSources(new ArrayList<>(map.values()));
+        } catch (MimeTypeException e) {
+            log.warn("Failed to extract image extension", e);
+        }
+        return vo;
     }
 
     private String getCowImageBaseUrl(long earTagId, long pictureId) {
@@ -265,14 +268,14 @@ public class CowVOResourceDelegateImpl {
             if (!availableImageNames.contains(name)) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             }
-            String baseUrl = getCowImageBaseUrl(earTagId, pictureId);
-            Path imagePath = cowPictureSourceService.getOrCreateImagePath(pictureId, name, baseUrl);
+
+            String baseUrl = getCowImageBaseUrl(earTagId, photoEntity.getId());
             CacheControl cacheControl = getImageCacheControl(cattleEntity, photoEntity);
             return ResponseEntity
                 .ok()
                 .contentType(MediaType.parseMediaType(photoEntity.getImageContentType()))
                 .cacheControl(cacheControl)
-                .body(new InputStreamResource(new FileInputStream(imagePath.toFile())));
+                .body(new InputStreamResource(cowPictureSourceService.createImageInputStream(photoEntity, baseUrl, name)));
         } catch (IOException | MimeTypeException e) {
             log.warn("Image with name {} for cow {} and id {} not found", name, earTagId, pictureId, e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

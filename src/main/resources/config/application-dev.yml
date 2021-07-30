@@ -145,7 +145,14 @@ jhipster:
 # ===================================================================
 
 application:
-  image-base-dir: target/images
+  thumbnails:
+    image-storage: DISK
+    image-base-dir: target/images
+  aws:
+    region-name: eu-north-1
+    # access-key: defined somewhere else...
+    # secret-key: defined somewhere else...
+    image-bucket-name: bonlimousin-dev
   bff:
     client:
       username: gatewayclient
