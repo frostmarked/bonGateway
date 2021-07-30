@@ -12,9 +12,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
-	
+
+    public enum ImageStorage {
+        DISK,
+        AWS
+    }
+
 	private Boolean publicAccountRegistration;
-	private String imageBaseDir;
+    private Thumbnails thumbnails;
+    private Web web;
+	private Aws aws;
 	private Bff bff;
 
 	public Boolean getPublicAccountRegistration() {
@@ -24,16 +31,32 @@ public class ApplicationProperties {
 	public void setPublicAccountRegistration(Boolean publicAccountRegistration) {
 		this.publicAccountRegistration = publicAccountRegistration;
 	}
-	
-	public String getImageBaseDir() {
-		return imageBaseDir;
-	}
 
-	public void setImageBaseDir(String imageBaseDir) {
-		this.imageBaseDir = imageBaseDir;
-	}
-	
-	public Bff getBff() {
+    public Thumbnails getThumbnails() {
+        return thumbnails;
+    }
+
+    public void setThumbnails(Thumbnails thumbnails) {
+        this.thumbnails = thumbnails;
+    }
+
+    public Web getWeb() {
+        return web;
+    }
+
+    public void setWeb(Web web) {
+        this.web = web;
+    }
+
+    public Aws getAws() {
+        return aws;
+    }
+
+    public void setAws(Aws aws) {
+        this.aws = aws;
+    }
+
+    public Bff getBff() {
 		return bff;
 	}
 
@@ -41,10 +64,100 @@ public class ApplicationProperties {
 		this.bff = bff;
 	}
 
+    public static class Thumbnails {
+        private String imageBaseDir;
+        private String imageStorage;
+        private Boolean imageCreationAot;
+
+        public String getImageBaseDir() {
+            return imageBaseDir;
+        }
+
+        public void setImageBaseDir(String imageBaseDir) {
+            this.imageBaseDir = imageBaseDir;
+        }
+
+        public ImageStorage getImageStorage() {
+            return ImageStorage.valueOf(imageStorage);
+        }
+
+        public void setImageStorage(String imageStorage) {
+            this.imageStorage = imageStorage;
+        }
+
+        public Boolean getImageCreationAot() {
+            return imageCreationAot;
+        }
+
+        public void setImageCreationAot(Boolean imageCreationAot) {
+            this.imageCreationAot = imageCreationAot;
+        }
+    }
+
+    public static class Web {
+        private String contentSecurityPolicy;
+        private String featurePolicy;
+
+        public String getContentSecurityPolicy() {
+            return contentSecurityPolicy;
+        }
+
+        public void setContentSecurityPolicy(String contentSecurityPolicy) {
+            this.contentSecurityPolicy = contentSecurityPolicy;
+        }
+
+        public String getFeaturePolicy() {
+            return featurePolicy;
+        }
+
+        public void setFeaturePolicy(String featurePolicy) {
+            this.featurePolicy = featurePolicy;
+        }
+    }
+
+    public static class Aws {
+	    private String regionName;
+	    private String accessKey;
+        private String secretKey;
+        private String imageBucketName;
+
+        public String getRegionName() {
+            return regionName;
+        }
+
+        public void setRegionName(String regionName) {
+            this.regionName = regionName;
+        }
+
+        public String getAccessKey() {
+            return accessKey;
+        }
+
+        public void setAccessKey(String accessKey) {
+            this.accessKey = accessKey;
+        }
+
+        public String getSecretKey() {
+            return secretKey;
+        }
+
+        public void setSecretKey(String secretKey) {
+            this.secretKey = secretKey;
+        }
+
+        public String getImageBucketName() {
+            return imageBucketName;
+        }
+
+        public void setImageBucketName(String imageBucketName) {
+            this.imageBucketName = imageBucketName;
+        }
+    }
+
 	public static class Bff {
 		private Client client;
 		private Resource resource;
-		
+
 		public Client getClient() {
 			return client;
 		}
@@ -60,7 +173,7 @@ public class ApplicationProperties {
 		public void setResource(Resource resource) {
 			this.resource = resource;
 		}
-		
+
 		public static class Client {
 			@NotBlank
 			private String username;
@@ -236,7 +349,7 @@ public class ApplicationProperties {
 			public static class ResourceProps {
 
 				@NotBlank
-				private String name;		
+				private String name;
 				private String url;
 
 				public String getName() {

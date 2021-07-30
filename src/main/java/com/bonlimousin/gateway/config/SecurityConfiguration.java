@@ -25,14 +25,15 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final TokenProvider tokenProvider;
-
     private final CorsFilter corsFilter;
     private final SecurityProblemSupport problemSupport;
+    private final ApplicationProperties applicationProperties;
 
-    public SecurityConfiguration(TokenProvider tokenProvider, CorsFilter corsFilter, SecurityProblemSupport problemSupport) {
+    public SecurityConfiguration(TokenProvider tokenProvider, CorsFilter corsFilter, SecurityProblemSupport problemSupport, ApplicationProperties applicationProperties) {
         this.tokenProvider = tokenProvider;
         this.corsFilter = corsFilter;
         this.problemSupport = problemSupport;
+        this.applicationProperties = applicationProperties;
     }
 
     @Bean
@@ -65,11 +66,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(problemSupport)
         .and()
             .headers()
-            .contentSecurityPolicy("default-src 'self'; frame-src 'self' https://player.vimeo.com https://*.vimeo.com data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com https://buttons.github.io https://player.vimeo.com https://*.vimeocdn.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' https://picsum.photos https://*.picsum.photos https://*.vimeocdn.com data:; font-src 'self' https://fonts.gstatic.com data:")
+            .contentSecurityPolicy(this.applicationProperties.getWeb().getContentSecurityPolicy())
         .and()
             .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
-            .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
+            .featurePolicy(this.applicationProperties.getWeb().getFeaturePolicy())
         .and()
             .frameOptions()
             .deny()

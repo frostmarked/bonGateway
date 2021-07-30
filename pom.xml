@@ -98,6 +98,7 @@
         <spring-cloud-contract.version>2.2.2.RELEASE</spring-cloud-contract.version>
         <net.coobird.thumbnailator.version>0.4.11</net.coobird.thumbnailator.version>
         <org.apache.tika.version>1.24.1</org.apache.tika.version>
+        <aws-java-sdk-bom.version>1.12.32</aws-java-sdk-bom.version>
     </properties>
 
     <dependencyManagement>
@@ -112,6 +113,13 @@
             <!-- jhipster-needle-maven-add-dependency-management -->
 
             <!-- Bon -->
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-bom</artifactId>
+                <version>${aws-java-sdk-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
 			  <groupId>com.graphql-java-kickstart</groupId>
 			  <artifactId>graphql-spring-boot-starter</artifactId>
@@ -432,6 +440,10 @@
         <!-- jhipster-needle-maven-add-dependency -->
 
         <!-- Bon -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+        </dependency>
         <dependency>
 		  <groupId>com.graphql-java-kickstart</groupId>
 		  <artifactId>graphql-spring-boot-starter</artifactId>

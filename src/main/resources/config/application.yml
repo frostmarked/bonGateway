@@ -233,6 +233,11 @@ kafka:
 
 application:
   public-account-registration: false
+  thumbnails:
+    image-creation-aot: true
+  web:
+    content-security-policy: "default-src 'self'; frame-src 'self' https://player.vimeo.com https://*.vimeo.com data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com https://buttons.github.io https://player.vimeo.com https://*.vimeocdn.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' https://picsum.photos https://*.picsum.photos https://*.vimeocdn.com https://bonlimousin-dev.s3.eu-north-1.amazonaws.com https://bonlimousin.s3.eu-north-1.amazonaws.com data:; font-src 'self' https://fonts.gstatic.com data:"
+    feature-policy: "geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'"
   bff:
     resource:
       # bonContentService
