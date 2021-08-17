@@ -56,28 +56,26 @@ jobs:
               run: ./mvnw -B -ntp package -Pprod -DskipTests -Dsha1=.${GITHUB_SHA:0:7}
             - name: Build and publish docker snapshot image for master
               if: github.event_name != 'release' && github.ref == 'refs/heads/master'
-              run: ./mvnw -ntp jib:build -DargLine="-Xmx1024m" -Djib.to.image=frostmark/bongateway -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }}"
+              run: ./mvnw -ntp jib:build -DargLine="-Xmx1024m" -Djib.to.image=frostmark/bongateway -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }}"
             # Build - Release
             - name: Package release application
               if: github.event_name == 'release'
               run: ./mvnw -B -ntp package -Pprod -DskipTests -Drevision=${{ github.event.release.tag_name }} -Dsha1= -Dchangelist=
             - name: Build and publish docker release image
               if: github.event_name == 'release'
-              run: ./mvnw -ntp jib:build -DargLine="-Xmx1024m" -Drevision=${{ github.event.release.tag_name }} -Dsha1= -Dchangelist= -Djib.to.image=frostmark/bongateway -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }}"
+              run: ./mvnw -ntp jib:build -DargLine="-Xmx1024m" -Drevision=${{ github.event.release.tag_name }} -Dsha1= -Dchangelist= -Djib.to.image=frostmark/bongateway -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }}"
             # Rollout
             - name: Deploy to k8s cluster
               if: github.event_name == 'release'
-              uses: steebchen/kubectl@master
-              env:
-                  KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-                  KUBECTL_VERSION: "1.15"
+              uses: steebchen/kubectl@v2.0.0
               with:
-                  args: set image --record deployment/bongateway bongateway-app=frostmark/bongateway:${{ github.event.release.tag_name }} -n bonlimousin
+                  config: ${{ secrets.KUBE_CONFIG_DATA }}
+                  version: v1.18.0
+                  command: set image --record deployment/bongateway bongateway-app=frostmark/bongateway:${{ github.event.release.tag_name }} -n bonlimousin
             - name: Verify k8s deployment
               if: github.event_name == 'release'
-              uses: steebchen/kubectl@master
-              env:
-                  KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-                  KUBECTL_VERSION: "1.15"
+              uses: steebchen/kubectl@v2.0.0
               with:
-                  args: '"rollout status deployment/bongateway -n bonlimousin"'
+                config: ${{ secrets.KUBE_CONFIG_DATA }}
+                version: v1.18.0
+                command: rollout status deployment/bongateway -n bonlimousin
